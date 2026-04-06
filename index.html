@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LLM Works — We build AI agents that work.</title>
+  <meta name="description" content="We ship AI agents that run 24/7 and learn from feedback. You tell us what to automate. We deliver a running agent in 2 weeks. Open source stack, no lock-in.">
+  <meta property="og:title" content="LLM Works — We build AI agents that work.">
+  <meta property="og:description" content="You tell us what to automate. We deliver a running agent in 2 weeks. Open source stack, no lock-in.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://llm-works.ai">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2588;</text></svg>">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0b;
+      --bg-raised: #111113;
+      --bg-subtle: #18181b;
+      --border: #27272a;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+      --accent: #3b82f6;
+      --accent-dim: #1d4ed8;
+      --mono: "SF Mono", "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* --- Layout --- */
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 80px 0;
+    }
+
+    section + section {
+      border-top: 1px solid var(--border);
+    }
+
+    /* --- Nav --- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(10, 10, 11, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .logo {
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span { color: var(--text-muted); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    /* --- Hero --- */
+    .hero {
+      padding: 160px 0 80px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero h1 {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 540px;
+      margin-bottom: 40px;
+    }
+
+    .cta-primary {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 14px;
+      color: #fff;
+      background: var(--accent);
+      padding: 12px 28px;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .cta-primary:hover { background: var(--accent-dim); }
+
+    /* --- Cards --- */
+    .card {
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 32px;
+    }
+
+    .card + .card { margin-top: 16px; }
+
+    .card h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .card a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .card a:hover { text-decoration: underline; }
+
+    /* --- Section headings --- */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    section h2 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    /* --- Stats --- */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .stat {
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: var(--mono);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .stat-label {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* --- Proof --- */
+    .proof-banner {
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 32px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .proof-badge {
+      flex-shrink: 0;
+      width: 10px;
+      height: 10px;
+      background: #22c55e;
+      border-radius: 50%;
+      margin-top: 7px;
+      animation: pulse-green 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse-green {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+    }
+
+    .proof-text h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .proof-text p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .proof-text a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .proof-text a:hover { text-decoration: underline; }
+
+    /* --- About --- */
+    .about-text {
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 600px;
+    }
+
+    /* --- CTA section --- */
+    .cta-section {
+      text-align: center;
+      padding: 100px 0;
+    }
+
+    .cta-section h2 {
+      margin-bottom: 16px;
+    }
+
+    .cta-section p {
+      font-size: 16px;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+    }
+
+    .cta-email {
+      font-family: var(--mono);
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-top: 16px;
+    }
+
+    .cta-email a {
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .cta-email a:hover { color: var(--accent); }
+
+    /* --- Footer --- */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+    }
+
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--text); }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    /* --- Light mode --- */
+    html.light-mode {
+      --bg: #ffffff;
+      --bg-raised: #f4f4f5;
+      --bg-subtle: #e4e4e7;
+      --border: #d4d4d8;
+      --text: #18181b;
+      --text-muted: #52525b;
+      --accent: #2563eb;
+      --accent-dim: #1d4ed8;
+    }
+
+    html.light-mode nav {
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    html.light-mode .cta-primary {
+      color: #fff;
+    }
+
+    /* --- Theme toggle --- */
+    .theme-toggle {
+      position: fixed;
+      top: 17px;
+      right: 24px;
+      z-index: 101;
+      display: block;
+      width: 40px;
+      height: 22px;
+      cursor: pointer;
+    }
+
+    .theme-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .theme-toggle .slider {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      transition: background 0.2s;
+    }
+
+    .theme-toggle .slider::before {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .theme-toggle input:checked + .slider::before {
+      transform: translateX(18px);
+      background: var(--accent);
+    }
+
+    /* --- Mobile --- */
+    @media (max-width: 600px) {
+      section { padding: 60px 0; }
+      .hero { padding: 120px 0 60px; }
+      .stats { grid-template-columns: repeat(2, 1fr); }
+      .proof-banner { flex-direction: column; gap: 12px; }
+      .proof-badge { margin-top: 0; }
+      .nav-links { gap: 16px; }
+      .cta-section { padding: 60px 0; }
+      footer .container { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a href="/" class="logo">llm-works<span>.ai</span></a>
+      <ul class="nav-links">
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#proof">Proof</a></li>
+        <li><a href="#stack">Stack</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+    <input type="checkbox" id="theme-switch">
+    <span class="slider"></span>
+  </label>
+
+  <section class="hero">
+    <div class="container">
+      <h1>We build AI agents<br>that work.</h1>
+      <p>You tell us what to automate. We deliver a production agent on your infrastructure —
+         no data leaves your network. Open source stack, no lock-in.</p>
+      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 40px;">
+        For operations teams at companies that need AI running reliably, not chatbots that break.</p>
+      <a href="#contact" class="cta-primary">Discuss your use case</a>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="container">
+      <div class="section-label">How it works</div>
+      <h2>From problem to production agent</h2>
+      <div class="card">
+        <h3>1. You describe the workflow</h3>
+        <p>What do you need automated? Operational monitoring, compliance reporting,
+           document processing, research pipelines, internal tooling —
+           if it can be defined, it can be an agent.</p>
+      </div>
+      <div class="card">
+        <h3>2. We build and deploy</h3>
+        <p>We deliver a working prototype fast, then iterate with your team.
+           Runs 24/7, handles failures gracefully, learns from feedback.</p>
+      </div>
+      <div class="card">
+        <h3>3. You own everything</h3>
+        <p>Open source infrastructure. Your data, your hosting, your code.
+           No vendor lock-in. Walk away any time with everything you need to run it yourself.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="proof">
+    <div class="container">
+      <div class="section-label">Live now</div>
+      <h2>Proof, not promises</h2>
+      <div class="proof-banner">
+        <div class="proof-badge"></div>
+        <div class="proof-text">
+          <h3>llm-news</h3>
+          <p>Our first agent monitors 67 sources daily and delivers personalized AI industry
+             briefings. Running in production now.</p>
+          <p style="margin-top: 12px;">
+            <a href="https://news.llm-works.ai">news.llm-works.ai</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stack">
+    <div class="container">
+      <div class="section-label">The stack</div>
+      <h2>Purpose-built infrastructure</h2>
+      <div class="card">
+        <h3>appinfra — Foundation</h3>
+        <p>Production-grade Python infrastructure. Configuration, logging, scheduling,
+           and service management.</p>
+      </div>
+      <div class="card">
+        <h3>llm-infer — Inference</h3>
+        <p>Multi-backend inference server. Native, vLLM, and Ollama with unified client interface.</p>
+      </div>
+      <div class="card">
+        <h3>llm-kelt — Fine-tuning</h3>
+        <p>Context management, feedback collection, RAG retrieval, and LoRA fine-tuning pipeline.</p>
+      </div>
+      <div class="card">
+        <h3>llm-saia — Structured AI</h3>
+        <p>Typed verbs for LLM interactions — verify, critique, extract, synthesize.
+           Predictable, testable outputs.</p>
+      </div>
+      <div class="card">
+        <h3>llm-gent — Agents</h3>
+        <p>Agent framework with trait-based architecture and learning capabilities.</p>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-value">250k</div>
+          <div class="stat-label">lines of code</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">6,500+</div>
+          <div class="stat-label">tests</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">70%</div>
+          <div class="stat-label">coverage</div>
+        </div>
+        <div class="stat">
+          <div class="stat-value">6</div>
+          <div class="stat-label">packages</div>
+        </div>
+      </div>
+      <p style="font-size: 14px; color: var(--text-muted); margin-top: 20px; text-align: center;">
+        Full stack on <a href="https://github.com/llm-works" style="color: var(--accent); text-decoration: none;">GitHub</a>
+      </p>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="container">
+      <div class="section-label">About</div>
+      <h2>Built by an engineer</h2>
+      <p class="about-text">
+        18 years of building high-performance systems. PhD in computer science
+        (signal processing, 3D graphics). Real-time and mission-critical platform
+        engineering across multiple industries — designed from scratch, operated at scale.
+      </p>
+      <p class="about-text" style="margin-top: 16px;">
+        LLM Works exists because AI agents should be infrastructure —
+        reliable, tested, production-grade.
+      </p>
+    </div>
+  </section>
+
+  <section id="contact" class="cta-section">
+    <div class="container">
+      <div class="section-label">Get started</div>
+      <h2>Let's discuss your use case</h2>
+      <p>Describe your workflow. We'll tell you how we'd build it and what it takes.</p>
+      <a href="mailto:info@llm-works.ai" class="cta-primary">Schedule a technical assessment</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <span>&copy; 2026 LLM Works LLC</span>
+      <div class="footer-links">
+        <a href="https://github.com/llm-works">GitHub</a>
+        <a href="mailto:info@llm-works.ai">Contact</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      function getTheme() { try { return localStorage.getItem('theme'); } catch(e) { return null; } }
+      function setTheme(v) { try { localStorage.setItem('theme', v); } catch(e) {} }
+
+      if (getTheme() === 'light') document.documentElement.classList.add('light-mode');
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var toggle = document.getElementById('theme-switch');
+        toggle.checked = document.documentElement.classList.contains('light-mode');
+        toggle.addEventListener('change', function() {
+          document.documentElement.classList.toggle('light-mode', toggle.checked);
+          setTheme(toggle.checked ? 'light' : 'dark');
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>

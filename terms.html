@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms &amp; Conditions — LLM Works</title>
+  <meta name="robots" content="noindex">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0a0a0b;
+      --bg-raised: #111113;
+      --border: #27272a;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+      --accent: #3b82f6;
+      --mono: "SF Mono", "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
+      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      background: rgba(10, 10, 11, 0.85);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 56px;
+    }
+
+    .logo {
+      font-family: var(--mono);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: -0.02em;
+    }
+
+    .logo span { color: var(--text-muted); }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .legal {
+      padding: 120px 0 80px;
+    }
+
+    .legal h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .legal .effective {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 48px;
+    }
+
+    .legal h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-top: 40px;
+      margin-bottom: 12px;
+    }
+
+    .legal p, .legal li {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.75;
+    }
+
+    .legal p + p { margin-top: 12px; }
+
+    .legal ul, .legal ol {
+      margin-top: 8px;
+      margin-bottom: 8px;
+      padding-left: 24px;
+    }
+
+    .legal li { margin-bottom: 6px; }
+
+    .legal a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .legal a:hover { text-decoration: underline; }
+
+    .legal strong { color: var(--text); font-weight: 600; }
+
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 0;
+    }
+
+    footer .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: var(--text-muted);
+      text-decoration: none;
+    }
+
+    footer a:hover { color: var(--text); }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    /* --- Light mode --- */
+    html.light-mode {
+      --bg: #ffffff;
+      --bg-raised: #f4f4f5;
+      --bg-subtle: #e4e4e7;
+      --border: #d4d4d8;
+      --text: #18181b;
+      --text-muted: #52525b;
+      --accent: #2563eb;
+    }
+
+    html.light-mode nav {
+      background: rgba(255, 255, 255, 0.85);
+    }
+
+    /* --- Theme toggle --- */
+    .theme-toggle {
+      position: fixed;
+      top: 17px;
+      right: 24px;
+      z-index: 101;
+      display: block;
+      width: 40px;
+      height: 22px;
+      cursor: pointer;
+    }
+
+    .theme-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .theme-toggle .slider {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      transition: background 0.2s;
+    }
+
+    .theme-toggle .slider::before {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 16px;
+      height: 16px;
+      background: var(--text-muted);
+      border-radius: 50%;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .theme-toggle input:checked + .slider::before {
+      transform: translateX(18px);
+      background: var(--accent);
+    }
+
+    @media (max-width: 600px) {
+      .legal { padding: 100px 0 60px; }
+      footer .container { flex-direction: column; gap: 12px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a href="/" class="logo">llm-works<span>.ai</span></a>
+    </div>
+  </nav>
+
+  <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+    <input type="checkbox" id="theme-switch">
+    <span class="slider"></span>
+  </label>
+
+  <div class="legal">
+    <div class="container">
+
+      <h1>Terms &amp; Conditions</h1>
+      <p class="effective">Effective date: April 6, 2026</p>
+
+      <p>These Terms &amp; Conditions ("Terms") govern your use of the website, hosted services,
+         and consulting engagements provided by LLM Works LLC ("LLM Works," "we," "us," or "our"),
+         a Tennessee limited liability company. By accessing our website at llm-works.ai or using
+         any of our services, you ("Client," "you," or "your") agree to these Terms.</p>
+
+      <h2>1. Services</h2>
+      <p>LLM Works provides two categories of service:</p>
+      <ul>
+        <li><strong>Build &amp; Deliver.</strong> We design, build, and deliver custom AI agent
+            systems to your specifications. Upon delivery and final payment, you receive the source
+            code and all rights to run, modify, and distribute the delivered work.</li>
+        <li><strong>Hosted Services.</strong> We host and operate AI agent systems on your behalf.
+            Hosted services are provided on a subscription basis as agreed in a separate statement
+            of work or order form.</li>
+      </ul>
+
+      <h2>2. Accounts &amp; Access</h2>
+      <p>Certain services may require you to create an account or provide credentials. You are
+         responsible for maintaining the confidentiality of your account credentials and for all
+         activity under your account.</p>
+
+      <h2>3. Intellectual Property</h2>
+      <p><strong>Build &amp; Deliver.</strong> Upon full payment, you own all custom code, models,
+         and configurations created specifically for your engagement. We retain ownership of our
+         pre-existing tools, libraries, and frameworks (including open source components published
+         under their respective licenses).</p>
+      <p><strong>Hosted Services.</strong> You retain ownership of all data you provide to us.
+         We retain ownership of the underlying platform, infrastructure, and agent frameworks.</p>
+      <p><strong>Open Source.</strong> Portions of our stack are published as open source under
+         their respective licenses. Nothing in these Terms restricts your rights under those
+         licenses.</p>
+
+      <h2>4. Client Obligations</h2>
+      <p>You agree to:</p>
+      <ul>
+        <li>Provide accurate and complete information necessary for us to perform the services.</li>
+        <li>Use the services in compliance with all applicable laws and regulations.</li>
+        <li>Not use the services to build systems that are deceptive, harmful, or in violation of
+            third-party rights.</li>
+        <li>Not attempt to reverse-engineer, probe, or compromise our hosted infrastructure.</li>
+      </ul>
+
+      <h2>5. Payment</h2>
+      <p>Payment terms, fees, and schedules are set forth in the applicable statement of work or
+         order form. Unless otherwise agreed, invoices are due within 30 days of receipt. Late
+         payments accrue interest at 1.5% per month or the maximum rate permitted by Tennessee law,
+         whichever is lower.</p>
+
+      <h2>6. Data &amp; Privacy</h2>
+      <p>We process Client data solely to provide the services. We do not sell, share, or use
+         Client data for any purpose other than service delivery. For hosted services, data
+         handling specifics (retention, location, encryption) are documented in the applicable
+         statement of work.</p>
+      <p>Our website collects minimal analytics data. We do not use third-party tracking or
+         advertising cookies.</p>
+
+      <h2>7. Confidentiality</h2>
+      <p>Each party agrees to keep confidential any non-public information received from the other
+         party during the engagement. This obligation survives termination for a period of two (2)
+         years. Confidentiality does not apply to information that is publicly available, already
+         known to the receiving party, or independently developed.</p>
+
+      <h2>8. Service Levels (Hosted Services)</h2>
+      <p>For hosted services, we target 99.5% monthly uptime measured at the application layer.
+         Scheduled maintenance windows are excluded. Specific SLA terms, credits, and remedies are
+         defined in the applicable order form.</p>
+
+      <h2>9. Warranty Disclaimer</h2>
+      <p>Services are provided <strong>"as is"</strong> and <strong>"as available."</strong> To
+         the maximum extent permitted by law, LLM Works disclaims all warranties, express or
+         implied, including but not limited to implied warranties of merchantability, fitness for
+         a particular purpose, and non-infringement.</p>
+      <p>We do not warrant that AI agent outputs will be error-free, complete, or suitable for
+         any particular use without human review. You are responsible for validating agent outputs
+         before acting on them.</p>
+
+      <h2>10. Limitation of Liability</h2>
+      <p>To the maximum extent permitted by Tennessee law, LLM Works' total aggregate liability
+         under these Terms shall not exceed the fees paid by you in the twelve (12) months
+         preceding the claim.</p>
+      <p>In no event shall LLM Works be liable for any indirect, incidental, special,
+         consequential, or punitive damages, including but not limited to loss of profits, data,
+         or business opportunity, regardless of the theory of liability.</p>
+
+      <h2>11. Indemnification</h2>
+      <p>You agree to indemnify and hold harmless LLM Works, its members, and contractors from
+         any claims, damages, or expenses arising from your use of the services, your violation
+         of these Terms, or your violation of any third-party rights.</p>
+
+      <h2>12. Term &amp; Termination</h2>
+      <p><strong>Build &amp; Deliver.</strong> Engagements conclude upon delivery and final
+         payment. Either party may terminate for material breach with 15 days' written notice
+         and opportunity to cure.</p>
+      <p><strong>Hosted Services.</strong> Subscriptions renew automatically unless cancelled
+         with 30 days' written notice before the renewal date. Upon termination, we will provide
+         a data export in a standard format within 30 days of request.</p>
+      <p>Sections 3, 7, 9, 10, 11, and 14 survive termination.</p>
+
+      <h2>13. Changes to These Terms</h2>
+      <p>We may update these Terms from time to time. Material changes will be communicated via
+         email to active clients at least 30 days before taking effect. Continued use of the
+         services after the effective date constitutes acceptance. The current version is always
+         available at
+         <a href="https://llm-works.ai/terms">llm-works.ai/terms</a>.</p>
+
+      <h2>14. Governing Law &amp; Disputes</h2>
+      <p>These Terms are governed by the laws of the State of Tennessee, without regard to
+         conflict-of-law principles. Any disputes shall be resolved in the state or federal courts
+         located in Tennessee. Both parties consent to personal jurisdiction in those courts.</p>
+
+      <h2>15. Miscellaneous</h2>
+      <ul>
+        <li><strong>Entire Agreement.</strong> These Terms, together with any applicable statement
+            of work, constitute the entire agreement between the parties.</li>
+        <li><strong>Severability.</strong> If any provision is found unenforceable, the remaining
+            provisions continue in full force.</li>
+        <li><strong>Waiver.</strong> Failure to enforce any provision does not constitute a waiver
+            of future enforcement.</li>
+        <li><strong>Assignment.</strong> You may not assign these Terms without our written consent.
+            We may assign them in connection with a merger, acquisition, or sale of assets.</li>
+        <li><strong>Force Majeure.</strong> Neither party is liable for delays or failures caused
+            by events beyond reasonable control, including natural disasters, acts of government,
+            or third-party service outages.</li>
+      </ul>
+
+      <h2>16. Contact</h2>
+      <p>Questions about these Terms should be directed to
+         <a href="mailto:info@llm-works.ai">info@llm-works.ai</a>.</p>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <span>&copy; 2026 LLM Works LLC</span>
+      <div class="footer-links">
+        <a href="/">Home</a>
+        <a href="https://github.com/llm-works">GitHub</a>
+        <a href="mailto:info@llm-works.ai">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      function getTheme() { try { return localStorage.getItem('theme'); } catch(e) { return null; } }
+      function setTheme(v) { try { localStorage.setItem('theme', v); } catch(e) {} }
+
+      if (getTheme() === 'light') document.documentElement.classList.add('light-mode');
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var toggle = document.getElementById('theme-switch');
+        toggle.checked = document.documentElement.classList.contains('light-mode');
+        toggle.addEventListener('change', function() {
+          document.documentElement.classList.toggle('light-mode', toggle.checked);
+          setTheme(toggle.checked ? 'light' : 'dark');
+        });
+      });
+    })();
+  </script>
+
+</body>
+</html>
