@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LLM Works — We build AI agents that work.</title>
-  <meta name="description" content="We build AI agents that run on your infrastructure. Production-grade, open source, no lock-in. 250K lines of code, 8,000+ tests.">
+  <title>LLM Works — AI is a systems engineering problem</title>
+  <meta name="description" content="AI is a systems engineering problem, not an AI/ML problem. We build the discipline that makes AI deployable into mission critical systems.">
   <link rel="canonical" href="https://www.llm-works.ai/">
-  <meta property="og:title" content="LLM Works — We build AI agents that work.">
-  <meta property="og:description" content="Production AI agents on your infrastructure. Open source stack, no lock-in.">
+  <meta property="og:title" content="LLM Works — AI is a systems engineering problem">
+  <meta property="og:description" content="We build the engineering discipline that makes AI reliable and safe to operate.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.llm-works.ai/">
   <meta property="og:site_name" content="LLM Works">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="LLM Works — We build AI agents that work.">
-  <meta name="twitter:description" content="Production AI agents on your infrastructure. Open source stack, no lock-in.">
+  <meta name="twitter:title" content="LLM Works — AI is a systems engineering problem">
+  <meta name="twitter:description" content="We build the engineering discipline that makes AI reliable and safe to operate.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2588;</text></svg>">
   <script type="application/ld+json">
   {
@@ -21,7 +21,7 @@
     "@type": "Organization",
     "name": "LLM Works",
     "url": "https://www.llm-works.ai",
-    "description": "We build production AI agents that run on your infrastructure.",
+    "description": "AI is a systems engineering problem, not an AI/ML problem. We build the discipline.",
     "email": "info@llm-works.ai",
     "sameAs": ["https://github.com/llm-works"]
   }
@@ -59,7 +59,6 @@
       -webkit-font-smoothing: antialiased;
     }
 
-    /* --- Layout --- */
     .container {
       max-width: 720px;
       margin: 0 auto;
@@ -74,7 +73,6 @@
       border-top: 1px solid var(--border);
     }
 
-    /* --- Nav --- */
     nav {
       position: fixed;
       top: 0;
@@ -128,18 +126,19 @@
     }
 
     .hero h1 {
-      font-size: clamp(32px, 5vw, 48px);
+      font-size: clamp(28px, 4.5vw, 42px);
       font-weight: 700;
-      line-height: 1.15;
+      line-height: 1.2;
       letter-spacing: -0.03em;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
 
     .hero p {
-      font-size: 18px;
+      font-size: 17px;
       color: var(--text-muted);
-      max-width: 540px;
+      max-width: 600px;
       margin-bottom: 20px;
+      line-height: 1.7;
     }
 
     .cta-primary {
@@ -156,35 +155,6 @@
 
     .cta-primary:hover { background: var(--accent-dim); }
 
-    /* --- Cards --- */
-    .card {
-      background: var(--bg-raised);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 32px;
-    }
-
-    .card + .card { margin-top: 16px; }
-
-    .card h3 {
-      font-size: 16px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .card p {
-      font-size: 15px;
-      color: var(--text-muted);
-      line-height: 1.65;
-    }
-
-    .card a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .card a:hover { text-decoration: underline; }
-
     /* --- Section headings --- */
     .section-label {
       font-family: var(--mono);
@@ -196,85 +166,214 @@
     }
 
     section h2 {
-      font-size: 28px;
+      font-size: 26px;
       font-weight: 700;
       letter-spacing: -0.02em;
-      margin-bottom: 32px;
+      margin-bottom: 24px;
     }
 
-    /* --- Stats --- */
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 16px;
-      margin-top: 24px;
-    }
-
-    .stat {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 20px;
-      text-align: center;
-    }
-
-    .stat-value {
-      font-family: var(--mono);
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text);
-    }
-
-    .stat-label {
-      font-size: 13px;
+    /* --- Prose --- */
+    .prose {
+      font-size: 16px;
       color: var(--text-muted);
-      margin-top: 4px;
+      line-height: 1.75;
+      max-width: 640px;
     }
 
-    /* --- Proof --- */
-    .proof-banner {
-      background: var(--bg-raised);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 32px;
-      display: flex;
-      align-items: flex-start;
-      gap: 20px;
+    .prose p + p {
+      margin-top: 20px;
     }
 
-    .proof-badge {
-      flex-shrink: 0;
+    .prose strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* --- Timeline --- */
+    .timeline {
+      margin-top: 32px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 28px;
+      padding-bottom: 28px;
+      border-left: 2px solid var(--border);
+    }
+
+    .timeline-item:last-child {
+      padding-bottom: 0;
+      border-left-color: var(--accent);
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -6px;
+      top: 0;
       width: 10px;
       height: 10px;
-      background: #22c55e;
+      background: var(--bg);
+      border: 2px solid var(--border);
       border-radius: 50%;
-      margin-top: 7px;
-      animation: pulse-green 2s ease-in-out infinite;
     }
 
-    @keyframes pulse-green {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
-      50% { box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
+    .timeline-item:last-child::before {
+      border-color: var(--accent);
+      background: var(--accent);
     }
 
-    .proof-text h3 {
-      font-size: 16px;
-      font-weight: 600;
+    .timeline-era {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--accent);
       margin-bottom: 6px;
     }
 
-    .proof-text p {
+    .timeline-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .timeline-text {
       font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* --- Comparison table --- */
+    .comparison {
+      margin-top: 28px;
+      overflow-x: auto;
+    }
+
+    .comparison table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    .comparison th {
+      text-align: left;
+      font-weight: 600;
+      color: var(--text);
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-raised);
+    }
+
+    .comparison td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+      vertical-align: top;
+    }
+
+    .comparison tr:last-child td {
+      border-bottom: none;
+    }
+
+    .comparison td:first-child {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* --- Consequences list --- */
+    .consequences {
+      margin-top: 28px;
+    }
+
+    .consequence {
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .consequence:last-child {
+      border-bottom: none;
+    }
+
+    .consequence h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .consequence p {
+      font-size: 14px;
       color: var(--text-muted);
       line-height: 1.6;
     }
 
-    .proof-text a {
+    /* --- Stack (evidence) --- */
+    .stack-intro {
+      font-size: 15px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.65;
+    }
+
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .stack-item {
+      display: block;
+      background: var(--bg-raised);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 16px;
+      text-decoration: none;
+      transition: border-color 0.15s;
+    }
+
+    a.stack-item:hover {
+      border-color: var(--accent);
+    }
+
+    .stack-item h4 {
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .stack-item p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .stack-link {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .stack-essentials {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stack-essentials .stack-item {
+      width: 216px;
+      flex-shrink: 0;
+    }
+
+    .stack-link a {
       color: var(--accent);
       text-decoration: none;
     }
 
-    .proof-text a:hover { text-decoration: underline; }
+    .stack-link a:hover {
+      text-decoration: underline;
+    }
 
     /* --- About --- */
     .about-text {
@@ -282,6 +381,10 @@
       color: var(--text-muted);
       line-height: 1.7;
       max-width: 600px;
+    }
+
+    .about-text + .about-text {
+      margin-top: 16px;
     }
 
     /* --- CTA section --- */
@@ -299,20 +402,6 @@
       color: var(--text-muted);
       margin-bottom: 32px;
     }
-
-    .cta-email {
-      font-family: var(--mono);
-      font-size: 15px;
-      color: var(--text-muted);
-      margin-top: 16px;
-    }
-
-    .cta-email a {
-      color: var(--text);
-      text-decoration: none;
-    }
-
-    .cta-email a:hover { color: var(--accent); }
 
     /* --- Footer --- */
     footer {
@@ -408,12 +497,14 @@
     @media (max-width: 600px) {
       section { padding: 60px 0; }
       .hero { padding: 120px 0 60px; }
-      .stats { grid-template-columns: repeat(2, 1fr); }
-      .proof-banner { flex-direction: column; gap: 12px; }
-      .proof-badge { margin-top: 0; }
       .nav-links { display: none; }
       .cta-section { padding: 60px 0; }
       footer .container { flex-direction: column; gap: 12px; text-align: center; }
+      .comparison { font-size: 13px; }
+      .comparison th, .comparison td { padding: 10px 12px; }
+      .timeline-item { padding-left: 20px; }
+      .stack-essentials { flex-direction: column; align-items: center; }
+      .stack-essentials .stack-item { width: 100%; }
     }
   </style>
 </head>
@@ -423,9 +514,9 @@
     <div class="container">
       <a href="/" class="logo">llm-works<span>.ai</span></a>
       <ul class="nav-links">
-        <li><a href="#how">How it works</a></li>
-        <li><a href="#proof">Proof</a></li>
-        <li><a href="#stack">Stack</a></li>
+        <li><a href="#problem">The Essentials</a></li>
+        <li><a href="#transition">The Pattern</a></li>
+        <li><a href="#stack">The Solution</a></li>
         <li><a href="#about">About</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
@@ -439,51 +530,98 @@
 
   <section class="hero">
     <div class="container">
-      <h1>We build AI agents<br>that work.</h1>
-      <p>You tell us what to automate. We deliver a production agent on your infrastructure —
-         no data leaves your network. Open source stack, no lock-in.</p>
-      <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 40px;">
-        For operations teams at companies that need AI running reliably, not chatbots that break.</p>
-      <a href="#contact" class="cta-primary">Discuss your use case</a>
+      <h1>AI Is Systems Engineering</h1>
+      <p>The industry is racing to add large language models (LLMs), and the potential is enormous: systems that can make decisions, learn, and adapt continuously.
+         Like any transformative technology, it brings its own significant challenges, such as determinism, security, and trust.</p>
+      <p>The hardest part of production AI isn't the model — it's everything around it.
+         With well-structured and reliable systems in place, AI becomes a natural extension
+         that brings its full potential to fruition.</p>
     </div>
   </section>
 
-  <section id="how">
+  <section id="problem">
     <div class="container">
-      <div class="section-label">How it works</div>
-      <h2>From problem to production agent</h2>
-      <div class="card">
-        <h3>1. You describe the workflow</h3>
-        <p>What do you need automated? Operational monitoring, compliance reporting,
-           document processing, research pipelines, internal tooling —
-           if it can be defined, it can be an agent.</p>
-      </div>
-      <div class="card">
-        <h3>2. We build and deploy</h3>
-        <p>We deliver a working prototype fast, then iterate with your team.
-           Runs 24/7, handles failures gracefully, learns from feedback.</p>
-      </div>
-      <div class="card">
-        <h3>3. You own everything</h3>
-        <p>Open source infrastructure. Your data, your hosting, your code.
-           No vendor lock-in. Walk away any time with everything you need to run it yourself.</p>
+      <div class="section-label">What you actually need</div>
+      <h2>The two essentials</h2>
+      <div class="prose">
+        <p><strong>Reliable infrastructure.</strong> The operational backbone that keeps production systems running smoothly, while offering transparency and maximum control.</p>
+        <p><strong>Clean LLM communication.</strong> A harness that nurtures the power of AI, while mitigating its shortcomings, such as hallucinations, inconsistent outputs, and silent failures.</p>
+        <p>These two components are the foundation for doing anything with LLMs reliably in a production setting.</p>
       </div>
     </div>
   </section>
 
-  <section id="proof">
+  <section id="transition">
     <div class="container">
-      <div class="section-label">Live now</div>
-      <h2>Proof, not promises</h2>
-      <div class="proof-banner">
-        <div class="proof-badge"></div>
-        <div class="proof-text">
-          <h3>llm-news</h3>
-          <p>Our first agent monitors 67 sources daily and delivers personalized AI industry
-             briefings. Running in production now.</p>
-          <p style="margin-top: 12px;">
-            <a href="https://news.llm-works.ai">news.llm-works.ai</a>
-          </p>
+      <div class="section-label">We've seen this before</div>
+      <h2>The same hardship, across three industries</h2>
+      <div class="prose">
+        <p>Every field that started where AI is now — highly experimental, while fast-growing — has faced the same dilemma.
+           The right path leads to proper systems engineering, producing clean solutions and compounding growth.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-era">2000s</div>
+          <div class="timeline-title">Electronic Trading</div>
+          <div class="timeline-text">
+            Fast-moving teams, rapid iteration, learning on the fly. Then 2008 and the flash crash of May 6, 2010
+            forced the reckoning: clean architecture, real module boundaries, and risk controls as infrastructure.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-era">2010s</div>
+          <div class="timeline-title">Blockchain</div>
+          <div class="timeline-text">
+            The pattern repeats: experimental codebases, rapid growth, high stakes.
+            Insufficiently tested solutions were vulnerable to hacks that caused tremendous damage and forced the same reckoning.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-era">2020s</div>
+          <div class="timeline-title">AI — today</div>
+          <div class="timeline-text">
+            Explosive adoption, evolving tooling, real-world impact.
+            But we're already seeing similar problems with agent reliability and security.
+            The transition has not happened yet.
+            <strong>We're building the post-transition architecture now.</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="discipline">
+    <div class="container">
+      <div class="section-label">What this enables</div>
+      <h2>The result</h2>
+      <div class="prose">
+        <p>When systems engineering comes first, certain benefits emerge naturally from the architecture,
+           benefits that are hard to retrofit later. Each is a property of how our stack is already built,
+           not a feature on a roadmap.</p>
+      </div>
+
+      <div class="consequences">
+        <div class="consequence">
+          <h3>Audit trail by construction</h3>
+          <p>When agents make decisions that need to be defended later, they can be reconstructed directly,
+             including what was done, why, on what inputs, against which tools, and with what intermediate state.
+             This is not a compliance retrofit but engineering discipline from the first line of code.</p>
+        </div>
+        <div class="consequence">
+          <h3>Predictable behavior</h3>
+          <p>Even though LLMs are non-deterministic, the system behaves consistently.
+             Errors are typed, retries are structured, and outcomes stay within expected bounds.</p>
+        </div>
+        <div class="consequence">
+          <h3>Drift-bounded long-running agents</h3>
+          <p>Agents that run for days or weeks maintain their purpose, context, and goals
+             without gradually drifting from the intended behavior.</p>
+        </div>
+        <div class="consequence">
+          <h3>Rapid agent development</h3>
+          <p>With reliable infrastructure and clean LLM communication in place,
+             building new agents becomes fast and straightforward.</p>
         </div>
       </div>
     </div>
@@ -491,56 +629,40 @@
 
   <section id="stack">
     <div class="container">
-      <div class="section-label">The stack</div>
-      <h2>Purpose-built infrastructure</h2>
-      <p style="font-size: 16px; color: var(--text-muted); margin-bottom: 32px;">
-        We offer a multi-layered infrastructure where each component has a well-defined
-        responsibility and integrates seamlessly.</p>
-      <div class="card">
-        <h3>appinfra — Foundation</h3>
-        <p>Handles the operational backbone — configuration, logging, scheduling, and service
-           lifecycle — so agents run reliably without manual intervention.</p>
+      <div class="section-label">The evidence</div>
+      <h2>Built on this foundation</h2>
+      <p class="stack-intro">
+        We are introducing an open source stack that addresses these challenges through a modular architecture.
+      </p>
+
+      <div class="stack-essentials">
+        <a href="https://github.com/llm-works/appinfra" class="stack-item">
+          <h4>appinfra</h4>
+          <p>Reliable infrastructure. Config, logging, scheduling, lifecycle.</p>
+        </a>
+        <a href="https://github.com/llm-works/llm-saia" class="stack-item">
+          <h4>llm-saia</h4>
+          <p>Clean LLM communication. Structured requests, typed responses, guards.</p>
+        </a>
       </div>
-      <div class="card">
-        <h3>llm-infer — Inference</h3>
-        <p>Runs models across multiple backends with a single interface. Swap providers
-           without changing agent code.</p>
+
+      <div class="stack-grid">
+        <a href="https://github.com/llm-works/llm-infer" class="stack-item">
+          <h4>llm-infer</h4>
+          <p>Inference across backends. Swap providers without changing code.</p>
+        </a>
+        <a href="https://github.com/llm-works/llm-kelt" class="stack-item">
+          <h4>llm-kelt</h4>
+          <p>Feedback collection, context management, fine-tuning.</p>
+        </a>
+        <a href="https://github.com/llm-works/llm-gent" class="stack-item">
+          <h4>llm-gent</h4>
+          <p>Trait-based agents. Explicit capabilities, explicit configuration.</p>
+        </a>
       </div>
-      <div class="card">
-        <h3>llm-kelt — Learning</h3>
-        <p>Collects operational feedback, manages context, and fine-tunes models so agents
-           improve from real-world usage.</p>
-      </div>
-      <div class="card">
-        <h3>llm-saia — Structured AI</h3>
-        <p>Structures the communication between agents and LLMs. Defines how agents ask questions,
-           interpret answers, and validate results.</p>
-      </div>
-      <div class="card">
-        <h3>llm-gent — Agents</h3>
-        <p>Orchestrates agent behavior with trait-based architecture. Agents that learn, adapt,
-           and run autonomously.</p>
-      </div>
-      <div class="stats">
-        <div class="stat">
-          <div class="stat-value">250k</div>
-          <div class="stat-label">lines of code</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">8,000+</div>
-          <div class="stat-label">tests</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">80%</div>
-          <div class="stat-label">coverage</div>
-        </div>
-        <div class="stat">
-          <div class="stat-value">6</div>
-          <div class="stat-label">packages</div>
-        </div>
-      </div>
-      <p style="font-size: 14px; color: var(--text-muted); margin-top: 20px; text-align: center;">
-        Full stack on <a href="https://github.com/llm-works" style="color: var(--accent); text-decoration: none;">GitHub</a>
+
+      <p class="stack-link">
+        <a href="https://github.com/llm-works">View on GitHub →</a>
       </p>
     </div>
   </section>
@@ -548,25 +670,22 @@
   <section id="about">
     <div class="container">
       <div class="section-label">About</div>
-      <h2>Built by an engineer</h2>
+      <h2>Expertise across multiple domains</h2>
       <p class="about-text">
-        18 years of building high-performance systems. PhD in computer science
-        (signal processing, 3D graphics). Real-time and mission-critical platform
-        engineering across multiple industries — designed from scratch, operated at scale.
-      </p>
-      <p class="about-text" style="margin-top: 16px;">
-        LLM Works exists because AI agents should be infrastructure —
-        reliable, tested, production-grade.
+        Over 18 years of building high-performance systems across electronic trading, blockchain infrastructure,
+        and now AI, each domain has demanded production-grade architecture built from the ground up.
+        This experience, combined with a PhD in computer science, shaped how I approach the challenges
+        of reliable AI deployment.
       </p>
     </div>
   </section>
 
   <section id="contact" class="cta-section">
     <div class="container">
-      <div class="section-label">Get started</div>
-      <h2>Let's discuss your use case</h2>
-      <p>Describe your workflow. We'll tell you how we'd build it and what it takes.</p>
-      <a href="mailto:info@llm-works.ai" class="cta-primary">Schedule a technical assessment</a>
+      <div class="section-label">Get in touch</div>
+      <h2>Let's talk</h2>
+      <p>Interested in production-grade AI infrastructure?</p>
+      <a href="mailto:info@llm-works.ai" class="cta-primary">info@llm-works.ai</a>
     </div>
   </section>
 
@@ -585,8 +704,11 @@
     (function() {
       function getTheme() { try { return localStorage.getItem('theme'); } catch(e) { return null; } }
       function setTheme(v) { try { localStorage.setItem('theme', v); } catch(e) {} }
+      function systemPrefersDark() { return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; }
 
-      if (getTheme() === 'light') document.documentElement.classList.add('light-mode');
+      var saved = getTheme();
+      var isLight = saved ? saved === 'light' : !systemPrefersDark();
+      if (isLight) document.documentElement.classList.add('light-mode');
 
       document.addEventListener('DOMContentLoaded', function() {
         var toggle = document.getElementById('theme-switch');
