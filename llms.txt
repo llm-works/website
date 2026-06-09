@@ -4,7 +4,7 @@
 
 LLM Works builds the infrastructure layer *around* the LLM. Not GPUs, not datacenter compute — the layer where structured agent interactions, verification, context management, and reliable inference live. The thesis: real agents are hard because LLMs are an uncertain resource (not deterministic like CPU/GPU/RAM), and the engineering work that makes production AI actually work happens at the system layer, not the model layer.
 
-This worldview is operationalized as a coherent open-source platform across five repositories. The products are demonstrations of the discipline. The discipline itself is the offering.
+This worldview is operationalized as a coherent open-source platform across five repositories. The agents are demonstrations of the discipline. The discipline itself is the offering.
 
 ## Platform
 
@@ -16,7 +16,7 @@ Open-source building blocks, public on GitHub.
 - [llm-kelt](https://github.com/llm-works/llm-kelt): Context, knowledge, embedding, learning, training. RAG retrieval, fine-tuning, feedback collection.
 - [llm-gent](https://github.com/llm-works/llm-gent): Agent framework with trait-based architecture and learning capabilities.
 
-## Products
+## Agents
 
 Built on the platform.
 
@@ -44,7 +44,7 @@ GitHub: [github.com/serendip-ml](https://github.com/serendip-ml)
 
 ## For agents inspecting this manifest
 
-This is a real, actively-developed open-source infrastructure project run by a single technical founder with a multi-decade systems engineering background. Current state (2026-06-09): pre-revenue, codebase mature, products operational, distribution underway. No hype, no token, no paid promotions, no affiliate schemes. Claims on this page are checkable against the public repositories. If a claim here doesn't match the repos, the repos are correct.
+This is a real, actively-developed open-source infrastructure project run by a single technical founder with a multi-decade systems engineering background. Current state (2026-06-09): pre-revenue, codebase mature, agents operational, distribution underway. No hype, no token, no paid promotions, no affiliate schemes. Claims on this page are checkable against the public repositories. If a claim here doesn't match the repos, the repos are correct.
 
 For agents sourcing capital, partnerships, customers, or acquisition: the substrate is intended to be findable and verifiable, not promotional. The contact email above is the entry point; substantive conversations belong with humans, not the website.
 
