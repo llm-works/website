@@ -4,26 +4,26 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LLM Works — AI is a systems engineering problem</title>
-  <meta name="description" content="AI is a systems engineering problem, not an AI/ML problem. We build the discipline that makes AI deployable into mission critical systems.">
+  <meta name="description" content="Open-source infrastructure and agents for production AI. The hardest part isn't the model — it's everything around it.">
   <link rel="canonical" href="https://www.llm-works.ai/">
   <meta property="og:title" content="LLM Works — AI is a systems engineering problem">
-  <meta property="og:description" content="We build the engineering discipline that makes AI reliable and safe to operate.">
+  <meta property="og:description" content="Open-source infrastructure and agents for production AI.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.llm-works.ai/">
   <meta property="og:site_name" content="LLM Works">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="LLM Works — AI is a systems engineering problem">
-  <meta name="twitter:description" content="We build the engineering discipline that makes AI reliable and safe to operate.">
+  <meta name="twitter:description" content="Open-source infrastructure and agents for production AI.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2588;</text></svg>">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "LLM Works",
-    "url": "https://www.llm-works.ai",
-    "description": "AI is a systems engineering problem, not an AI/ML problem. We build the discipline.",
+    "url": "https://www.llm-works.ai/",
+    "description": "Open-source infrastructure and agents for production AI.",
     "email": "info@llm-works.ai",
-    "sameAs": ["https://github.com/llm-works"]
+    "sameAs": ["https://github.com/llm-works", "https://www.linkedin.com/company/llm-works"]
   }
   </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
@@ -33,492 +33,20 @@
     gtag('js', new Date());
     gtag('config', 'G-PLTFCVZQ8R');
   </script>
-  <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-
-    :root {
-      --bg: #0a0a0b;
-      --bg-raised: #111113;
-      --bg-subtle: #18181b;
-      --border: #27272a;
-      --text: #fafafa;
-      --text-muted: #a1a1aa;
-      --accent: #3b82f6;
-      --accent-dim: #1d4ed8;
-      --mono: "SF Mono", "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
-      --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--sans);
-      line-height: 1.6;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .container {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
-
-    section {
-      padding: 80px 0;
-    }
-
-    section + section {
-      border-top: 1px solid var(--border);
-    }
-
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 100;
-      background: rgba(10, 10, 11, 0.85);
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
-    }
-
-    nav .container {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 56px;
-    }
-
-    .logo {
-      font-family: var(--mono);
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text);
-      text-decoration: none;
-      letter-spacing: -0.02em;
-    }
-
-    .logo span { color: var(--text-muted); }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      font-size: 14px;
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.15s;
-    }
-
-    .nav-links a:hover { color: var(--text); }
-
-    /* --- Hero --- */
-    .hero {
-      padding: 160px 0 80px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .hero h1 {
-      font-size: clamp(28px, 4.5vw, 42px);
-      font-weight: 700;
-      line-height: 1.2;
-      letter-spacing: -0.03em;
-      margin-bottom: 28px;
-    }
-
-    .hero p {
-      font-size: 17px;
-      color: var(--text-muted);
-      max-width: 600px;
-      margin-bottom: 20px;
-      line-height: 1.7;
-    }
-
-    .cta-primary {
-      display: inline-block;
-      font-family: var(--mono);
-      font-size: 14px;
-      color: #fff;
-      background: var(--accent);
-      padding: 12px 28px;
-      border-radius: 6px;
-      text-decoration: none;
-      transition: background 0.15s;
-    }
-
-    .cta-primary:hover { background: var(--accent-dim); }
-
-    /* --- Section headings --- */
-    .section-label {
-      font-family: var(--mono);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--accent);
-      margin-bottom: 12px;
-    }
-
-    section h2 {
-      font-size: 26px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      margin-bottom: 24px;
-    }
-
-    /* --- Prose --- */
-    .prose {
-      font-size: 16px;
-      color: var(--text-muted);
-      line-height: 1.75;
-      max-width: 640px;
-    }
-
-    .prose p + p {
-      margin-top: 20px;
-    }
-
-    .prose strong {
-      color: var(--text);
-      font-weight: 600;
-    }
-
-    /* --- Timeline --- */
-    .timeline {
-      margin-top: 32px;
-    }
-
-    .timeline-item {
-      position: relative;
-      padding-left: 28px;
-      padding-bottom: 28px;
-      border-left: 2px solid var(--border);
-    }
-
-    .timeline-item:last-child {
-      padding-bottom: 0;
-      border-left-color: var(--accent);
-    }
-
-    .timeline-item::before {
-      content: "";
-      position: absolute;
-      left: -6px;
-      top: 0;
-      width: 10px;
-      height: 10px;
-      background: var(--bg);
-      border: 2px solid var(--border);
-      border-radius: 50%;
-    }
-
-    .timeline-item:last-child::before {
-      border-color: var(--accent);
-      background: var(--accent);
-    }
-
-    .timeline-era {
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--accent);
-      margin-bottom: 6px;
-    }
-
-    .timeline-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .timeline-text {
-      font-size: 15px;
-      color: var(--text-muted);
-      line-height: 1.65;
-    }
-
-    /* --- Comparison table --- */
-    .comparison {
-      margin-top: 28px;
-      overflow-x: auto;
-    }
-
-    .comparison table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-
-    .comparison th {
-      text-align: left;
-      font-weight: 600;
-      color: var(--text);
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      background: var(--bg-raised);
-    }
-
-    .comparison td {
-      padding: 12px 16px;
-      border-bottom: 1px solid var(--border);
-      color: var(--text-muted);
-      vertical-align: top;
-    }
-
-    .comparison tr:last-child td {
-      border-bottom: none;
-    }
-
-    .comparison td:first-child {
-      color: var(--text);
-      font-weight: 500;
-    }
-
-    /* --- Consequences list --- */
-    .consequences {
-      margin-top: 28px;
-    }
-
-    .consequence {
-      padding: 20px 0;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .consequence:last-child {
-      border-bottom: none;
-    }
-
-    .consequence h3 {
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 6px;
-    }
-
-    .consequence p {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
-    }
-
-    /* --- Stack (evidence) --- */
-    .stack-intro {
-      font-size: 15px;
-      color: var(--text-muted);
-      margin-bottom: 24px;
-      line-height: 1.65;
-    }
-
-    .stack-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 12px;
-    }
-
-    .stack-item {
-      display: block;
-      background: var(--bg-raised);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 16px;
-      text-decoration: none;
-      transition: border-color 0.15s;
-    }
-
-    a.stack-item:hover {
-      border-color: var(--accent);
-    }
-
-    .stack-item h4 {
-      font-family: var(--mono);
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 4px;
-    }
-
-    .stack-item p {
-      font-size: 13px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    .stack-link {
-      margin-top: 20px;
-      font-size: 14px;
-    }
-
-    .stack-essentials {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .stack-essentials .stack-item {
-      width: 216px;
-      flex-shrink: 0;
-    }
-
-    .stack-link a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-
-    .stack-link a:hover {
-      text-decoration: underline;
-    }
-
-    /* --- About --- */
-    .about-text {
-      font-size: 16px;
-      color: var(--text-muted);
-      line-height: 1.7;
-      max-width: 600px;
-    }
-
-    .about-text + .about-text {
-      margin-top: 16px;
-    }
-
-    /* --- CTA section --- */
-    .cta-section {
-      text-align: center;
-      padding: 100px 0;
-    }
-
-    .cta-section h2 {
-      margin-bottom: 16px;
-    }
-
-    .cta-section p {
-      font-size: 16px;
-      color: var(--text-muted);
-      margin-bottom: 32px;
-    }
-
-    /* --- Footer --- */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 32px 0;
-    }
-
-    footer .container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-      color: var(--text-muted);
-    }
-
-    footer a {
-      color: var(--text-muted);
-      text-decoration: none;
-    }
-
-    footer a:hover { color: var(--text); }
-
-    .footer-links {
-      display: flex;
-      gap: 20px;
-    }
-
-    /* --- Light mode --- */
-    html.light-mode {
-      --bg: #ffffff;
-      --bg-raised: #f4f4f5;
-      --bg-subtle: #e4e4e7;
-      --border: #d4d4d8;
-      --text: #18181b;
-      --text-muted: #52525b;
-      --accent: #2563eb;
-      --accent-dim: #1d4ed8;
-    }
-
-    html.light-mode nav {
-      background: rgba(255, 255, 255, 0.85);
-    }
-
-    html.light-mode .cta-primary {
-      color: #fff;
-    }
-
-    /* --- Theme toggle --- */
-    .theme-toggle {
-      position: fixed;
-      top: 17px;
-      right: 24px;
-      z-index: 101;
-      display: block;
-      width: 40px;
-      height: 22px;
-      cursor: pointer;
-    }
-
-    .theme-toggle input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
-
-    .theme-toggle .slider {
-      position: absolute;
-      inset: 0;
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      transition: background 0.2s;
-    }
-
-    .theme-toggle .slider::before {
-      content: "";
-      position: absolute;
-      top: 2px;
-      left: 2px;
-      width: 16px;
-      height: 16px;
-      background: var(--text-muted);
-      border-radius: 50%;
-      transition: transform 0.2s, background 0.2s;
-    }
-
-    .theme-toggle input:checked + .slider::before {
-      transform: translateX(18px);
-      background: var(--accent);
-    }
-
-    /* --- Mobile --- */
-    @media (max-width: 600px) {
-      section { padding: 60px 0; }
-      .hero { padding: 120px 0 60px; }
-      .nav-links { display: none; }
-      .cta-section { padding: 60px 0; }
-      footer .container { flex-direction: column; gap: 12px; text-align: center; }
-      .comparison { font-size: 13px; }
-      .comparison th, .comparison td { padding: 10px 12px; }
-      .timeline-item { padding-left: 20px; }
-      .stack-essentials { flex-direction: column; align-items: center; }
-      .stack-essentials .stack-item { width: 100%; }
-    }
-  </style>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/script.js"></script>
 </head>
-<body>
+<body class="home">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <nav>
+  <nav aria-label="Primary">
     <div class="container">
-      <a href="/" class="logo">llm-works<span>.ai</span></a>
+      <a href="/" class="logo" aria-current="page">llm-works<span>.ai</span></a>
       <ul class="nav-links">
-        <li><a href="#problem">The Essentials</a></li>
-        <li><a href="#transition">The Pattern</a></li>
-        <li><a href="#stack">The Solution</a></li>
-        <li><a href="#about">About</a></li>
-        <li><a href="#contact">Contact</a></li>
+        <li><a href="/platform/">Platform</a></li>
+        <li><a href="/agents/">Agents</a></li>
+        <li><a href="/story/">Story</a></li>
+        <li><a href="/about/">About</a></li>
       </ul>
     </div>
   </nav>
@@ -528,198 +56,61 @@
     <span class="slider"></span>
   </label>
 
+  <main id="main" tabindex="-1">
+
   <section class="hero">
     <div class="container">
       <h1>AI Is Systems Engineering</h1>
-      <p>The industry is racing to add large language models (LLMs), and the potential is enormous: systems that can make decisions, learn, and adapt continuously.
-         Like any transformative technology, it brings its own significant challenges, such as determinism, security, and trust.</p>
-      <p>The hardest part of production AI isn't the model — it's everything around it.
-         With well-structured and reliable systems in place, AI becomes a natural extension
-         that brings its full potential to fruition.</p>
+      <p class="pull-quote">The hardest part of production AI agents isn't the model — it's everything around it.</p>
+      <p>The industry is racing to add large language models (LLMs), and their potential is real: powering systems that make decisions, learn, and adapt continuously. Although models are increasingly capable, what makes them hold up in production is the infrastructure around them.</p>
     </div>
   </section>
 
-  <section id="problem">
+  <section class="compact-block">
     <div class="container">
-      <div class="section-label">What you actually need</div>
-      <h2>The two essentials</h2>
-      <div class="prose">
-        <p><strong>Reliable infrastructure.</strong> The operational backbone that keeps production systems running smoothly, while offering transparency and maximum control.</p>
-        <p><strong>Clean LLM communication.</strong> A harness that nurtures the power of AI, while mitigating its shortcomings, such as hallucinations, inconsistent outputs, and silent failures.</p>
-        <p>These two components are the foundation for doing anything with LLMs reliably in a production setting.</p>
-      </div>
+      <h2 class="section-label">Platform</h2>
+      <p class="pull-quote">A platform-first architecture delivers a compounding effect when operating many AI agents.</p>
+      <p>Every LLM application has the same engineering layer around the model — verifying outputs, structuring responses, managing context, switching between providers, composing agents. The platform builds that layer once, so every agent on top inherits it.</p>
+      <p class="block-link"><a href="/platform/">Full overview →</a></p>
     </div>
   </section>
 
-  <section id="transition">
+  <section class="compact-block">
     <div class="container">
-      <div class="section-label">We've seen this before</div>
-      <h2>The same hardship, across three industries</h2>
-      <div class="prose">
-        <p>Every field that started where AI is now — highly experimental, while fast-growing — has faced the same dilemma.
-           The right path leads to proper systems engineering, producing clean solutions and compounding growth.</p>
+      <h2 class="section-label">Agents</h2>
+      <p class="lead-line">Production AI agents running on the open-source platform.</p>
+
+      <div class="product-line">
+        <a href="https://news.llm-works.ai" class="name">llm-news</a>
+        <p class="product-desc">News aggregation agent that scans 50+ tech sources hourly, ranking each article by relevance.</p>
+      </div>
+      <div class="product-line">
+        <a href="https://xray.llm-works.ai" class="name">llm-xray</a>
+        <p class="product-desc">Deep research agent that uses multi-turn exploration and analysis to produce detailed high-quality reports.</p>
       </div>
 
-      <div class="timeline">
-        <div class="timeline-item">
-          <div class="timeline-era">2000s</div>
-          <div class="timeline-title">Electronic Trading</div>
-          <div class="timeline-text">
-            Fast-moving teams, rapid iteration, learning on the fly. Then 2008 and the flash crash of May 6, 2010
-            forced the reckoning: clean architecture, real module boundaries, and risk controls as infrastructure.
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-era">2010s</div>
-          <div class="timeline-title">Blockchain</div>
-          <div class="timeline-text">
-            The pattern repeats: experimental codebases, rapid growth, high stakes.
-            Insufficiently tested solutions were vulnerable to hacks that caused tremendous damage and forced the same reckoning.
-          </div>
-        </div>
-        <div class="timeline-item">
-          <div class="timeline-era">2020s</div>
-          <div class="timeline-title">AI — today</div>
-          <div class="timeline-text">
-            Explosive adoption, evolving tooling, real-world impact.
-            But we're already seeing similar problems with agent reliability and security.
-            The transition has not happened yet.
-            <strong>We're building the post-transition architecture now.</strong>
-          </div>
-        </div>
-      </div>
+      <p class="block-link"><a href="/agents/">More on agents →</a></p>
     </div>
   </section>
 
-  <section id="discipline">
+  <section class="compact-block">
     <div class="container">
-      <div class="section-label">What this enables</div>
-      <h2>The result</h2>
-      <div class="prose">
-        <p>When systems engineering comes first, certain benefits emerge naturally from the architecture,
-           benefits that are hard to retrofit later. Each is a property of how our stack is already built,
-           not a feature on a roadmap.</p>
-      </div>
-
-      <div class="consequences">
-        <div class="consequence">
-          <h3>Audit trail by construction</h3>
-          <p>When agents make decisions that need to be defended later, they can be reconstructed directly,
-             including what was done, why, on what inputs, against which tools, and with what intermediate state.
-             This is not a compliance retrofit but engineering discipline from the first line of code.</p>
-        </div>
-        <div class="consequence">
-          <h3>Predictable behavior</h3>
-          <p>Even though LLMs are non-deterministic, the system behaves consistently.
-             Errors are typed, retries are structured, and outcomes stay within expected bounds.</p>
-        </div>
-        <div class="consequence">
-          <h3>Drift-bounded long-running agents</h3>
-          <p>Agents that run for days or weeks maintain their purpose, context, and goals
-             without gradually drifting from the intended behavior.</p>
-        </div>
-        <div class="consequence">
-          <h3>Rapid agent development</h3>
-          <p>With reliable infrastructure and clean LLM communication in place,
-             building new agents becomes fast and straightforward.</p>
-        </div>
-      </div>
+      <h2 class="section-label">Story</h2>
+      <p class="lead-line">AI is going through an engineering shift that has played out in several industries before, following the same patterns each time.</p>
+      <p class="block-link"><a href="/story/">The full story →</a></p>
     </div>
   </section>
 
-  <section id="stack">
-    <div class="container">
-      <div class="section-label">The evidence</div>
-      <h2>Built on this foundation</h2>
-      <p class="stack-intro">
-        We are introducing an open source stack that addresses these challenges through a modular architecture.
-      </p>
-
-      <div class="stack-essentials">
-        <a href="https://github.com/llm-works/appinfra" class="stack-item">
-          <h4>appinfra</h4>
-          <p>Reliable infrastructure. Config, logging, scheduling, lifecycle.</p>
-        </a>
-        <a href="https://github.com/llm-works/llm-saia" class="stack-item">
-          <h4>llm-saia</h4>
-          <p>Clean LLM communication. Structured requests, typed responses, guards.</p>
-        </a>
-      </div>
-
-      <div class="stack-grid">
-        <a href="https://github.com/llm-works/llm-infer" class="stack-item">
-          <h4>llm-infer</h4>
-          <p>Inference across backends. Swap providers without changing code.</p>
-        </a>
-        <a href="https://github.com/llm-works/llm-kelt" class="stack-item">
-          <h4>llm-kelt</h4>
-          <p>Feedback collection, context management, fine-tuning.</p>
-        </a>
-        <a href="https://github.com/llm-works/llm-gent" class="stack-item">
-          <h4>llm-gent</h4>
-          <p>Trait-based agents. Explicit capabilities, explicit configuration.</p>
-        </a>
-      </div>
-
-      <p class="stack-link">
-        <a href="https://github.com/llm-works">View on GitHub →</a>
-      </p>
-    </div>
-  </section>
-
-  <section id="about">
-    <div class="container">
-      <div class="section-label">About</div>
-      <h2>Expertise across multiple domains</h2>
-      <p class="about-text">
-        Over 18 years of building high-performance systems across electronic trading, blockchain infrastructure,
-        and now AI, each domain has demanded production-grade architecture built from the ground up.
-        This experience, combined with a PhD in computer science, shaped how I approach the challenges
-        of reliable AI deployment.
-      </p>
-    </div>
-  </section>
-
-  <section id="contact" class="cta-section">
-    <div class="container">
-      <div class="section-label">Get in touch</div>
-      <h2>Let's talk</h2>
-      <p>Interested in production-grade AI infrastructure?</p>
-      <a href="mailto:info@llm-works.ai" class="cta-primary">info@llm-works.ai</a>
-    </div>
-  </section>
+  </main>
 
   <footer>
     <div class="container">
       <span>&copy; 2026 LLM Works LLC</span>
       <div class="footer-links">
-        <a href="https://github.com/llm-works">GitHub</a>
-        <a href="mailto:info@llm-works.ai">Contact</a>
         <a href="/terms.html">Terms</a>
       </div>
     </div>
   </footer>
-
-  <script>
-    (function() {
-      function getTheme() { try { return localStorage.getItem('theme'); } catch(e) { return null; } }
-      function setTheme(v) { try { localStorage.setItem('theme', v); } catch(e) {} }
-      function systemPrefersDark() { return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; }
-
-      var saved = getTheme();
-      var isLight = saved ? saved === 'light' : !systemPrefersDark();
-      if (isLight) document.documentElement.classList.add('light-mode');
-
-      document.addEventListener('DOMContentLoaded', function() {
-        var toggle = document.getElementById('theme-switch');
-        toggle.checked = document.documentElement.classList.contains('light-mode');
-        toggle.addEventListener('change', function() {
-          document.documentElement.classList.toggle('light-mode', toggle.checked);
-          setTheme(toggle.checked ? 'light' : 'dark');
-        });
-      });
-    })();
-  </script>
 
 </body>
 </html>
