@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Story — LLM Works</title>
+  <meta name="description" content="AI is going through an engineering shift that has played out in several industries before, following the same patterns each time. The story behind LLM Works.">
+  <link rel="canonical" href="https://www.llm-works.ai/story/">
+  <meta property="og:title" content="Story — LLM Works">
+  <meta property="og:description" content="AI is going through an engineering shift that has played out in several industries before.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.llm-works.ai/story/">
+  <meta property="og:site_name" content="LLM Works">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Story — LLM Works">
+  <meta name="twitter:description" content="AI is going through an engineering shift that has played out in several industries before.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2588;</text></svg>">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PLTFCVZQ8R');
+  </script>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/script.js"></script>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a href="/" class="logo">llm-works<span>.ai</span></a>
+      <ul class="nav-links">
+        <li><a href="/platform/">Platform</a></li>
+        <li><a href="/products/">Products</a></li>
+        <li><a href="/story/" aria-current="page">Story</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+    <input type="checkbox" id="theme-switch">
+    <span class="slider"></span>
+  </label>
+
+  <section class="hero">
+    <div class="container">
+      <div class="section-label">Why we exist</div>
+      <h1>AI Is Systems Engineering</h1>
+      <p>The industry is racing to add large language models (LLMs), and their potential is real: powering systems that make decisions, learn, and adapt continuously.
+         Like any transformative technology, it brings significant challenges — determinism, security, trust.</p>
+      <p>The hardest part of production AI agents isn't the model — it's everything around it.
+         Although models are increasingly capable, what makes them hold up in production is the infrastructure around them.</p>
+    </div>
+  </section>
+
+  <section id="problem">
+    <div class="container">
+      <div class="section-label">What you actually need</div>
+      <h2>The two essentials</h2>
+      <div class="prose">
+        <p><strong>Reliable infrastructure.</strong> The operational backbone that keeps production systems running.</p>
+        <p><strong>Clean LLM communication.</strong> A harness around the LLM that handles its failure modes: hallucinations, inconsistent outputs, silent failures.</p>
+        <p>These two components are the foundation for doing anything with LLMs reliably in a production setting.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="transition">
+    <div class="container">
+      <div class="section-label">Recurring pattern</div>
+      <h2>The same hardship, across three industries</h2>
+      <div class="prose">
+        <p>Every field that started where AI is now — highly experimental, fast-growing — has gone through the same engineering shift: from experimental code to structured systems.</p>
+      </div>
+
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-era">2000s</div>
+          <div class="timeline-title">Electronic Trading</div>
+          <div class="timeline-text">
+            Fast-moving teams, rapid iteration, learning on the fly. Then 2008 and the flash crash of May 6, 2010
+            forced the reckoning: clean architecture, real module boundaries, and risk controls as infrastructure.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-era">2010s</div>
+          <div class="timeline-title">Blockchain</div>
+          <div class="timeline-text">
+            The pattern repeats: experimental codebases, rapid growth, high stakes.
+            Insufficiently tested solutions were vulnerable to hacks that caused tremendous damage and forced the same reckoning.
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-era">2020s</div>
+          <div class="timeline-title">AI — today</div>
+          <div class="timeline-text">
+            Explosive adoption, evolving tooling, real-world impact.
+            But similar problems with agent reliability and security are already showing.
+            The transition has not happened yet.
+            <strong>LLM Works is building the post-transition architecture now.</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="discipline">
+    <div class="container">
+      <div class="section-label">What this enables</div>
+      <h2>The result</h2>
+      <div class="prose">
+        <p>When systems engineering comes first, certain benefits emerge naturally from the architecture,
+           benefits that are hard to retrofit later. Each is a property of how the platform is already built.</p>
+      </div>
+
+      <div class="consequences">
+        <div class="consequence">
+          <h3>Audit trail by construction</h3>
+          <p>When agents make decisions that need to be defended later, they can be reconstructed directly,
+             including what was done, why, on what inputs, against which tools, and with what intermediate state.</p>
+        </div>
+        <div class="consequence">
+          <h3>Predictable behavior</h3>
+          <p>Even though LLMs are non-deterministic, the system behaves consistently.
+             Errors are typed, retries are structured, and outcomes stay within expected bounds.</p>
+        </div>
+        <div class="consequence">
+          <h3>Drift-bounded long-running agents</h3>
+          <p>Agents that run for days or weeks maintain their purpose, context, and goals
+             without gradually drifting from the intended behavior.</p>
+        </div>
+        <div class="consequence">
+          <h3>Rapid agent development</h3>
+          <p>With reliable infrastructure and clean LLM communication in place,
+             building new agents becomes fast and straightforward.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section">
+    <div class="container">
+      <div class="section-label">Platform</div>
+      <h2>The platform</h2>
+      <p>Five open-source modules built on this discipline.</p>
+      <a href="/platform/" class="cta-primary">See the platform →</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <span>&copy; 2026 LLM Works LLC</span>
+      <div class="footer-links">
+        <a href="/terms.html">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

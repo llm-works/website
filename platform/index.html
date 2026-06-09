@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Platform — LLM Works</title>
+  <meta name="description" content="Open-source building blocks for production AI agents: appinfra, llm-saia, llm-infer, llm-kelt, llm-gent.">
+  <link rel="canonical" href="https://www.llm-works.ai/platform/">
+  <meta property="og:title" content="Platform — LLM Works">
+  <meta property="og:description" content="Open-source building blocks for production AI agents.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://www.llm-works.ai/platform/">
+  <meta property="og:site_name" content="LLM Works">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Platform — LLM Works">
+  <meta name="twitter:description" content="Open-source building blocks for production AI agents.">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2588;</text></svg>">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PLTFCVZQ8R');
+  </script>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/script.js"></script>
+</head>
+<body>
+
+  <nav>
+    <div class="container">
+      <a href="/" class="logo">llm-works<span>.ai</span></a>
+      <ul class="nav-links">
+        <li><a href="/platform/" aria-current="page">Platform</a></li>
+        <li><a href="/products/">Products</a></li>
+        <li><a href="/story/">Story</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+    <input type="checkbox" id="theme-switch">
+    <span class="slider"></span>
+  </label>
+
+  <section class="hero">
+    <div class="container">
+      <div class="section-label">Platform</div>
+      <h1>Open-source building blocks</h1>
+      <p>Modular open-source libraries that compose into the infrastructure layer around the LLM. Each independently versioned and licensed under Apache 2.0 on GitHub.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="stack-essentials">
+        <a href="https://github.com/llm-works/appinfra" class="stack-item">
+          <h4>appinfra</h4>
+          <p>Reliable infrastructure: config, logging, scheduling, lifecycle.</p>
+        </a>
+        <a href="https://github.com/llm-works/llm-saia" class="stack-item">
+          <h4>llm-saia</h4>
+          <p>Clean LLM communication: structured requests, typed responses, guards.</p>
+        </a>
+      </div>
+
+      <div class="stack-grid">
+        <a href="https://github.com/llm-works/llm-infer" class="stack-item">
+          <h4>llm-infer</h4>
+          <p>Inference across backends: same code across providers.</p>
+        </a>
+        <a href="https://github.com/llm-works/llm-kelt" class="stack-item">
+          <h4>llm-kelt</h4>
+          <p>Feedback collection, context management, fine-tuning.</p>
+        </a>
+        <a href="https://github.com/llm-works/llm-gent" class="stack-item">
+          <h4>llm-gent</h4>
+          <p>Trait-based agents: explicit capabilities and configuration.</p>
+        </a>
+      </div>
+
+      <p class="stack-link">
+        <a href="https://github.com/llm-works">View on GitHub →</a>
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-label">Example</div>
+      <p class="stack-intro">An appinfra CLI creates a SAIA object, connects to an Anthropic backend via llm-infer, and sends one request.</p>
+<pre class="code-example"><span class="c-import">import</span> sys, asyncio
+<span class="c-import">from</span> appinfra.app <span class="c-import">import</span> AppBuilder
+<span class="c-import">from</span> llm_infer.client <span class="c-import">import</span> Factory, SAIAAdapter
+<span class="c-import">from</span> llm_saia <span class="c-import">import</span> SAIA
+
+app = AppBuilder(<span class="c-string">"hello-llm"</span>).build()
+
+<span class="c-deco">@app.tool</span>(name=<span class="c-string">"run"</span>)
+<span class="c-deco">@app.argument</span>(<span class="c-string">"prompt"</span>)
+<span class="c-keyword">def</span> <span class="c-name">run</span>(self):
+    asyncio.run(_send(self.lg, self.args.prompt))
+
+<span class="c-keyword">async def</span> <span class="c-name">_send</span>(lg, prompt):
+    <span class="c-keyword">async with</span> Factory(lg).anthropic() <span class="c-keyword">as</span> client:
+        saia = SAIA.builder().backend(SAIAAdapter(client)).build()
+        <span class="c-builtin">print</span>((<span class="c-keyword">await</span> saia.instruct(prompt)).value)
+
+<span class="c-keyword">if</span> __name__ == <span class="c-string">"__main__"</span>:
+    sys.exit(app.main())</pre>
+
+      <p class="stack-intro" style="margin-top: 24px;">Usage:</p>
+<pre class="code-example"><span class="c-comment">$</span> pip install appinfra llm-saia <span class="c-string">"llm-infer[anthropic,saia]"</span>
+<span class="c-comment">$</span> export ANTHROPIC_API_KEY=sk-ant-...
+<span class="c-comment">$</span> python app.py run <span class="c-string">"What is systems engineering?"</span></pre>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <span>&copy; 2026 LLM Works LLC</span>
+      <div class="footer-links">
+        <a href="/terms.html">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
