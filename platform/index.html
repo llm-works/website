@@ -25,9 +25,10 @@
   <link rel="stylesheet" href="/styles.css">
   <script src="/script.js"></script>
 </head>
-<body>
+<body class="platform">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <nav>
+  <nav aria-label="Primary">
     <div class="container">
       <a href="/" class="logo">llm-works<span>.ai</span></a>
       <ul class="nav-links">
@@ -44,6 +45,8 @@
     <span class="slider"></span>
   </label>
 
+  <main id="main" tabindex="-1">
+
   <section class="hero">
     <div class="container">
       <div class="section-label">Platform</div>
@@ -56,26 +59,26 @@
     <div class="container">
       <div class="stack-essentials">
         <a href="https://github.com/llm-works/appinfra" class="stack-item">
-          <h4>appinfra</h4>
+          <h2>appinfra</h2>
           <p>Reliable infrastructure: config, logging, scheduling, lifecycle.</p>
         </a>
         <a href="https://github.com/llm-works/llm-saia" class="stack-item">
-          <h4>llm-saia</h4>
+          <h2>llm-saia</h2>
           <p>Clean LLM communication: structured requests, typed responses, guards.</p>
         </a>
       </div>
 
       <div class="stack-grid">
         <a href="https://github.com/llm-works/llm-infer" class="stack-item">
-          <h4>llm-infer</h4>
+          <h2>llm-infer</h2>
           <p>Inference across backends: same code across providers.</p>
         </a>
         <a href="https://github.com/llm-works/llm-kelt" class="stack-item">
-          <h4>llm-kelt</h4>
+          <h2>llm-kelt</h2>
           <p>Feedback collection, context management, fine-tuning.</p>
         </a>
         <a href="https://github.com/llm-works/llm-gent" class="stack-item">
-          <h4>llm-gent</h4>
+          <h2>llm-gent</h2>
           <p>Trait-based agents: explicit capabilities and configuration.</p>
         </a>
       </div>
@@ -90,6 +93,7 @@
     <div class="container">
       <div class="section-label">Example</div>
       <p class="stack-intro">An appinfra CLI creates a SAIA object, connects to an Anthropic backend via llm-infer, and sends one request.</p>
+<!-- prettier-ignore: leading whitespace inside <pre> is rendered verbatim -->
 <pre class="code-example"><span class="c-import">import</span> sys, asyncio
 <span class="c-import">from</span> appinfra.app <span class="c-import">import</span> AppBuilder
 <span class="c-import">from</span> llm_infer.client <span class="c-import">import</span> Factory, SAIAAdapter
@@ -111,11 +115,14 @@ app = AppBuilder(<span class="c-string">"hello-llm"</span>).build()
     sys.exit(app.main())</pre>
 
       <p class="stack-intro" style="margin-top: 24px;">Usage:</p>
+<!-- prettier-ignore: leading whitespace inside <pre> is rendered verbatim -->
 <pre class="code-example"><span class="c-comment">$</span> pip install appinfra llm-saia <span class="c-string">"llm-infer[anthropic,saia]"</span>
 <span class="c-comment">$</span> export ANTHROPIC_API_KEY=sk-ant-...
 <span class="c-comment">$</span> python app.py run <span class="c-string">"What is systems engineering?"</span></pre>
     </div>
   </section>
+
+  </main>
 
   <footer>
     <div class="container">

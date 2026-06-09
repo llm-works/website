@@ -26,8 +26,9 @@
   <script src="/script.js"></script>
 </head>
 <body class="about">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <nav>
+  <nav aria-label="Primary">
     <div class="container">
       <a href="/" class="logo">llm-works<span>.ai</span></a>
       <ul class="nav-links">
@@ -43,6 +44,8 @@
     <input type="checkbox" id="theme-switch">
     <span class="slider"></span>
   </label>
+
+  <main id="main" tabindex="-1">
 
   <section class="hero">
     <div class="container">
@@ -79,6 +82,8 @@
       </div>
     </div>
   </section>
+
+  </main>
 
   <footer>
     <div class="container">

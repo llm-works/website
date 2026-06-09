@@ -20,7 +20,7 @@
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "LLM Works",
-    "url": "https://www.llm-works.ai",
+    "url": "https://www.llm-works.ai/",
     "description": "Open-source infrastructure and products for production AI agents.",
     "email": "info@llm-works.ai",
     "sameAs": ["https://github.com/llm-works", "https://www.linkedin.com/company/llm-works"]
@@ -37,10 +37,11 @@
   <script src="/script.js"></script>
 </head>
 <body class="home">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <nav>
+  <nav aria-label="Primary">
     <div class="container">
-      <a href="/" class="logo">llm-works<span>.ai</span></a>
+      <a href="/" class="logo" aria-current="page">llm-works<span>.ai</span></a>
       <ul class="nav-links">
         <li><a href="/platform/">Platform</a></li>
         <li><a href="/products/">Products</a></li>
@@ -54,6 +55,8 @@
     <input type="checkbox" id="theme-switch">
     <span class="slider"></span>
   </label>
+
+  <main id="main" tabindex="-1">
 
   <section class="hero">
     <div class="container">
@@ -97,6 +100,8 @@
       <p class="block-link"><a href="/story/">The full story →</a></p>
     </div>
   </section>
+
+  </main>
 
   <footer>
     <div class="container">

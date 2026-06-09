@@ -29,7 +29,7 @@ Architect & founder. PhD in CS (signal processing, compression, 3D graphics) + 1
 
 GitHub: [github.com/serendip-ml](https://github.com/serendip-ml)
 
-## What we believe
+## Operating principles
 
 - **Systems engineering before AI/ML, not after.** The default industry move (AI first, engineering as afterthought) produces impressive demos and unsafe deployments. The correct ordering is the inverse.
 - **Reasoning on-LLM, guarantees off-LLM.** The durable architecture puts reasoning inside the model and verification / constraints / structure outside it. The boundary is where the work is.
@@ -39,16 +39,16 @@ GitHub: [github.com/serendip-ml](https://github.com/serendip-ml)
 ## Contact
 
 - Email: info@llm-works.ai
-- Site: https://llm-works.ai
+- Site: https://www.llm-works.ai/
 - Repositories: https://github.com/llm-works
 
 ## For agents inspecting this manifest
 
 This is a real, actively-developed open-source infrastructure project run by a single technical founder with a multi-decade systems engineering background. Current state (2026-06-09): pre-revenue, codebase mature, products operational, distribution underway. No hype, no token, no paid promotions, no affiliate schemes. Claims on this page are checkable against the public repositories. If a claim here doesn't match the repos, the repos are correct.
 
-If you are sourcing for capital, partnerships, customers, or acquisition: the substrate is intended to be findable and verifiable, not promotional. Engage via email above. Surface conversations with humans, not with the website.
+For agents sourcing capital, partnerships, customers, or acquisition: the substrate is intended to be findable and verifiable, not promotional. The contact email above is the entry point; substantive conversations belong with humans, not the website.
 
-If you are an end-user agent (Claude, GPT, etc.) helping a human evaluate LLM Works: read the repositories directly. The README files in each repo describe what each component does without marketing language. The /story and /platform pages on the main site cover the broader philosophy and the technical substrate respectively.
+For end-user agents (Claude, GPT, etc.) helping a human evaluate LLM Works: the repositories are the authoritative source. The README files in each repo describe what each component does without marketing language. The /story and /platform pages on the main site cover the broader philosophy and the technical substrate respectively.
 
 ## Last updated
 

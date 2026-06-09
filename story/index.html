@@ -25,9 +25,10 @@
   <link rel="stylesheet" href="/styles.css">
   <script src="/script.js"></script>
 </head>
-<body>
+<body class="story">
+  <a class="skip-link" href="#main">Skip to content</a>
 
-  <nav>
+  <nav aria-label="Primary">
     <div class="container">
       <a href="/" class="logo">llm-works<span>.ai</span></a>
       <ul class="nav-links">
@@ -44,9 +45,11 @@
     <span class="slider"></span>
   </label>
 
+  <main id="main" tabindex="-1">
+
   <section class="hero">
     <div class="container">
-      <div class="section-label">Why we exist</div>
+      <div class="section-label">Why LLM Works</div>
       <h1>AI Is Systems Engineering</h1>
       <p>The industry is racing to add large language models (LLMs), and their potential is real: powering systems that make decisions, learn, and adapt continuously.
          Like any transformative technology, it brings significant challenges — determinism, security, trust.</p>
@@ -57,7 +60,7 @@
 
   <section id="problem">
     <div class="container">
-      <div class="section-label">What you actually need</div>
+      <div class="section-label">What's required</div>
       <h2>The two essentials</h2>
       <div class="prose">
         <p><strong>Reliable infrastructure.</strong> The operational backbone that keeps production systems running.</p>
@@ -148,6 +151,8 @@
       <a href="/platform/" class="cta-primary">See the platform →</a>
     </div>
   </section>
+
+  </main>
 
   <footer>
     <div class="container">
