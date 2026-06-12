@@ -4,9 +4,11 @@
 import re
 import shutil
 from datetime import datetime
+from html import escape
 from pathlib import Path
 
 import markdown
+import yaml
 from markdown.extensions.tables import TableExtension
 from markdown.extensions.fenced_code import FencedCodeExtension
 
@@ -229,24 +231,22 @@ def parse_frontmatter(content: str) -> tuple[dict, str]:
     if len(parts) < 3:
         return {}, content
 
+    raw = yaml.safe_load(parts[1])
+    if not raw:
+        return {}, parts[2].strip()
+
     frontmatter = {}
-    current_key = None
-    for line in parts[1].strip().split("\n"):
-        if ":" in line and not line.startswith(" "):
-            key, value = line.split(":", 1)
-            value = value.strip().strip('"').strip("'")
-            current_key = key.strip()
-            frontmatter[current_key] = value
-        elif line.startswith("  ") and ":" in line and current_key:
-            # Nested key like "  teaser: /path"
-            nested_key, value = line.strip().split(":", 1)
-            value = value.strip().strip('"').strip("'")
-            frontmatter[f"{current_key}_{nested_key.strip()}"] = value
+    for key, value in raw.items():
+        if isinstance(value, dict):
+            for nested_key, nested_value in value.items():
+                frontmatter[f"{key}_{nested_key}"] = nested_value
+        else:
+            frontmatter[key] = value
 
     return frontmatter, parts[2].strip()
 
 
-def transform_content(body: str, slug: str) -> str:
+def transform_content(body: str) -> str:
     """Transform markdown content for new site structure."""
     # Fix internal blog links: /slug/ -> /blog/slug/
     body = re.sub(r'\]\(/([a-z0-9-]+)/\)', r'](/blog/\1/)', body)
@@ -289,8 +289,12 @@ def build_post(src_dir: Path) -> dict | None:
         print(f"  Skipping {slug}: missing title or date")
         return None
 
-    date = datetime.strptime(frontmatter["date"], "%Y-%m-%d")
-    body = transform_content(body, slug)
+    raw_date = frontmatter["date"]
+    if isinstance(raw_date, str):
+        date = datetime.strptime(raw_date, "%Y-%m-%d")
+    else:
+        date = datetime.combine(raw_date, datetime.min.time())
+    body = transform_content(body)
     html_content = render_markdown(body)
 
     # Indent content for template
@@ -321,8 +325,11 @@ def build_post(src_dir: Path) -> dict | None:
     # Write HTML to same directory as post.md
     out_dir = src_dir
 
-    # Write HTML
-    html = POST_TEMPLATE.format(**post_data)
+    # Write HTML (escape title/description for HTML attributes)
+    html = POST_TEMPLATE.format(
+        **{**post_data, "title": escape(post_data["title"]),
+           "description": escape(post_data["description"])}
+    )
     (out_dir / "index.html").write_text(html)
     print(f"  Built: /blog/{slug}/")
 
@@ -336,8 +343,8 @@ def build_index(posts: list[dict]) -> None:
     cards = "\n".join(
         POST_CARD_TEMPLATE.format(
             slug=p["slug"],
-            title=p["title"],
-            description=p["description"],
+            title=escape(p["title"]),
+            description=escape(p["description"]),
             date_iso=p["date_iso"],
             date_display=p["date_display"],
             teaser=p["teaser"],
@@ -358,8 +365,8 @@ def build_rss(posts: list[dict]) -> None:
     items = "\n".join(
         RSS_ITEM_TEMPLATE.format(
             slug=p["slug"],
-            title=p["title"],
-            description=p["description"],
+            title=escape(p["title"]),
+            description=escape(p["description"]),
             pub_date=p["date"].strftime("%a, %d %b %Y 00:00:00 +0000"),
         )
         for p in posts_sorted
