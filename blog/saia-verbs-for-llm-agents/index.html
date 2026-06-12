@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Verb Layer for Agent-LLM Communication — LLM Works</title>
+  <meta name="description" content=">">
+  <link rel="canonical" href="https://www.llm-works.ai/blog/saia-verbs-for-llm-agents/">
+  <meta property="og:title" content="A Verb Layer for Agent-LLM Communication">
+  <meta property="og:description" content=">">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.llm-works.ai/blog/saia-verbs-for-llm-agents/">
+  <meta property="og:site_name" content="LLM Works">
+  <meta property="article:published_time" content="2026-03-27">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="A Verb Layer for Agent-LLM Communication">
+  <meta name="twitter:description" content=">">
+  <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
+  <link rel="alternate" type="application/rss+xml" title="LLM Works Blog" href="/blog/feed.xml">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2588;</text></svg>">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PLTFCVZQ8R');
+  </script>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/script.js"></script>
+</head>
+<body class="blog-post">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav aria-label="Primary">
+    <div class="container">
+      <a href="/" class="logo">llm-works<span>.ai</span></a>
+      <ul class="nav-links">
+        <li><a href="/platform/">Platform</a></li>
+        <li><a href="/agents/">Agents</a></li>
+        <li><a href="/story/">Story</a></li>
+        <li><a href="/blog/" aria-current="page">Blog</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+    <input type="checkbox" id="theme-switch">
+    <span class="slider"></span>
+  </label>
+
+  <main id="main" tabindex="-1">
+
+  <article class="post">
+    <header class="post-header">
+      <div class="container">
+        <p class="post-date">March 27, 2026</p>
+        <h1>A Verb Layer for Agent-LLM Communication</h1>
+        <p class="post-byline">LLM Works</p>
+      </div>
+    </header>
+
+    <div class="post-content">
+      <div class="container">
+        <p>Building agents means asking LLMs to verify claims, critique drafts, decompose tasks—but the only
+        interface is "send text, get text back." The result is hand-rolled prompts, bespoke response
+        parsing,
+        and reimplemented retry logic for every operation. There's a missing layer. Here's how current tools
+        approach the problem, and what we're building instead.</p>
+        <h2>Current Approaches</h2>
+        <p><strong>Raw prompting.</strong> The simplest approach: concatenate strings, send to model, parse the response.
+        LangChain, most tutorials, and most production agents work this way.</p>
+        <pre><code class="language-python">prompt = f&quot;Given this code:\n{code}\n\nDoes it handle null safely? Answer yes or no.&quot;
+        response = await llm.complete(prompt)
+        is_safe = &quot;yes&quot; in response.lower()
+        </code></pre>
+        <p><strong>Strengths</strong>: flexible, no abstractions to learn. <strong>Gap</strong>: no structure—every call requires
+        hand-parsing and reimplemented error handling.</p>
+        <p><strong>Tool/function calling.</strong> OpenAI and Anthropic provide structured tool calling: define a schema,
+        the model returns JSON matching that schema.</p>
+        <pre><code class="language-python">tools = [{
+            &quot;name&quot;: &quot;check_null_safety&quot;,
+            &quot;parameters&quot;: {
+                &quot;type&quot;: &quot;object&quot;,
+                &quot;properties&quot;: {
+                    &quot;is_safe&quot;: {&quot;type&quot;: &quot;boolean&quot;},
+                    &quot;reason&quot;: {&quot;type&quot;: &quot;string&quot;}
+                }
+            }
+        }]
+        response = await llm.complete(prompt, tools=tools)
+        </code></pre>
+        <p><strong>Strengths</strong>: structured output, model understands intent. <strong>Gap</strong>: defines <em>syntax</em> not
+        <em>semantics</em>—the JSON is structured, but prompt construction, retries, and provider differences
+        remain
+        the caller's problem.</p>
+        <p><strong>Structured output libraries.</strong> Instructor, Outlines, and similar libraries allow defining
+        Pydantic models and getting typed responses.</p>
+        <pre><code class="language-python">class SafetyCheck(BaseModel):
+            is_safe: bool
+            reason: str
+
+        result = await client.chat.completions.create(
+            response_model=SafetyCheck,
+            messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt}]
+        )
+        </code></pre>
+        <p><strong>Strengths</strong>: type safety, clean API. <strong>Gap</strong>: defines <em>what shape the answer has</em>
+        (<code>SafetyCheck</code>) but not <em>what cognitive operation to perform</em>. A Pydantic model carries no prompt
+        strategy, no retry semantics specific to the operation, no validation logic for
+        yes/no-with-reasoning vs. structured-critique. Prompt crafting and per-call logic remain manual.</p>
+        <p><strong>DSPy.</strong> Takes a different approach: define signatures and let the framework optimize prompts.</p>
+        <pre><code class="language-python">class CheckSafety(dspy.Signature):
+            code: str = dspy.InputField()
+            is_safe: bool = dspy.OutputField()
+            reason: str = dspy.OutputField()
+        </code></pre>
+        <p><strong>Strengths</strong>: prompt optimization, composable modules. <strong>Gap</strong>: optimizes prompts but requires
+        labeled data and adds abstraction layers that can obscure what's happening.</p>
+        <p><strong>LangGraph.</strong> Models agent workflows as graphs: nodes are functions, edges define control flow,
+        state flows through the system.</p>
+        <pre><code class="language-python">from langgraph.graph import StateGraph
+
+        graph = StateGraph(AgentState)
+        graph.add_node(&quot;check_safety&quot;, check_safety_node)
+        graph.add_node(&quot;fix_issues&quot;, fix_issues_node)
+        graph.add_conditional_edges(&quot;check_safety&quot;, route_based_on_result)
+        </code></pre>
+        <p><strong>Strengths</strong>: explicit control flow, checkpointing, human-in-the-loop patterns, parallel execution
+        via <code>Send</code>. The <code>langgraph-prebuilt</code> package adds helpers like <code>create_react_agent</code>, <code>ToolNode</code>, and
+        <code>ValidationNode</code>.</p>
+        <p><strong>Gap</strong>: orchestrates <em>workflow</em>—which node runs next, when to checkpoint, how to fan out—but
+        inside each node, the LLM call itself is still unstructured: no output validation, no retry on
+        malformed responses, no typed results.</p>
+        <h2>A Different Layer</h2>
+        <p>These approaches operate at different levels:</p>
+        <ul>
+        <li><strong>Tool calling / Instructor</strong>: <em>Syntax</em>—ensuring responses parse correctly</li>
+        <li><strong>DSPy</strong>: <em>Optimization</em>—finding prompts that work better</li>
+        <li><strong>LangGraph</strong>: <em>Control flow</em>—orchestrating multi-step workflows</li>
+        </ul>
+        <p>We got interested in a different layer: <em>semantics</em>—what kind of cognitive operation is being asked
+        of the LLM.</p>
+        <p>Consider these operations:
+        - "Does X satisfy Y?" (verification)
+        - "What's wrong with X?" (critique)
+        - "Improve X given feedback Y" (refinement)
+        - "Break X into subtasks" (decomposition)</p>
+        <p>Each is a distinct cognitive pattern. A call to <code>verify()</code> expects a yes/no with reasoning. A call
+        to <code>critique()</code> expects the strongest counter-argument. These aren't arbitrary function
+        names—they're
+        semantic primitives that recur across agent architectures.</p>
+        <p>With raw prompting, this intent lives in prose. With tool calling, it's expressed as schemas. We
+        wanted the <em>operation itself</em> as a first-class concept.</p>
+        <p>Not all verbs sit at the same depth. Some—<code>verify</code>, <code>critique</code>, <code>refine</code>—encode genuine cognitive
+        patterns with operation-specific prompt strategies and retry semantics. Others—<code>extract</code>,
+        <code>classify</code>—are closer to structured output with better defaults. The vocabulary spans both: the
+        value isn't that every verb is equally "semantic," but that the full set composes into reusable
+        loops.</p>
+        <h2>Our Approach</h2>
+        <p>We defined a fixed vocabulary of verbs for LLM interactions. The idea draws from SCUMM (1987)—the
+        adventure game engine that replaced free-form text parsers with a fixed verb vocabulary (<code>pick up</code>,
+        <code>use</code>, <code>talk to</code>). A constrained verb set made tooling, testing, and composition tractable. The same
+        principle applies to agent-LLM communication.</p>
+        <p>Each verb has defined semantics and a typed return value. Here are the core ones:</p>
+        <p><strong><code>verify</code></strong> — Does X satisfy predicate Y? Returns <code>VerifyResult(passed: bool, reason: str)</code>.</p>
+        <pre><code class="language-python">result = await saia.verify(code, &quot;handles null input safely&quot;)
+        # result.passed = False
+        # result.reason = &quot;Line 12 dereferences user.name without a null check&quot;
+        </code></pre>
+        <p><strong><code>critique</code></strong> — What's the strongest argument against X? Returns
+        <code>Critique(counter_argument: str, weaknesses: list[str])</code>.</p>
+        <pre><code class="language-python">critique = await saia.critique(proposal)
+        # critique.counter_argument = &quot;This assumes network latency is constant...&quot;
+        # critique.weaknesses = [&quot;No retry budget&quot;, &quot;Silent failure on timeout&quot;]
+        </code></pre>
+        <p><strong><code>refine</code></strong> — Improve X given feedback Y. Returns the improved artifact.</p>
+        <pre><code class="language-python">improved = await saia.refine(proposal, &quot;\n&quot;.join(critique.weaknesses))
+        </code></pre>
+        <p>The remaining verbs—<code>extract</code>, <code>complete</code>, <code>decompose</code>, <code>classify</code>, <code>choose</code>, <code>ask</code>, <code>synthesize</code>,
+        <code>find</code>, <code>constrain</code>, <code>ground</code>, <code>instruct</code>—follow the same pattern: defined semantics, typed return,
+        operation-specific prompt strategy and retry logic.
+        The <a href="https://github.com/llm-works/llm-saia#readme" target="_blank" rel="noopener
+        noreferrer">full reference</a> covers all 14.</p>
+        <h3>Why These Verbs</h3>
+        <p>We started with ~20 verbs and cut them down. The test: if a verb can be expressed as another verb
+        with a specific input, it's a variant, not a primitive.</p>
+        <p>Concrete examples of what we cut:</p>
+        <ul>
+        <li><strong><code>summarize</code></strong> → <code>extract</code> with a string return type. The cognitive operation is the same:
+          pull structured content from unstructured text. The only difference is the output shape.</li>
+        <li><strong><code>compare</code></strong> → <code>verify</code> with a comparison predicate. "Is A better than B on criterion C?" is
+          just verification applied to a pair.</li>
+        <li><strong><code>rank</code></strong> → <code>classify</code> applied repeatedly. Ordering N items is N classification calls
+          with a consistent rubric, not a distinct operation.</li>
+        <li><strong><code>plan</code></strong> → <code>decompose</code> followed by <code>instruct</code>. Planning is decomposition (break into steps)
+          plus instruction generation (define each step). Making it a single verb hid the composability.</li>
+        <li><strong><code>validate</code></strong> → <code>verify</code>. We had both, distinguished by "check format" vs "check correctness."
+          In practice, both are predicate checks with different prompts. One verb handles both.</li>
+        </ul>
+        <p>The decision framework was: can the verb be composed from existing ones without losing prompt
+        strategy or retry semantics? If yes, cut it. If the composition would require the caller to
+        reimplement prompt logic that should be encapsulated, keep it as a primitive.</p>
+        <p>We converged on 14 that form composable loops recurring across agent architectures:</p>
+        <ul>
+        <li><strong>Validation loop</strong>: <code>verify</code> → <code>critique</code> → <code>refine</code>. Check a claim, find weaknesses, improve
+          it. This pattern appears in any agent that iterates on quality.</li>
+        <li><strong>Build loop</strong>: <code>decompose</code> → <code>instruct</code> → <code>synthesize</code>. Break a task apart, execute the pieces,
+          combine the results. The standard divide-and-conquer pattern for complex tasks.</li>
+        <li><strong>Structured extraction</strong>: <code>extract</code> and <code>classify</code> handle pulling typed data from unstructured
+          text—the most common operation in production agents.</li>
+        </ul>
+        <h2>How This Relates to LangGraph</h2>
+        <p>LangGraph and SAIA operate at different layers. LangGraph handles <em>workflow orchestration</em>—which
+        node runs next, what state to pass, when to checkpoint. SAIA handles <em>what happens inside the
+        node</em>—the actual LLM operation.</p>
+        <p>They compose naturally:</p>
+        <pre><code class="language-python"># LangGraph node using SAIA verbs
+        async def review_node(state: AgentState) -&gt; AgentState:
+            result = await saia.verify(state[&quot;code&quot;], &quot;handles errors correctly&quot;)
+            if not result.passed:
+                critique = await saia.critique(state[&quot;code&quot;])
+                state[&quot;feedback&quot;] = critique.weaknesses
+            return state
+
+        graph.add_node(&quot;review&quot;, review_node)
+        graph.add_conditional_edges(&quot;review&quot;, lambda s: &quot;fix&quot; if s.get(&quot;feedback&quot;) else &quot;done&quot;)
+        </code></pre>
+        <p>LangGraph decides "run review, then conditionally route to fix or done." SAIA decides "verify the
+        code, and if it fails, generate a critique." Different concerns, same workflow.</p>
+        <p>For workflows needing LangGraph's orchestration—checkpointing, parallel branches,
+        human-in-the-loop—they
+        compose well. For simpler cases needing only semantic operations, SAIA works standalone.</p>
+        <h2>Obstacles</h2>
+        <p><strong>Backend differences.</strong> Anthropic and OpenAI have different APIs, different tool calling formats,
+        different quirks. Local models via vLLM differ again.</p>
+        <p>We pushed all provider-specific code into a thin adapter layer. The verb implementations don't know
+        which model they're talking to. Same agent code works with Claude, GPT-4, or a local Llama.</p>
+        <p><strong>Premature completion.</strong> LLMs often claim they're "done" when they're not. We added a confirmation
+        flow: when the model signals completion, we ask it to confirm. If its response contains
+        contradictory signals ("done" but also "let me continue"), we catch that and push back.</p>
+        <p><strong>Lost tool access.</strong> Sometimes models lose the ability to call tools mid-conversation—they start
+        writing <code>read_file(...)</code> as text instead of invoking the tool. We detect these patterns and nudge
+        the model to use actual tool calls. Related: we warn when input token counts suggest the server is
+        ignoring tool definitions entirely.</p>
+        <p><strong>Structured output reliability.</strong> Models don't always return valid JSON. When parsing fails, we
+        retry with the error message as context, which often fixes the issue. For local models, we support
+        grammar-constrained decoding (xgrammar/outlines) to
+        guarantee valid output.</p>
+        <p><strong>Nudge fatigue.</strong> When models get stuck, repeated correction prompts can make things worse. We
+        implemented backoff: after nudging, wait N iterations before nudging again. A classifier
+        (itself an LLM call) determines whether the model is stuck, asking a question, or actually done.</p>
+        <p><strong>Balancing structure with flexibility.</strong> Some operations genuinely need free-form output.
+        <code>instruct()</code> exists for open-ended tasks where typed output doesn't make sense.</p>
+        <p><strong>Output guards.</strong> Valid JSON isn't enough—models return preambles ("Sure! Here's..."), emoji,
+        markdown, or exceed length limits. Guards validate after parsing and retry with specific
+        instructions. Built-in guards handle common cases: <code>no_preamble</code>, <code>no_emoji</code>, <code>max_length</code>,
+        <code>english_only</code>. Custom guards are a validator function plus a retry instruction.</p>
+        <p><strong>Token cost of reliability.</strong> Retries, confirmation flows, and nudge classifiers all burn tokens.
+        In practice, most verb calls succeed on the first attempt with frontier models, but local models
+        retry more often. We treat this as an acceptable trade-off—a retry that produces correct typed
+        output
+        is cheaper than debugging a silently wrong result downstream—but it's a real cost to account for.</p>
+        <h2>Current API</h2>
+        <pre><code class="language-python">from llm_saia import SAIA
+
+        saia = SAIA.builder().backend(your_backend).build()
+
+        # Verify a claim
+        result = await saia.verify(code, &quot;handles null input safely&quot;)
+
+        # Chain operations
+        critique = await saia.critique(claim)
+        improved = await saia.refine(claim, &quot;\n&quot;.join(critique.weaknesses))
+
+        # Multi-model: cheap generates, expensive validates
+        local = SAIA.builder().backend(local_backend).build()
+        smart = SAIA.builder().backend(anthropic_backend).build()
+
+        draft = await local.instruct(&quot;Write a function to parse dates&quot;)
+        result = await smart.verify(draft, &quot;handles edge cases correctly&quot;)
+        </code></pre>
+        <p>Pure Python, zero framework dependencies, pluggable backends. Same verb calls work across Claude,
+        GPT-4, and local models via vLLM.</p>
+        <h2>What's Next</h2>
+        <p>Every verb call already captures inputs, outputs, latency, and token usage—structured operation
+        traces, not chat transcripts. These traces create (verb, prompt, decision) tuples that map directly
+        to training examples. We're using them to fine-tune verb-specific adapters: a model trained on
+        <code>verify</code> traces for more consistent verification, another on <code>critique</code> traces for sharper
+        counter-arguments. The first target is <code>verify</code>—it has the cleanest signal (boolean outcome +
+        reason)
+        and the highest call volume in our current agents. Early direction, not results yet.</p>
+        <h2>The Code</h2>
+        <ul>
+        <li>Repository: <a href="https://github.com/llm-works/llm-saia" target="_blank" rel="noopener noreferrer">github.com/llm-works/llm-saia</a></li>
+        <li>Documentation: <a href="https://github.com/llm-works/llm-saia#readme" target="_blank" rel="noopener noreferrer">README</a></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <span>&copy; 2026 LLM Works LLC</span>
+      <div class="footer-links">
+        <a href="/blog/feed.xml">RSS</a>
+        <a href="/llms.txt">llms.txt</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why I'm Building Agent Infrastructure — LLM Works</title>
+  <meta name="description" content=">">
+  <link rel="canonical" href="https://www.llm-works.ai/blog/building-agent-infrastructure/">
+  <meta property="og:title" content="Why I'm Building Agent Infrastructure">
+  <meta property="og:description" content=">">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.llm-works.ai/blog/building-agent-infrastructure/">
+  <meta property="og:site_name" content="LLM Works">
+  <meta property="article:published_time" content="2026-03-19">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Why I'm Building Agent Infrastructure">
+  <meta name="twitter:description" content=">">
+  <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
+  <link rel="alternate" type="application/rss+xml" title="LLM Works Blog" href="/blog/feed.xml">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2588;</text></svg>">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PLTFCVZQ8R');
+  </script>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/script.js"></script>
+</head>
+<body class="blog-post">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav aria-label="Primary">
+    <div class="container">
+      <a href="/" class="logo">llm-works<span>.ai</span></a>
+      <ul class="nav-links">
+        <li><a href="/platform/">Platform</a></li>
+        <li><a href="/agents/">Agents</a></li>
+        <li><a href="/story/">Story</a></li>
+        <li><a href="/blog/" aria-current="page">Blog</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+    <input type="checkbox" id="theme-switch">
+    <span class="slider"></span>
+  </label>
+
+  <main id="main" tabindex="-1">
+
+  <article class="post">
+    <header class="post-header">
+      <div class="container">
+        <p class="post-date">March 19, 2026</p>
+        <h1>Why I'm Building Agent Infrastructure</h1>
+        <p class="post-byline">LLM Works</p>
+      </div>
+    </header>
+
+    <div class="post-content">
+      <div class="container">
+        <p>Every domain I've worked in has reinforced the same lesson: systems that serve a business require
+        sound infrastructure as a foundation. I've seen this across eighteen years of professional
+        work—research, HFT, blockchain—and I see it again now in AI.</p>
+        <h2>The Problem</h2>
+        <p>Today's agent frameworks—LangChain, CrewAI, AutoGPT—have real traction. Millions of users, active
+        communities, production deployments. The dominant architecture is orchestration layers on top of
+        frontier models, relying on prompts and RAG to shape behavior. When agents fail, teams tweak the
+        prompt. When they hallucinate, they add guardrails. When outputs drift (new edge cases, changed
+        user behavior), they hope the next model version fixes it.</p>
+        <p>The fundamental problem is that <strong>agents don't learn from experience</strong>.</p>
+        <p>An agent that fails a task today will fail the same way tomorrow. The knowledge of what went wrong
+        lives in logs that nobody reads, or in the heads of engineers who eventually leave. There's no
+        feedback loop.</p>
+        <h2>The Thesis</h2>
+        <p>The AI ecosystem has mature components:</p>
+        <ul>
+        <li><strong>Inference</strong>: vLLM, TGI, Ollama, cloud APIs</li>
+        <li><strong>Training</strong>: Unsloth, Axolotl, torchtune</li>
+        <li><strong>Agents</strong>: LangChain, CrewAI, AutoGPT</li>
+        </ul>
+        <p>Integrating them into a learning loop is the next challenge. An agent deployed on Monday fails on
+        Tuesday; Wednesday brings manual prompt tweaks. The loop from failure to improvement is manual,
+        slow, and doesn't scale.</p>
+        <p>The missing piece is the connection between deployment, observation, training, and redeployment
+        into an automated cycle.</p>
+        <p><strong>Integration enables fine-tuning at scale.</strong> A fine-tuned 3B model
+        <a href="/blog/fine-tuned-3b-beats-haiku/">can beat a frontier model</a> on constrained tasks—but only if you have
+        the infrastructure to collect examples, train adapters, and redeploy. Without integration, you can
+        fine-tune once; with it, you can fine-tune continuously as your agent encounters new patterns.</p>
+        <h2>What We're Building</h2>
+        <p><a href="https://github.com/llm-works" target="_blank" rel="noopener noreferrer">llm-works</a>
+        is infrastructure for
+        agents that learn:</p>
+        <p><img src="assets/agent-stack.svg" alt="Agent Infrastructure Stack" class="blog-dark-only">
+        <img src="assets/agent-stack-light.svg" alt="Agent Infrastructure Stack" class="blog-light-only"></p>
+        <p>The pieces connect into a loop:</p>
+        <ol>
+        <li><strong>Deploy</strong> an agent with a base model</li>
+        <li><strong>Observe</strong> its interactions—successes, failures, edge cases</li>
+        <li><strong>Train</strong> an adapter on the collected data</li>
+        <li><strong>Redeploy</strong> with the improved model</li>
+        <li>Repeat</li>
+        </ol>
+        <p>The goal isn't to replace frontier models. It's to let agents ship with task-specific adapters that
+        improve over time—learning from production experience rather than relying solely on prompt
+        engineering.</p>
+        <h2>The Hard Part: Data Collection</h2>
+        <p>The loop sounds simple—observe, train, redeploy. The hard part is step two.</p>
+        <p>What counts as a "success" for fine-tuning? When an agent completes a task, was the output actually
+        good? When it fails, what should it have done instead? Human labeling doesn't scale. Automated
+        heuristics miss nuance. This is where most learning loops break down.</p>
+        <p>We don't have a complete answer yet. We're exploring combinations of automated validation,
+        task-specific heuristics, and human review—but the right mix likely varies per use case. This is
+        where we're focused now, and we'll share what we learn.</p>
+        <h2>Why Now</h2>
+        <p>Two years ago, this project wouldn't have been practical. Three things shifted:</p>
+        <p><strong>Fine-tuning became accessible.</strong> LoRA (2021) showed adapters could work; QLoRA (2023) cut memory
+        requirements 4x; Unsloth (2024) made it fast enough for iteration. A 7B model now fine-tunes on a
+        single consumer GPU in under an hour. Fine-tuning went from "needs a cluster" to "runs on a
+        laptop."</p>
+        <p><strong>Inference commoditized.</strong> vLLM hit production stability in late 2023. Cloud APIs dropped to
+        fractions of a cent per call. Local inference on consumer hardware became viable. The serving
+        problem is solved.</p>
+        <p><strong>The integration layer remains fragmented.</strong> The pieces exist—DSPy optimizes prompts, W&amp;B tracks
+        experiments, various platforms offer fine-tuning APIs—but they don't compose into a unified loop.
+        Connecting them requires glue code that reimplements the same patterns: collect observations, filter
+        for quality, format for training, validate before deploy. That glue layer is what's missing.</p>
+        <p>The primitives are ready; the integration isn't. That's the gap. It's not glamorous work—no novel
+        architectures, no benchmark headlines. Just the infrastructure that makes agents actually work in
+        production.</p>
+        <h2>The Risks</h2>
+        <p>This bet could be wrong in several ways:</p>
+        <p><strong>Frontier models may outpace fine-tuning.</strong> The next generation of frontier models could be so
+        capable that task-specific fine-tuning offers no advantage. If frontier models become good enough at
+        everything, the integration layer becomes less valuable.</p>
+        <p><strong>The window may be short.</strong> Even if fine-tuning matters today, it may not matter in two years. The
+        infrastructure we're building could become obsolete before it matures. That said, the integration
+        patterns—observability, automated retraining, continuous deployment—will transfer even if the
+        underlying techniques change.</p>
+        <p><strong>Integration could commoditize.</strong> Just as inference and training tooling commoditized, the
+        integration layer might too. We could build it, only to see it become table stakes.</p>
+        <p>These are real risks. We're betting that task-specific learning will remain valuable even as
+        frontier models improve, and that the integration layer is hard enough to build that doing it well
+        creates durable value. Time will tell.</p>
+        <h2>The Vision</h2>
+        <p>Consider an agent that extracts structured data from legal contracts. Today, it runs on a frontier
+        model with a detailed prompt. When it misparses a clause type it hasn't seen before, an engineer
+        manually adds examples to the prompt. Next quarter, someone else hits the same edge case and adds
+        duplicate examples. The prompt grows; latency increases; nobody knows which examples still matter.</p>
+        <p>With the infrastructure we're building: the agent ships with a fine-tuned adapter. When it
+        encounters a new clause type and a human corrects the output, that correction flows into a training
+        queue. When enough corrections accumulate, the system fine-tunes a new adapter and validates it
+        against held-out examples. When the new adapter passes, it deploys. The agent learns from
+        production—not from prompt archaeology.</p>
+        <p>We've proven the pieces work. Our <a href="/blog/fine-tuned-3b-beats-haiku/">first experiment</a> shows a
+        fine-tuned 3B matching Haiku on constrained generation. The infrastructure for deploy → observe →
+        train → redeploy exists. The hard part is the middle—turning raw observations into training
+        signal at scale. That's where we're focused now.</p>
+        <h2>The Code</h2>
+        <p>The stack is open source and under active development. If that resonates:</p>
+        <ul>
+        <li>Check out the repos: <a href="https://github.com/llm-works" target="_blank" rel="noopener noreferrer">github.com/llm-works</a></li>
+        <li>Follow on X: <a href="https://x.com/serendip_ml" target="_blank" rel="noopener noreferrer">@serendip_ml</a></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <span>&copy; 2026 LLM Works LLC</span>
+      <div class="footer-links">
+        <a href="/blog/feed.xml">RSS</a>
+        <a href="/llms.txt">llms.txt</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
