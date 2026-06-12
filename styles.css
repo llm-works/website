@@ -913,7 +913,7 @@ html.light-mode .blog-neg { color: #dc2626; }
   .stack-essentials { flex-direction: column; }
   .stack-essentials .stack-item { width: auto; }
   .post-grid { grid-template-columns: 1fr; }
-  .post-card { padding: 20px; }
+  .post-card-content { padding: 20px; }
   body.blog-post .post-header { padding: 100px 0 32px; }
   .post-content { padding: 24px 0 48px; }
 }

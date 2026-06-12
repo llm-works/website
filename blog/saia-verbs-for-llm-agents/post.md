@@ -120,6 +120,7 @@ We got interested in a different layer: *semantics*—what kind of cognitive ope
 of the LLM.
 
 Consider these operations:
+
 - "Does X satisfy Y?" (verification)
 - "What's wrong with X?" (critique)
 - "Improve X given feedback Y" (refinement)

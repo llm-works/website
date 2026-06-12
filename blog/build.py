@@ -3,7 +3,7 @@
 
 import re
 import shutil
-from datetime import datetime
+from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
 
@@ -221,6 +221,21 @@ RSS_ITEM_TEMPLATE = """\
       <description>{description}</description>
     </item>"""
 
+REDIRECT_TEMPLATE = """\
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="refresh" content="0; url={target}">
+  <link rel="canonical" href="{target}">
+  <title>Redirecting...</title>
+</head>
+<body>
+  <p>Redirecting to <a href="{target}">{target}</a></p>
+</body>
+</html>
+"""
+
 
 def parse_frontmatter(content: str) -> tuple[dict, str]:
     """Extract YAML frontmatter and body from markdown."""
@@ -250,8 +265,10 @@ def transform_content(body: str) -> str:
     """Transform markdown content for new site structure."""
     # Fix internal blog links: /slug/ -> /blog/slug/
     body = re.sub(r'\]\(/([a-z0-9-]+)/\)', r'](/blog/\1/)', body)
-    # Fix image paths: /assets/images/ -> assets/
+    # Fix image paths: /assets/images/ -> assets/ (HTML and Markdown)
     body = body.replace('src="/assets/images/', 'src="assets/')
+    body = body.replace('](/assets/images/', '](assets/')
+    body = body.replace('![/assets/images/', '![assets/')
     # Fix GitHub org: serendip-ml -> llm-works
     body = body.replace('github.com/serendip-ml', 'github.com/llm-works')
     body = body.replace('serendip-ml', 'llm-works')
@@ -282,7 +299,7 @@ def build_post(src_dir: Path) -> dict | None:
         return None
 
     slug = src_dir.name
-    content = post_md.read_text()
+    content = post_md.read_text(encoding="utf-8")
     frontmatter, body = parse_frontmatter(content)
 
     if not frontmatter.get("title") or not frontmatter.get("date"):
@@ -330,8 +347,20 @@ def build_post(src_dir: Path) -> dict | None:
         **{**post_data, "title": escape(post_data["title"]),
            "description": escape(post_data["description"])}
     )
-    (out_dir / "index.html").write_text(html)
+    (out_dir / "index.html").write_text(html, encoding="utf-8")
     print(f"  Built: /blog/{slug}/")
+
+    # Generate redirects from old URLs
+    redirects = frontmatter.get("redirect_from", [])
+    if isinstance(redirects, str):
+        redirects = [redirects]
+    for redirect_path in redirects:
+        redirect_path = redirect_path.strip("/")
+        redirect_dir = ROOT.parent / redirect_path
+        redirect_dir.mkdir(parents=True, exist_ok=True)
+        redirect_html = REDIRECT_TEMPLATE.format(target=f"/blog/{slug}/")
+        (redirect_dir / "index.html").write_text(redirect_html, encoding="utf-8")
+        print(f"  Redirect: /{redirect_path}/ -> /blog/{slug}/")
 
     return post_data
 
@@ -354,7 +383,7 @@ def build_index(posts: list[dict]) -> None:
     )
 
     html = INDEX_TEMPLATE.format(posts=cards)
-    (ROOT / "index.html").write_text(html)
+    (ROOT / "index.html").write_text(html, encoding="utf-8")
     print("  Built: /blog/")
 
 
@@ -373,10 +402,10 @@ def build_rss(posts: list[dict]) -> None:
     )
 
     rss = RSS_TEMPLATE.format(
-        build_date=datetime.now().strftime("%a, %d %b %Y %H:%M:%S +0000"),
+        build_date=datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S +0000"),
         items=items,
     )
-    (ROOT / "feed.xml").write_text(rss)
+    (ROOT / "feed.xml").write_text(rss, encoding="utf-8")
     print("  Built: /blog/feed.xml")
 
 

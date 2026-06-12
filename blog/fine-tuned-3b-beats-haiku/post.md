@@ -50,12 +50,12 @@ It also requires no tooling, making it a clean benchmark for raw generation qual
 **Task.** Generate 1000 jokes, each mutually different (embedding vector similarity < 0.85 cutoff).
 See the <a
 href="https://github.com/llm-works/llm-gent/blob/a8431edc02a821c766710daf20a72303e7bcf762/etc/agents/jokester-p.yaml#L74-L89"
-target="_blank">joke creation prompt</a>.
+target="_blank" rel="noopener noreferrer">joke creation prompt</a>.
 
 **Evaluation.** Every sample was graded 1-5 stars using Claude Haiku. See the
 <a
 href="https://github.com/llm-works/llm-gent/blob/a8431edc02a821c766710daf20a72303e7bcf762/etc/agents/jokester-p.yaml#L110-L136"
-target="_blank">grading prompt</a>.
+target="_blank" rel="noopener noreferrer">grading prompt</a>.
 Using Haiku as the judge gives us a consistent baseline: we're measuring
 whether fine-tuned models can match or beat the same model that's grading them.
 
@@ -150,4 +150,4 @@ agents with well-defined objectives that improve over time. Fine-tuning is one p
 More to come.
 
 *Follow along at <a href="https://github.com/serendip-ml"
-target="_blank">github.com/serendip-ml</a>*
+target="_blank" rel="noopener noreferrer">github.com/serendip-ml</a>*

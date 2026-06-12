@@ -144,11 +144,13 @@
         </ul>
         <p>We got interested in a different layer: <em>semantics</em>—what kind of cognitive operation is being asked
         of the LLM.</p>
-        <p>Consider these operations:
-        - "Does X satisfy Y?" (verification)
-        - "What's wrong with X?" (critique)
-        - "Improve X given feedback Y" (refinement)
-        - "Break X into subtasks" (decomposition)</p>
+        <p>Consider these operations:</p>
+        <ul>
+        <li>"Does X satisfy Y?" (verification)</li>
+        <li>"What's wrong with X?" (critique)</li>
+        <li>"Improve X given feedback Y" (refinement)</li>
+        <li>"Break X into subtasks" (decomposition)</li>
+        </ul>
         <p>Each is a distinct cognitive pattern. A call to <code>verify()</code> expects a yes/no with reasoning. A call
         to <code>critique()</code> expects the strongest counter-argument. These aren't arbitrary function
         names—they're
