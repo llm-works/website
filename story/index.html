@@ -52,11 +52,9 @@
   <section class="hero">
     <div class="container">
       <div class="section-label">Why LLM Works</div>
-      <h1>AI Is Systems Engineering</h1>
-      <p>The industry is racing to add large language models (LLMs), and their potential is real: powering systems that make decisions, learn, and adapt continuously.
-         Like any transformative technology, it brings significant challenges — determinism, security, trust.</p>
-      <p>The hardest part of production AI agents isn't the model — it's everything around it.
-         Although models are increasingly capable, what makes them hold up in production is the infrastructure around them.</p>
+      <h1>AI is systems engineering</h1>
+      <p>The industry is racing to add large language models (LLMs), and their potential is substantial: powering systems that make decisions, learn, and adapt continuously.</p>
+      <p>While models keep getting more capable, the hardest engineering work happens around them, turning a stochastic resource into systems that can run in production.</p>
     </div>
   </section>
 
@@ -65,7 +63,7 @@
       <div class="section-label">What's required</div>
       <h2>The two essentials</h2>
       <div class="prose">
-        <p><strong>Reliable infrastructure.</strong> The operational backbone that keeps production systems running.</p>
+        <p><strong>Reliable application infrastructure.</strong> The operational backbone that keeps production systems running.</p>
         <p><strong>Clean LLM communication.</strong> A harness around the LLM that handles its failure modes: hallucinations, inconsistent outputs, silent failures.</p>
         <p>These two components are the foundation for doing anything with LLMs reliably in a production setting.</p>
       </div>
@@ -75,9 +73,9 @@
   <section id="transition">
     <div class="container">
       <div class="section-label">Recurring pattern</div>
-      <h2>The same hardship, across three industries</h2>
+      <h2>The same shift across three industries</h2>
       <div class="prose">
-        <p>Every field that started where AI is now — highly experimental, fast-growing — has gone through the same engineering shift: from experimental code to structured systems.</p>
+        <p>The shift goes from experimental code to properly engineered systems.</p>
       </div>
 
       <div class="timeline">
@@ -86,14 +84,14 @@
           <h3 class="timeline-title">Electronic Trading</h3>
           <div class="timeline-text">
             Fast-moving teams, rapid iteration, learning on the fly. Then 2008 and the flash crash of May 6, 2010
-            forced the reckoning: clean architecture, real module boundaries, and risk controls as infrastructure.
+            forced the reckoning. Clean architecture, real module boundaries, and risk controls became standard infrastructure.
           </div>
         </div>
         <div class="timeline-item">
           <div class="timeline-era">2010s</div>
           <h3 class="timeline-title">Blockchain</h3>
           <div class="timeline-text">
-            The pattern repeats: experimental codebases, rapid growth, high stakes.
+            Experimental codebases, rapid growth, high stakes.
             Insufficiently tested solutions were vulnerable to hacks that caused tremendous damage and forced the same reckoning.
           </div>
         </div>
@@ -102,8 +100,8 @@
           <h3 class="timeline-title">AI — today</h3>
           <div class="timeline-text">
             Explosive adoption, evolving tooling, real-world impact.
-            But similar problems with agent reliability and security are already showing.
-            The transition has not happened yet.
+            Similar reliability and security problems are already showing, and the transition is underway.
+            <br><br>
             <strong>LLM Works is building the post-transition architecture now.</strong>
           </div>
         </div>
@@ -116,20 +114,17 @@
       <div class="section-label">What this enables</div>
       <h2>The result</h2>
       <div class="prose">
-        <p>When systems engineering comes first, certain benefits emerge naturally from the architecture,
-           benefits that are hard to retrofit later. Each is a property of how the platform is already built.</p>
+        <p>Four properties come from how the platform is already built.</p>
       </div>
 
       <div class="consequences">
         <div class="consequence">
           <h3>Audit trail by construction</h3>
-          <p>When agents make decisions that need to be defended later, they can be reconstructed directly,
-             including what was done, why, on what inputs, against which tools, and with what intermediate state.</p>
+          <p>Every agent decision can be reconstructed from logged state. Inputs, actions, and intermediate state are preserved at each step.</p>
         </div>
         <div class="consequence">
           <h3>Predictable behavior</h3>
-          <p>Even though LLMs are non-deterministic, the system behaves consistently.
-             Errors are typed, retries are structured, and outcomes stay within expected bounds.</p>
+          <p>The system behaves consistently on top of stochastic models. Errors are typed, retries are structured, and outcomes stay within expected bounds.</p>
         </div>
         <div class="consequence">
           <h3>Drift-bounded long-running agents</h3>
@@ -138,8 +133,7 @@
         </div>
         <div class="consequence">
           <h3>Rapid agent development</h3>
-          <p>With reliable infrastructure and clean LLM communication in place,
-             building new agents becomes fast and straightforward.</p>
+          <p>New agents inherit reliable application infrastructure and clean LLM communication. Development focuses on the agent's specific logic.</p>
         </div>
       </div>
     </div>
