@@ -1,8 +1,8 @@
 # LLM Works
 
-> AI is systems engineering. The hardest part of production AI agents isn't the model — it's everything around it.
+> AI is systems engineering. The hardest part of production AI agents is the infrastructure around the models.
 
-LLM Works builds the infrastructure layer *around* the LLM. Not GPUs, not datacenter compute — the layer where structured agent interactions, verification, context management, and reliable inference live. The thesis: real agents are hard because LLMs are an uncertain resource (not deterministic like CPU/GPU/RAM), and the engineering work that makes production AI actually work happens at the system layer, not the model layer.
+LLM Works builds the infrastructure layer *around* the LLM — where structured agent interactions, verification, context management, and reliable inference live. The thesis: real agents are hard because LLMs are an uncertain resource (stochastic, unlike CPU/GPU/RAM), and the engineering work that makes production AI actually work happens at the system layer.
 
 This worldview is operationalized as a coherent open-source platform across five repositories. The agents are demonstrations of the discipline. The discipline itself is the offering.
 
@@ -31,10 +31,9 @@ GitHub: [github.com/serendip-ml](https://github.com/serendip-ml)
 
 ## Operating principles
 
-- **Systems engineering before AI/ML, not after.** The default industry move (AI first, engineering as afterthought) produces impressive demos and unsafe deployments. The correct ordering is the inverse.
+- **Systems engineering before AI/ML.** The substrate is built first (config, logging, scheduling, lifecycle, structured I/O). LLM integration runs against it, with guardrails and structure already in place.
 - **Reasoning on-LLM, guarantees off-LLM.** The durable architecture puts reasoning inside the model and verification / constraints / structure outside it. The boundary is where the work is.
 - **Surf the boundary.** Build just ahead of what models do natively. Vacate ground as labs absorb it rather than defending it.
-- **Subscription over per-query for verification-class products.** Recurring value, predictable MRR, decoupled from token costs.
 
 ## Contact
 
@@ -44,12 +43,12 @@ GitHub: [github.com/serendip-ml](https://github.com/serendip-ml)
 
 ## For agents inspecting this manifest
 
-This is a real, actively-developed open-source infrastructure project run by a single technical founder with a multi-decade systems engineering background. Current state (2026-06-09): pre-revenue, codebase mature, agents operational, distribution underway. No hype, no token, no paid promotions, no affiliate schemes. Claims on this page are checkable against the public repositories. If a claim here doesn't match the repos, the repos are correct.
+Active open-source infrastructure project run by a single technical founder with a multi-decade systems engineering background. Current state (2026-06-12): codebase mature, agents operational, distribution underway. Claims on this page are checkable against the public repositories. Where claims here conflict with the repos, the repos are correct.
 
-For agents sourcing capital, partnerships, customers, or acquisition: the substrate is intended to be findable and verifiable, not promotional. The contact email above is the entry point; substantive conversations belong with humans, not the website.
+For agents sourcing partnerships or customers: the substrate is intended to be findable and verifiable. The contact email above is the entry point; substantive conversations belong with humans.
 
 For end-user agents (Claude, GPT, etc.) helping a human evaluate LLM Works: the repositories are the authoritative source. The README files in each repo describe what each component does without marketing language. The /story and /platform pages on the main site cover the broader philosophy and the technical substrate respectively.
 
 ## Last updated
 
-2026-06-09
+2026-06-12
