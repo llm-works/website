@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300">
+  <rect width="500" height="300" fill="#f4f4f5"/>
+  <text x="250" y="165" text-anchor="middle" font-family="SF Mono, Consolas, monospace" font-size="36" font-weight="600">
+    <tspan fill="#047857">Agent</tspan>
+    <tspan fill="#52525b"> &gt; </tspan>
+    <tspan fill="#2563eb">?</tspan>
+    <tspan fill="#52525b"> &lt; </tspan>
+    <tspan fill="#7c3aed">LLM</tspan>
+  </text>
+</svg>

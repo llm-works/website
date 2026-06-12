@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agent Release: llm-news — AI-Curated Tech News — LLM Works</title>
+  <meta name="description" content="An AI news curation service that monitors 50+ sources, summarizes and rates articles, clusters them into themes, and produces daily digests — all running on a local 14B model.
+">
+  <link rel="canonical" href="https://www.llm-works.ai/blog/introducing-llm-news/">
+  <meta property="og:title" content="Agent Release: llm-news — AI-Curated Tech News">
+  <meta property="og:description" content="An AI news curation service that monitors 50+ sources, summarizes and rates articles, clusters them into themes, and produces daily digests — all running on a local 14B model.
+">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.llm-works.ai/blog/introducing-llm-news/">
+  <meta property="og:site_name" content="LLM Works">
+  <meta property="article:published_time" content="2026-03-31">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Agent Release: llm-news — AI-Curated Tech News">
+  <meta name="twitter:description" content="An AI news curation service that monitors 50+ sources, summarizes and rates articles, clusters them into themes, and produces daily digests — all running on a local 14B model.
+">
+  <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
+  <link rel="alternate" type="application/rss+xml" title="LLM Works Blog" href="/blog/feed.xml">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2588;</text></svg>">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PLTFCVZQ8R');
+  </script>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/script.js"></script>
+</head>
+<body class="blog-post">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav aria-label="Primary">
+    <div class="container">
+      <a href="/" class="logo">llm-works<span>.ai</span></a>
+      <ul class="nav-links">
+        <li><a href="/platform/">Platform</a></li>
+        <li><a href="/agents/">Agents</a></li>
+        <li><a href="/story/">Story</a></li>
+        <li><a href="/blog/" aria-current="page">Blog</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+    <input type="checkbox" id="theme-switch">
+    <span class="slider"></span>
+  </label>
+
+  <main id="main" tabindex="-1">
+
+  <article class="post">
+    <header class="post-header">
+      <div class="container">
+        <p class="post-date">March 31, 2026</p>
+        <h1>Agent Release: llm-news — AI-Curated Tech News</h1>
+        <p class="post-byline">LLM Works</p>
+      </div>
+    </header>
+
+    <div class="post-content">
+      <div class="container">
+        <p>Tech news is fragmented across dozens of sources — RSS feeds, aggregators, social media, research
+        feeds. Keeping up means scanning hundreds of articles daily, most of which are rewritten press
+        releases or low-substance hype. We wanted a service that does the filtering for us: pull from
+        everywhere, surface what actually matters, skip the noise.</p>
+        <p>It's live at <a href="https://news.llm-works.ai" target="_blank" rel="noopener
+        noreferrer">news.llm-works.ai</a>.</p>
+        <h2>What It Does</h2>
+        <p>The service runs a pipeline every hour:</p>
+        <ol>
+        <li><strong>Collect</strong> — pulls articles from 50+ RSS feeds and aggregators covering AI, programming,
+           finance, crypto, science, and security</li>
+        <li><strong>Summarize &amp; rate</strong> — each article gets a 2-3 sentence AI summary and a 1-5 star relevance
+           score based on significance, novelty, and substance</li>
+        <li><strong>Cluster</strong> — related articles are grouped into thematic digests using semantic similarity</li>
+        <li><strong>Daily summary</strong> — top stories condensed into a short daily digest</li>
+        </ol>
+        <p>Every item links back to its original source. Summaries are AI-generated, not pulled from the
+        source.</p>
+        <h2>Personas</h2>
+        <p>Not everyone reads the news the same way. The service offers 10 personas — developer, founder,
+        investor, researcher, executive, designer, marketer, student, journalist, lawyer — each filtering
+        and ranking the same article pool differently based on what matters to that role.</p>
+        <p>A developer's feed surfaces technical releases, benchmarks, and open-source launches. A founder's
+        feed highlights market moves, competitive signals, and funding rounds. Same source pool, different
+        signal — the articles that matter to you float to the top.</p>
+        <h2>Runs Local</h2>
+        <p>All AI tasks — summarization, rating, clustering, and digest generation — run on a local Qwen 2.5
+        14B model. No article data is sent to third-party AI services.</p>
+        <p>The pipeline processes 300-500 articles per day on a single GPU. Running local keeps costs fixed
+        and latency predictable — no rate limits, no per-token billing, no third-party data sharing.</p>
+        <h2>Built on Our Stack</h2>
+        <p>llm-news is built on our open-source stack:
+        <a href="https://github.com/llm-works/llm-saia" target="_blank" rel="noopener
+        noreferrer">llm-saia</a> for structured LLM operations (summarization, rating, and clustering all
+        use <a href="/blog/saia-verbs-for-llm-agents/">typed verbs</a> with output guards),
+        <a href="https://github.com/llm-works/llm-infer" target="_blank" rel="noopener
+        noreferrer">llm-infer</a> for model-agnostic inference, and
+        <a href="https://github.com/llm-works/appinfra" target="_blank" rel="noopener
+        noreferrer">appinfra</a> for service lifecycle. The pipeline swaps between local and remote models
+        without code changes.</p>
+        <h2>Try It</h2>
+        <p>Pick a persona that matches how you consume news and browse today's digest at
+        <a href="https://news.llm-works.ai" target="_blank" rel="noopener
+        noreferrer">news.llm-works.ai</a>.</p>
+        <p>Feedback welcome at <a href="https://x.com/serendip_ml" target="_blank" rel="noopener
+        noreferrer">@serendip_ml</a>.</p>
+      </div>
+    </div>
+  </article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <span>&copy; 2026 LLM Works LLC</span>
+      <div class="footer-links">
+        <a href="/blog/feed.xml">RSS</a>
+        <a href="/llms.txt">llms.txt</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

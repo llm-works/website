@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qwen 3B Fine-Tuning Beats Claude Haiku: Scaling Curve 0.5B-72B — LLM Works</title>
+  <meta name="description" content="Fine-tuned Qwen 3B outperforms Claude Haiku on constrained generation. Full scaling curve from 0.5B to 72B with SFT+DPO shows the quality cliff.">
+  <link rel="canonical" href="https://www.llm-works.ai/blog/fine-tuned-3b-beats-haiku/">
+  <meta property="og:title" content="Qwen 3B Fine-Tuning Beats Claude Haiku: Scaling Curve 0.5B-72B">
+  <meta property="og:description" content="Fine-tuned Qwen 3B outperforms Claude Haiku on constrained generation. Full scaling curve from 0.5B to 72B with SFT+DPO shows the quality cliff.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.llm-works.ai/blog/fine-tuned-3b-beats-haiku/">
+  <meta property="og:site_name" content="LLM Works">
+  <meta property="article:published_time" content="2026-03-12">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Qwen 3B Fine-Tuning Beats Claude Haiku: Scaling Curve 0.5B-72B">
+  <meta name="twitter:description" content="Fine-tuned Qwen 3B outperforms Claude Haiku on constrained generation. Full scaling curve from 0.5B to 72B with SFT+DPO shows the quality cliff.">
+  <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
+  <link rel="alternate" type="application/rss+xml" title="LLM Works Blog" href="/blog/feed.xml">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2588;</text></svg>">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PLTFCVZQ8R');
+  </script>
+  <link rel="stylesheet" href="/styles.css">
+  <script src="/script.js"></script>
+</head>
+<body class="blog-post">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav aria-label="Primary">
+    <div class="container">
+      <a href="/" class="logo">llm-works<span>.ai</span></a>
+      <ul class="nav-links">
+        <li><a href="/platform/">Platform</a></li>
+        <li><a href="/agents/">Agents</a></li>
+        <li><a href="/story/">Story</a></li>
+        <li><a href="/blog/" aria-current="page">Blog</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+    <input type="checkbox" id="theme-switch">
+    <span class="slider"></span>
+  </label>
+
+  <main id="main" tabindex="-1">
+
+  <article class="post">
+    <header class="post-header">
+      <div class="container">
+        <p class="post-date">March 12, 2026</p>
+        <h1>Qwen 3B Fine-Tuning Beats Claude Haiku: Scaling Curve 0.5B-72B</h1>
+        <p class="post-byline">LLM Works</p>
+      </div>
+    </header>
+
+    <div class="post-content">
+      <div class="container">
+        <p>Today, agents typically run on large frontier models, relying on prompts and RAG rather than
+        training. What happens when we use a much smaller model, train it for the task, and ship the agent
+        with its own adapter?</p>
+        <p>We tested this on Qwen 2.5 models from 0.5B to 72B, training them on the constrained task of joke
+        telling and comparing the quality of generated samples to Claude Haiku 4.5.</p>
+        <p>Result: a fine-tuned 3B matches Haiku, and 7B or 14B clearly surpasses it—running open-source models
+        on consumer hardware. On constrained tasks, this could mean <strong>frontier-level quality at drastically
+        simpler infrastructure—the 3B variant could even run on a smartphone.</strong></p>
+        <blockquote>
+        <p>"My doctor said I need to cut back on salt. I told him my tears should count."<br>
+        <span class="blog-example-meta">— Haiku ★★★☆☆</span></p>
+        <p>"I asked my Alexa to play sad music. She played a lecture on my credit card debt. My therapist charges $200/hr."<br>
+        <span class="blog-example-meta">— Qwen 2.5 3B ★★★☆☆</span></p>
+        <p>"I started a podcast about productivity. Episode 3 was just me explaining why I missed episodes 1 and 2."<br>
+        <span class="blog-example-meta">— Qwen 2.5 7B ★★★★☆</span></p>
+        </blockquote>
+        <p><img src="assets/scaling-curve.svg" alt="Scaling curve showing fine-tuned Qwen models from 0.5B to 72B compared to Claude Haiku baseline" class="blog-chart">
+        <img src="assets/scaling-curve-light.svg" alt="Scaling curve showing fine-tuned Qwen models from 0.5B to 72B compared to Claude Haiku baseline" class="blog-chart-light"></p>
+        <p>The fine-tuned 3B model produces an average quality of 2.70 stars, which is already slightly better
+        than Haiku at 2.62 stars. The 7B and 14B models clearly pull ahead, reaching 2.84 and 3.07
+        respectively.</p>
+        <h2>Experiment</h2>
+        <p>We fine-tuned Qwen 2.5 models across seven sizes using SFT and DPO, then compared their output
+        quality against Claude Haiku. We chose joke generation because it's a constrained creative task
+        where quality is subjective but measurable—easy to generate bad jokes, hard to generate good ones.
+        It also requires no tooling, making it a clean benchmark for raw generation quality.</p>
+        <p><strong>Task.</strong> Generate 1000 jokes, each mutually different (embedding vector similarity &lt; 0.85 cutoff).
+        See the <a
+        href="https://github.com/llm-works/llm-gent/blob/a8431edc02a821c766710daf20a72303e7bcf762/etc/agents/jokester-p.yaml#L74-L89"
+        target="_blank" rel="noopener noreferrer">joke creation prompt</a>.</p>
+        <p><strong>Evaluation.</strong> Every sample was graded 1-5 stars using Claude Haiku. See the
+        <a
+        href="https://github.com/llm-works/llm-gent/blob/a8431edc02a821c766710daf20a72303e7bcf762/etc/agents/jokester-p.yaml#L110-L136"
+        target="_blank" rel="noopener noreferrer">grading prompt</a>.
+        Using Haiku as the judge gives us a consistent baseline: we're measuring
+        whether fine-tuned models can match or beat the same model that's grading them.</p>
+        <p><strong>Base models.</strong> Qwen 2.5 Instruct (4-bit quantized): 0.5B, 1.5B, 3B, 7B, 14B, 32B, 72B. We used
+        4-bit quantization to fit larger models on consumer hardware while testing the full scaling curve.</p>
+        <p><strong>SFT training.</strong> 3000 samples generated by Haiku: 2000 4-star + 1000 3-star examples. We skipped
+        1-star and 2-star samples to teach the model what good looks like, not what to avoid.</p>
+        <p><strong>DPO training.</strong> 300 preference pairs from the SFT model's output, ranked by the same grading
+        prompt. DPO learns from the model's own mistakes—comparing its better outputs against its worse
+        ones.</p>
+        <h2>Results</h2>
+        <table>
+        <thead>
+        <tr>
+        <th>Model</th>
+        <th>Avg</th>
+        <th>4-star</th>
+        <th>3-star</th>
+        <th>2-star</th>
+        <th>1-star</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>72B + SFT + DPO</td>
+        <td>3.10</td>
+        <td>34.2%</td>
+        <td>41.1%</td>
+        <td>24.2%</td>
+        <td>0.3%</td>
+        </tr>
+        <tr>
+        <td>32B + SFT + DPO</td>
+        <td>3.04</td>
+        <td>32.9%</td>
+        <td>39.1%</td>
+        <td>27.2%</td>
+        <td>0.7%</td>
+        </tr>
+        <tr>
+        <td>14B + SFT + DPO</td>
+        <td>3.07</td>
+        <td>32.6%</td>
+        <td>41.5%</td>
+        <td>25.3%</td>
+        <td>0.4%</td>
+        </tr>
+        <tr>
+        <td>7B + SFT + DPO</td>
+        <td>2.84</td>
+        <td>22.2%</td>
+        <td>41.5%</td>
+        <td>34.6%</td>
+        <td>1.7%</td>
+        </tr>
+        <tr>
+        <td><strong>3B + SFT + DPO</strong></td>
+        <td><strong>2.70</strong></td>
+        <td><strong>16.9%</strong></td>
+        <td><strong>39.1%</strong></td>
+        <td><strong>41.6%</strong></td>
+        <td><strong>2.4%</strong></td>
+        </tr>
+        <tr>
+        <td>Haiku (ref)</td>
+        <td>2.62</td>
+        <td>13.8%</td>
+        <td>37.0%</td>
+        <td>46.1%</td>
+        <td>3.1%</td>
+        </tr>
+        <tr>
+        <td>1.5B + SFT + DPO</td>
+        <td>2.44</td>
+        <td>8.2%</td>
+        <td>34.6%</td>
+        <td>50.3%</td>
+        <td>6.9%</td>
+        </tr>
+        <tr>
+        <td>0.5B + SFT + DPO</td>
+        <td>1.48</td>
+        <td>0.2%</td>
+        <td>6.9%</td>
+        <td>34.0%</td>
+        <td>58.9%</td>
+        </tr>
+        </tbody>
+        </table>
+        <p><small><em>5-star ratings omitted (≤0.2% across all models).</em></small></p>
+        <p>Full scaling curve across Qwen 2.5 model sizes:</p>
+        <table>
+        <thead>
+        <tr>
+        <th>Size</th>
+        <th>Base</th>
+        <th>+SFT</th>
+        <th>+DPO</th>
+        <th>vs Haiku</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>72B</td>
+        <td>2.21</td>
+        <td>2.95</td>
+        <td>3.10</td>
+        <td><span class="blog-pos">+18%</span></td>
+        </tr>
+        <tr>
+        <td>32B</td>
+        <td>1.90</td>
+        <td>3.00</td>
+        <td>3.04</td>
+        <td><span class="blog-pos">+16%</span></td>
+        </tr>
+        <tr>
+        <td>14B</td>
+        <td>1.81</td>
+        <td>2.96</td>
+        <td>3.07</td>
+        <td><span class="blog-pos">+17%</span></td>
+        </tr>
+        <tr>
+        <td>7B</td>
+        <td>1.70</td>
+        <td>2.76</td>
+        <td>2.84</td>
+        <td><span class="blog-pos">+8%</span></td>
+        </tr>
+        <tr>
+        <td><strong>3B</strong></td>
+        <td><strong>1.55</strong></td>
+        <td><strong>2.56</strong></td>
+        <td><strong>2.70</strong></td>
+        <td><strong><span class="blog-pos">+3%</span></strong></td>
+        </tr>
+        <tr>
+        <td>1.5B</td>
+        <td>1.49</td>
+        <td>2.24</td>
+        <td>2.44</td>
+        <td><span class="blog-neg">-7%</span></td>
+        </tr>
+        <tr>
+        <td>0.5B</td>
+        <td>1.18</td>
+        <td>1.34</td>
+        <td>1.48</td>
+        <td><span class="blog-neg">-44%</span></td>
+        </tr>
+        </tbody>
+        </table>
+        <h2>Key Findings</h2>
+        <p><strong>3B is the crossover point.</strong> Fine-tuned 3B (2.70) beats Haiku (2.62). Below 3B, even full
+        fine-tuning can't close the gap.</p>
+        <p><strong>Sweet spot is 14B.</strong> It beats Haiku by 17%, while 32B shows no improvement—likely underfitting
+        with our small training set. The cost/quality tradeoff favors 14B for this task.</p>
+        <p><strong>SFT does the work, DPO polishes.</strong> SFT delivers +50-65% improvement across model sizes. DPO adds
+        +3-10% on top.</p>
+        <p><strong>Fine-tuned small beats base large.</strong> 3B+DPO (2.70) beats 72B base (2.21) by 22%. A 24x smaller
+        model wins when trained for the task.</p>
+        <h2>Discussion</h2>
+        <p>Joke telling is well suited for evaluating fine-tuned small models: simple and isolated—no tools,
+        no multi-step reasoning, no external dependencies—yet non-trivial, requiring creativity and taste.</p>
+        <p>Using Haiku as both trainer and judge might seem circular, but it actually puts Haiku at an
+        advantage. We trained smaller models to tell jokes like Haiku, then let Haiku grade on its own
+        terms. The fine-tuned models beat Haiku on Haiku's home turf.</p>
+        <p>We also found the larger models harder to train, most likely due to our small training sets
+        (3000 SFT, 300 DPO). With larger datasets and incremental training, the ceiling may be higher still.
+        Whether these gains hold for multi-step reasoning or tool use, ie. more complex agentic tasks,
+        remains to be tested.</p>
+        <p>For agents in real production, this experiment suggests interesting opportunities. Since agents
+        operate under
+        constrained directives—repeating a specific task, generating tool calls, producing structured
+        output, following specific
+        formats—fine-tuning is a perfect solution to increase their performance and efficiency without
+        having to rely on only frontier models.</p>
+        <p>A hybrid
+        architecture could use a frontier model for planning and reasoning, while delegating constrained
+        generation to small, task-specific models. Ship the agent with a 3B adapter, reducing its dependency
+        on high-cost frontier models. The benefits are:</p>
+        <ul>
+        <li><strong>Simpler operations.</strong> Smaller footprint means easier deployment, scaling, and resource management.</li>
+        <li><strong>Data privacy.</strong> Training and inference stay local—no sensitive data leaves your infrastructure.</li>
+        <li><strong>Cost reduction.</strong> No per-token API fees at scale. No pre-training from scratch. Runs on modest hardware.</li>
+        <li><strong>Fast iteration.</strong> Lightweight fine-tuning means quick improvement cycles as more data comes in.</li>
+        <li><strong>Lower latency.</strong> Smaller models respond faster, critical for interactive agents.</li>
+        <li><strong>Adapter per agent.</strong> Multiple agents share one base model, each with its own adapter loaded on demand.</li>
+        </ul>
+        <hr />
+        <p>This experiment is part of a larger stack we're building: infrastructure for permanently running
+        agents with well-defined objectives that improve over time. Fine-tuning is one piece of that puzzle.
+        More to come.</p>
+        <p><em>Follow along at <a href="https://github.com/llm-works"
+        target="_blank" rel="noopener noreferrer">github.com/llm-works</a></em></p>
+      </div>
+    </div>
+  </article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <span>&copy; 2026 LLM Works LLC</span>
+      <div class="footer-links">
+        <a href="/blog/feed.xml">RSS</a>
+        <a href="/llms.txt">llms.txt</a>
+        <a href="/terms.html">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

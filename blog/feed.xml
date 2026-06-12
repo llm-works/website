@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>LLM Works Blog</title>
+    <link>https://www.llm-works.ai/blog/</link>
+    <description>Technical writing on AI infrastructure, agent development, and fine-tuning.</description>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 12 Jun 2026 04:36:43 +0000</lastBuildDate>
+    <atom:link href="https://www.llm-works.ai/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Agent Release: llm-news — AI-Curated Tech News</title>
+      <link>https://www.llm-works.ai/blog/introducing-llm-news/</link>
+      <guid isPermaLink="true">https://www.llm-works.ai/blog/introducing-llm-news/</guid>
+      <pubDate>Tue, 31 Mar 2026 00:00:00 +0000</pubDate>
+      <description>An AI news curation service that monitors 50+ sources, summarizes and rates articles, clusters them into themes, and produces daily digests — all running on a local 14B model.
+</description>
+    </item>
+    <item>
+      <title>A Verb Layer for Agent-LLM Communication</title>
+      <link>https://www.llm-works.ai/blog/saia-verbs-for-llm-agents/</link>
+      <guid isPermaLink="true">https://www.llm-works.ai/blog/saia-verbs-for-llm-agents/</guid>
+      <pubDate>Fri, 27 Mar 2026 00:00:00 +0000</pubDate>
+      <description>Agents are code that interacts with LLMs. LLMs speak free-form text. How should this communication be structured? Current approaches, trade-offs, and what we&#x27;re building.
+</description>
+    </item>
+    <item>
+      <title>Why I&#x27;m Building Agent Infrastructure</title>
+      <link>https://www.llm-works.ai/blog/building-agent-infrastructure/</link>
+      <guid isPermaLink="true">https://www.llm-works.ai/blog/building-agent-infrastructure/</guid>
+      <pubDate>Thu, 19 Mar 2026 00:00:00 +0000</pubDate>
+      <description>Agents today don&#x27;t learn from experience. The missing piece isn&#x27;t better models—it&#x27;s the integration layer that connects inference, training, and deployment into a learning loop.
+</description>
+    </item>
+    <item>
+      <title>Qwen 3B Fine-Tuning Beats Claude Haiku: Scaling Curve 0.5B-72B</title>
+      <link>https://www.llm-works.ai/blog/fine-tuned-3b-beats-haiku/</link>
+      <guid isPermaLink="true">https://www.llm-works.ai/blog/fine-tuned-3b-beats-haiku/</guid>
+      <pubDate>Thu, 12 Mar 2026 00:00:00 +0000</pubDate>
+      <description>Fine-tuned Qwen 3B outperforms Claude Haiku on constrained generation. Full scaling curve from 0.5B to 72B with SFT+DPO shows the quality cliff.</description>
+    </item>
+  </channel>
+</rss>
