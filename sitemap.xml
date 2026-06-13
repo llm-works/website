@@ -2,22 +2,57 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.llm-works.ai/</loc>
+    <lastmod>2026-06-12</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.llm-works.ai/platform/</loc>
+    <lastmod>2026-06-12</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.llm-works.ai/agents/</loc>
+    <lastmod>2026-06-12</lastmod>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://www.llm-works.ai/story/</loc>
+    <lastmod>2026-06-12</lastmod>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.llm-works.ai/blog/</loc>
+    <lastmod>2026-06-12</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.llm-works.ai/about/</loc>
+    <lastmod>2026-06-12</lastmod>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.llm-works.ai/blog/introducing-llm-news/</loc>
+    <lastmod>2026-03-31</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.llm-works.ai/blog/saia-verbs-for-llm-agents/</loc>
+    <lastmod>2026-03-27</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.llm-works.ai/blog/building-agent-infrastructure/</loc>
+    <lastmod>2026-03-19</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.llm-works.ai/blog/fine-tuned-3b-beats-haiku/</loc>
+    <lastmod>2026-03-12</lastmod>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://www.llm-works.ai/terms.html</loc>
+    <lastmod>2026-04-12</lastmod>
+    <priority>0.3</priority>
   </url>
 </urlset>
