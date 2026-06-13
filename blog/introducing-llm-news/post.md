@@ -13,8 +13,6 @@ header:
 excerpt: >
   An AI news curation service that monitors 50+ sources, summarizes and rates articles, clusters
   them into themes, and produces daily digests — all running on a local 14B model.
-redirect_from:
-  - /llm-news-agent-release/
 ---
 
 Tech news is fragmented across dozens of sources — RSS feeds, aggregators, social media, research

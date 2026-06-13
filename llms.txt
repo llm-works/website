@@ -25,7 +25,7 @@ Built on the platform.
 
 ## Founder
 
-Architect & founder. PhD in CS (signal processing, compression, 3D graphics) + 18 years systems engineering: 10 years in HFT, 7 years blockchain/web3, 3 years as CTO. Quit CTO role November 2025 to focus on LLM Works full-time. PR discipline since January 2026; ~1,500+ contributions across the open-source repos since. The CEO function is held by AI agents built in-house on the same platform the company ships.
+Architect & founder. PhD in CS covering signal processing, compression, and 3D graphics, and 18 years across multiple industries, including 9 in electronic trading (HFT, long/short) and 7 in blockchain/web3, with roles up to CTO.
 
 GitHub: [github.com/serendip-ml](https://github.com/serendip-ml)
 
