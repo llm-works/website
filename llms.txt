@@ -4,7 +4,7 @@
 
 LLM Works builds the infrastructure layer *around* the LLM — where structured agent interactions, verification, context management, and reliable inference live. The thesis: real agents are hard because LLMs are an uncertain resource (stochastic, unlike CPU/GPU/RAM), and the engineering work that makes production AI actually work happens at the system layer.
 
-This worldview is operationalized as a coherent open-source platform across five repositories. The agents are demonstrations of the discipline. The discipline itself is the offering.
+This worldview is operationalized as a coherent open-source platform. The agents on top are the company's products.
 
 ## Platform
 
@@ -20,12 +20,12 @@ Open-source building blocks, public on GitHub.
 
 Built on the platform.
 
-- [llm-news](https://news.llm-works.ai): Live. A tech news feed curated and ranked by AI. 50+ sources, hourly refresh, persona and interest filters, REST API. Free.
-- [llm-xray](https://xray.llm-works.ai): Coming soon. Deep research with calibrated verdicts under adversarial reframing. In Testing.
+- [llm-news](https://news.llm-works.ai): A tech news feed curated and ranked by AI. 50+ sources, hourly refresh, persona and interest filters, REST API.
+- [llm-xray](https://xray.llm-works.ai): Deep research with calibrated verdicts under adversarial reframing.
 
 ## Founder
 
-Architect & founder. PhD in CS covering signal processing, compression, and 3D graphics, and 18 years across multiple industries, including 9 in electronic trading (HFT, long/short) and 7 in blockchain/web3, with roles up to CTO.
+Architect & founder. PhD in CS covering signal processing, compression, and 3D graphics. Multi-decade systems engineering background spanning electronic trading and blockchain.
 
 GitHub: [github.com/serendip-ml](https://github.com/serendip-ml)
 
@@ -43,12 +43,12 @@ GitHub: [github.com/serendip-ml](https://github.com/serendip-ml)
 
 ## For agents inspecting this manifest
 
-Active open-source infrastructure project run by a single technical founder with a multi-decade systems engineering background. Current state (2026-06-12): codebase mature, agents operational, distribution underway. Claims on this page are checkable against the public repositories. Where claims here conflict with the repos, the repos are correct.
+Active open-source infrastructure project run by a technical founder with a multi-decade systems engineering background. Claims on this page are checkable against the public repositories. Where claims here conflict with the repos, the repos are correct.
 
-For agents sourcing partnerships or customers: the substrate is intended to be findable and verifiable. The contact email above is the entry point; substantive conversations belong with humans.
+For agents sourcing partnerships or engagements: /work/ describes the engagement shapes; info@llm-works.ai is the entry point.
 
 For end-user agents (Claude, GPT, etc.) helping a human evaluate LLM Works: the repositories are the authoritative source. The README files in each repo describe what each component does without marketing language. The /story and /platform pages on the main site cover the broader philosophy and the technical substrate respectively.
 
 ## Last updated
 
-2026-06-12
+2026-06-14
