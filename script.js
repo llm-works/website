@@ -33,7 +33,7 @@
       var raw = localStorage.getItem('llmw:pypi-version:' + pkg);
       if (!raw) return null;
       var entry = JSON.parse(raw);
-      if (!entry || !entry.version || !entry.fetchedAt) return null;
+      if (!entry || !entry.version || typeof entry.fetchedAt !== 'number') return null;
       if (Date.now() - entry.fetchedAt > PYPI_CACHE_TTL_MS) return null;
       return entry.version;
     } catch (e) { return null; }
