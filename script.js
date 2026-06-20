@@ -15,11 +15,56 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     var toggle = document.getElementById('theme-switch');
-    if (!toggle) return;
-    toggle.checked = document.documentElement.classList.contains('light-mode');
-    toggle.addEventListener('change', function () {
-      document.documentElement.classList.toggle('light-mode', toggle.checked);
-      setTheme(toggle.checked ? 'light' : 'dark');
-    });
+    if (toggle) {
+      toggle.checked = document.documentElement.classList.contains('light-mode');
+      toggle.addEventListener('change', function () {
+        document.documentElement.classList.toggle('light-mode', toggle.checked);
+        setTheme(toggle.checked ? 'light' : 'dark');
+      });
+    }
+
+    hydratePypiVersions();
   });
+
+  var PYPI_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+
+  function readCachedVersion(pkg) {
+    try {
+      var raw = localStorage.getItem('pypi-version:' + pkg);
+      if (!raw) return null;
+      var entry = JSON.parse(raw);
+      if (!entry || !entry.version || !entry.fetchedAt) return null;
+      if (Date.now() - entry.fetchedAt > PYPI_CACHE_TTL_MS) return null;
+      return entry.version;
+    } catch (e) { return null; }
+  }
+
+  function writeCachedVersion(pkg, version) {
+    try {
+      localStorage.setItem('pypi-version:' + pkg, JSON.stringify({
+        version: version,
+        fetchedAt: Date.now()
+      }));
+    } catch (e) {}
+  }
+
+  function hydratePypiVersions() {
+    var slots = document.querySelectorAll('[data-pypi]');
+    for (var i = 0; i < slots.length; i++) {
+      (function (slot) {
+        var pkg = slot.getAttribute('data-pypi');
+        if (!pkg) return;
+        var cached = readCachedVersion(pkg);
+        if (cached) { slot.textContent = 'v' + cached; return; }
+        fetch('https://pypi.org/pypi/' + encodeURIComponent(pkg) + '/json')
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (data) {
+            if (!data || !data.info || !data.info.version) return;
+            writeCachedVersion(pkg, data.info.version);
+            slot.textContent = 'v' + data.info.version;
+          })
+          .catch(function () {});
+      })(slots[i]);
+    }
+  }
 })();
