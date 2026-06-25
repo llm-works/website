@@ -94,6 +94,40 @@
 
   <section>
     <div class="container">
+      <h2 class="section-label">Engineering</h2>
+      <p class="stack-intro">The quality of the platform components is checked by an open-source <a href="https://github.com/serendip-ml/claude-code-skills/tree/main/skills/grade-python-project">in-house grader</a>*. Latest <a href="https://github.com/llm-works/appinfra">appinfra</a> scoreboard:</p>
+
+      <div class="rigor-grade">
+        <table class="rigor-table">
+          <colgroup>
+            <col style="width: 33%">
+            <col style="width: 14%">
+            <col style="width: 20px">
+            <col style="width: 17%">
+            <col>
+          </colgroup>
+          <thead>
+            <tr><th>Category</th><th colspan="3">Score</th><th>Verified by</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Architecture &amp; Design</td><td class="score-num">10.0</td><td class="score-slash">/</td><td class="score-denom">10</td><td>22 packages, <code>py.typed</code></td></tr>
+            <tr><td>Code Quality</td><td class="score-num">10.0</td><td class="score-slash">/</td><td class="score-denom">10</td><td>mypy strict, ~200 files</td></tr>
+            <tr><td>Security</td><td class="score-num">10.0</td><td class="score-slash">/</td><td class="score-denom">10</td><td>172 dedicated security tests</td></tr>
+            <tr><td>Testing</td><td class="score-num">10.0</td><td class="score-slash">/</td><td class="score-denom">10</td><td>95% coverage, ~4800 tests</td></tr>
+            <tr><td>Documentation</td><td class="score-num">9.5</td><td class="score-slash">/</td><td class="score-denom">10</td><td>15 guides, 18 API refs</td></tr>
+            <tr><td>Production Readiness</td><td class="score-num">10.0</td><td class="score-slash">/</td><td class="score-denom">10</td><td>PyPI, semver, deprecations</td></tr>
+            <tr><td>Dependencies</td><td class="score-num">10.0</td><td class="score-slash">/</td><td class="score-denom">10</td><td>clean <code>pip-audit</code></td></tr>
+            <tr class="rigor-total"><td><strong>Overall</strong></td><td class="score-num"><strong>9.95</strong></td><td class="score-slash"><strong>/</strong></td><td class="score-denom"><strong>10 <span class="score-suffix">(A+)</span></strong></td><td></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="rigor-footnote">Last graded: <a href="https://github.com/llm-works/appinfra/tree/81ef184c661ccb5758f5613649bdcf5204a0e3d1">81ef184</a> with Opus 4.7<br>* The integrity of this grader can be further verified by another AI.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
       <h2 class="section-label">Example</h2>
       <p class="stack-intro">An appinfra CLI creates a SAIA object, connects to an Anthropic backend via llm-infer, and sends one request.</p>
 <!-- prettier-ignore: leading whitespace inside <pre> is rendered verbatim -->
