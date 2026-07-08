@@ -44,8 +44,8 @@
     <div class="container">
       <a href="/" class="logo" aria-current="page">llm-works<span>.ai</span></a>
       <ul class="nav-links">
-        <li><a href="/platform/">Platform</a></li>
         <li><a href="/agents/">Agents</a></li>
+        <li><a href="/platform/">Platform</a></li>
         <li><a href="/work/">Work</a></li>
         <li><a href="/story/">Story</a></li>
         <li><a href="/blog/">Blog</a></li>
@@ -64,15 +64,17 @@
   <section class="hero">
     <div class="container">
       <h1>AI is systems engineering</h1>
-      <p class="pull-quote">The hardest part of production AI agents is the infrastructure around the models.</p>
-      <p>The industry is racing to add large language models (LLMs), and their potential is substantial: powering systems that make decisions, learn, and adapt continuously. Although models are increasingly capable, what makes them hold up in production is the infrastructure around them.</p>
+      <div class="quote-reveal" tabindex="0" role="button" aria-expanded="false" onclick="toggleReveal(this,event)">
+        <p class="pull-quote">The hardest part of production AI agents is the infrastructure around the models.</p>
+        <p>The industry is racing to add large language models (LLMs), and their potential is substantial: powering systems that make decisions, learn, and adapt continuously. Although models are increasingly capable, what makes them hold up in production is the infrastructure around them.</p>
+      </div>
     </div>
   </section>
 
   <section class="compact-block">
     <div class="container">
       <h2 class="section-label">LLM Works</h2>
-      <p class="pull-quote">LLM Works is an AI agent infrastructure products company running production agents on its custom open-source platform.</p>
+      <p class="pull-quote is-positioning">LLM Works is an AI infrastructure company running production agents on its custom open-source platform.</p>
 
       <div class="product-line">
         <a href="/agents/" class="name">Agents</a>
@@ -84,24 +86,14 @@
       </div>
       <div class="product-line">
         <a href="/work/" class="name">Engagements</a>
-        <p class="product-desc">Delivery into customer environments. Strategic advisory.</p>
+        <p class="product-desc">Delivery into customer environments &amp; strategic advisory.</p>
       </div>
     </div>
   </section>
 
   <section class="compact-block">
     <div class="container">
-      <h2 class="section-label">Platform</h2>
-      <p class="pull-quote">Every agent built on the platform inherits the same engineering layer around the model.</p>
-      <p>The engineering layer around the model is the work that turns model calls into production agents. The platform builds it once, and every agent on top inherits it. It absorbs the engineering work that every production AI team rebuilds in-house.</p>
-      <p class="block-link"><a href="/platform/">Full overview →</a></p>
-    </div>
-  </section>
-
-  <section class="compact-block">
-    <div class="container">
       <h2 class="section-label">Agents</h2>
-      <p class="lead-line">Production AI agents running on this open-source platform.</p>
 
       <div class="product-line">
         <a href="https://news.llm-works.ai" class="name">llm-news</a>
@@ -118,8 +110,19 @@
 
   <section class="compact-block">
     <div class="container">
+      <h2 class="section-label">Platform</h2>
+      <div class="quote-reveal" tabindex="0" role="button" aria-expanded="false" onclick="toggleReveal(this,event)">
+        <p class="pull-quote">Every agent runs on a modular architecture enabling a clean <span class="nowrap">on-LLM / off-LLM</span> boundary.</p>
+        <p>The engineering layer around the model is the work that turns model calls into production agents. The platform builds it once, and every agent on top inherits it. It absorbs the engineering work that every production AI team rebuilds in-house.</p>
+      </div>
+      <p class="block-link"><a href="/platform/">Full overview →</a></p>
+    </div>
+  </section>
+
+  <section class="compact-block">
+    <div class="container">
       <h2 class="section-label">Story</h2>
-      <p class="lead-line">AI is going through an engineering shift that has played out in several industries before.</p>
+      <p class="lead-line">AI is going through an engineering shift seen in several industries before.</p>
       <p class="block-link"><a href="/story/">The full story →</a></p>
     </div>
   </section>
@@ -135,6 +138,15 @@
       </div>
     </div>
   </footer>
+
+  <script>
+  function toggleReveal(el, e) {
+    if (e.target.closest('a')) return;
+    el.classList.toggle('is-open');
+    if (!el.classList.contains('is-open')) el.blur();
+    el.setAttribute('aria-expanded', el.classList.contains('is-open'));
+  }
+  </script>
 
 </body>
 </html>

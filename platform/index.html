@@ -33,8 +33,8 @@
     <div class="container">
       <a href="/" class="logo">llm-works<span>.ai</span></a>
       <ul class="nav-links">
-        <li><a href="/platform/" aria-current="page">Platform</a></li>
         <li><a href="/agents/">Agents</a></li>
+        <li><a href="/platform/" aria-current="page">Platform</a></li>
         <li><a href="/work/">Work</a></li>
         <li><a href="/story/">Story</a></li>
         <li><a href="/blog/">Blog</a></li>
@@ -54,7 +54,7 @@
     <div class="container">
       <div class="section-label">Platform</div>
       <h1>Open-source building blocks</h1>
-      <p>Modular open-source libraries that compose into the infrastructure layer around the LLM. Each independently versioned and licensed under Apache 2.0 on GitHub.</p>
+      <p>LLM Works provides a modular open-source platform that organizes the infrastructure layer between LLMs and agents. The libraries are hosted on GitHub and published on PyPI.</p>
     </div>
   </section>
 
@@ -136,16 +136,21 @@
 <span class="c-import">from</span> llm_infer.client <span class="c-import">import</span> Factory, SAIAAdapter
 <span class="c-import">from</span> llm_saia <span class="c-import">import</span> SAIA
 
+<span class="c-comment"># build the CLI app via appinfra (provides self.lg, self.args, app.main)</span>
 app = AppBuilder(<span class="c-string">"hello-llm"</span>).build()
 
+<span class="c-comment"># bind run() as the "run" subcommand with a positional "prompt" argument</span>
 <span class="c-deco">@app.tool</span>(name=<span class="c-string">"run"</span>)
 <span class="c-deco">@app.argument</span>(<span class="c-string">"prompt"</span>)
 <span class="c-keyword">def</span> <span class="c-name">run</span>(self):
     asyncio.run(_send(self.lg, self.args.prompt))
 
 <span class="c-keyword">async def</span> <span class="c-name">_send</span>(lg, prompt):
+    <span class="c-comment"># open an async Anthropic client via llm-infer</span>
     <span class="c-keyword">async with</span> Factory(lg).anthropic() <span class="c-keyword">as</span> client:
+        <span class="c-comment"># build a SAIA session using the llm-infer client as its backend</span>
         saia = SAIA.builder().backend(SAIAAdapter(client)).build()
+        <span class="c-comment"># invoke the instruct verb to get a typed response</span>
         <span class="c-builtin">print</span>((<span class="c-keyword">await</span> saia.instruct(prompt)).value)
 
 <span class="c-keyword">if</span> __name__ == <span class="c-string">"__main__"</span>:
