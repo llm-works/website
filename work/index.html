@@ -61,7 +61,7 @@
   <section id="managed">
     <div class="container">
       <div class="section-label">Managed AI capabilities</div>
-      <div class="engagement-reveal" tabindex="0" role="button" aria-expanded="false" onclick="if(event.target.closest('a'))return;this.classList.toggle('is-open');if(!this.classList.contains('is-open'))this.blur();this.setAttribute('aria-expanded',this.classList.contains('is-open'))">
+      <div class="engagement-reveal" tabindex="0" role="button" aria-expanded="false" onclick="toggleReveal(this,event)">
         <h2>Production AI deployed and maintained inside the customer's infrastructure</h2>
         <div class="prose">
           <p>LLM Works introduces production AI capabilities. Our engagement covers model deployment, runtime operations, monitoring, and ongoing updates as models and requirements evolve.</p>
@@ -75,7 +75,7 @@
   <section id="custom-agents">
     <div class="container">
       <div class="section-label">Custom agents</div>
-      <div class="engagement-reveal" tabindex="0" role="button" aria-expanded="false" onclick="if(event.target.closest('a'))return;this.classList.toggle('is-open');if(!this.classList.contains('is-open'))this.blur();this.setAttribute('aria-expanded',this.classList.contains('is-open'))">
+      <div class="engagement-reveal" tabindex="0" role="button" aria-expanded="false" onclick="toggleReveal(this,event)">
         <h2>AI agents built for specific business needs</h2>
         <div class="prose">
           <p>LLM Works designs and builds production AI agents for a specific customer need, integrated with existing systems, with a defined handoff or ongoing support path. Each agent is scoped to a concrete outcome rather than a general capability.</p>
@@ -89,7 +89,7 @@
   <section id="architecture">
     <div class="container">
       <div class="section-label">AI architecture</div>
-      <div class="engagement-reveal" tabindex="0" role="button" aria-expanded="false" onclick="if(event.target.closest('a'))return;this.classList.toggle('is-open');if(!this.classList.contains('is-open'))this.blur();this.setAttribute('aria-expanded',this.classList.contains('is-open'))">
+      <div class="engagement-reveal" tabindex="0" role="button" aria-expanded="false" onclick="toggleReveal(this,event)">
         <h2>Strategy and integration for AI rollout</h2>
         <div class="prose">
           <p>LLM Works delivers architecture and strategy for organizations planning or coordinating AI deployment across teams, systems, and vendors. The output is a written plan covering build-vs-buy decisions, integration architecture, and sequencing.</p>
@@ -102,7 +102,7 @@
   <section id="security-review">
     <div class="container">
       <div class="section-label">AI security review</div>
-      <div class="engagement-reveal" tabindex="0" role="button" aria-expanded="false" onclick="if(event.target.closest('a'))return;this.classList.toggle('is-open');if(!this.classList.contains('is-open'))this.blur();this.setAttribute('aria-expanded',this.classList.contains('is-open'))">
+      <div class="engagement-reveal" tabindex="0" role="button" aria-expanded="false" onclick="toggleReveal(this,event)">
         <h2>Independent assessment of AI surfaces and model boundaries</h2>
         <div class="prose">
           <p>LLM Works independently reviews an organization's AI surface area: where models touch user data, where boundaries exist between trusted and untrusted inputs, where outputs feed downstream systems. The output is a written assessment with findings and recommendations.</p>
@@ -133,6 +133,15 @@
       </div>
     </div>
   </footer>
+
+  <script>
+  function toggleReveal(el, e) {
+    if (e.target.closest('a')) return;
+    el.classList.toggle('is-open');
+    if (!el.classList.contains('is-open')) el.blur();
+    el.setAttribute('aria-expanded', el.classList.contains('is-open'));
+  }
+  </script>
 
 </body>
 </html>

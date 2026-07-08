@@ -64,7 +64,7 @@
   <section class="hero">
     <div class="container">
       <h1>AI is systems engineering</h1>
-      <div class="quote-reveal" tabindex="0" role="button" aria-expanded="false" onclick="if(event.target.closest('a'))return;this.classList.toggle('is-open');if(!this.classList.contains('is-open'))this.blur();this.setAttribute('aria-expanded',this.classList.contains('is-open'))">
+      <div class="quote-reveal" tabindex="0" role="button" aria-expanded="false" onclick="toggleReveal(this,event)">
         <p class="pull-quote">The hardest part of production AI agents is the infrastructure around the models.</p>
         <p>The industry is racing to add large language models (LLMs), and their potential is substantial: powering systems that make decisions, learn, and adapt continuously. Although models are increasingly capable, what makes them hold up in production is the infrastructure around them.</p>
       </div>
@@ -111,8 +111,8 @@
   <section class="compact-block">
     <div class="container">
       <h2 class="section-label">Platform</h2>
-      <div class="quote-reveal" tabindex="0" role="button" aria-expanded="false" onclick="if(event.target.closest('a'))return;this.classList.toggle('is-open');if(!this.classList.contains('is-open'))this.blur();this.setAttribute('aria-expanded',this.classList.contains('is-open'))">
-        <p class="pull-quote">Every agent runs on a modular architecture enabling a clean <span style="white-space: nowrap;">on-LLM / off-LLM</span> boundary.</p>
+      <div class="quote-reveal" tabindex="0" role="button" aria-expanded="false" onclick="toggleReveal(this,event)">
+        <p class="pull-quote">Every agent runs on a modular architecture enabling a clean <span class="nowrap">on-LLM / off-LLM</span> boundary.</p>
         <p>The engineering layer around the model is the work that turns model calls into production agents. The platform builds it once, and every agent on top inherits it. It absorbs the engineering work that every production AI team rebuilds in-house.</p>
       </div>
       <p class="block-link"><a href="/platform/">Full overview →</a></p>
@@ -138,6 +138,15 @@
       </div>
     </div>
   </footer>
+
+  <script>
+  function toggleReveal(el, e) {
+    if (e.target.closest('a')) return;
+    el.classList.toggle('is-open');
+    if (!el.classList.contains('is-open')) el.blur();
+    el.setAttribute('aria-expanded', el.classList.contains('is-open'));
+  }
+  </script>
 
 </body>
 </html>

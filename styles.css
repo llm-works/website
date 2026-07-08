@@ -1,5 +1,7 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+.nowrap { white-space: nowrap; }
+
 :root {
   --bg: #0a0a0b;
   --bg-raised: #111113;
@@ -755,7 +757,7 @@ html.light-mode .code-example .c-string { color: #047857; }
 html.light-mode .code-example .c-name    { color: #1d4ed8; }
 html.light-mode .code-example .c-deco    { color: #b45309; }
 html.light-mode .code-example .c-builtin { color: #0891b2; }
-html.light-mode .code-example .c-comment { color: #16a34a; font-weight: 500; }
+html.light-mode .code-example .c-comment { color: #15803d; font-weight: 500; }
 
 /* --- About text + link list --- */
 .about-text {
