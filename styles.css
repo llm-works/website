@@ -445,7 +445,7 @@ body.home footer { padding: 24px 0; }
   flex-shrink: 0;
 }
 
-.status-live { color: #10b981; }
+.status-live { color: #00ff41; }
 .status-soon { color: var(--text-muted); }
 
 .block-link {
@@ -849,7 +849,7 @@ html.light-mode nav { background: rgba(255, 255, 255, 0.85); }
 
 html.light-mode .cta-primary { color: #fff; }
 
-html.light-mode .status-live { color: #047857; }
+html.light-mode .status-live { color: var(--accent); }
 
 /* --- Theme toggle --- */
 .theme-toggle {
