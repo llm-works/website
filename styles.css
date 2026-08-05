@@ -977,6 +977,35 @@ body.blog-post .post-header { padding: 120px 0 40px; }
   color: var(--text-muted);
 }
 
+.post-header .post-meta-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.post-header .post-meta-row .post-date { margin-bottom: 0; }
+
+.post-header .post-kicker { color: var(--green); margin-bottom: 0; }
+
+.post-card-meta-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.post-card-kicker {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 .post-content {
   padding: 32px 0 64px;
   border-top: 1px solid var(--border);
