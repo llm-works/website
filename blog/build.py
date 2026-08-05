@@ -349,10 +349,6 @@ def build_post(src_dir: Path) -> dict | None:
         kicker_raw = kicker_raw.strip()
     else:
         kicker_raw = ""
-    if kicker_raw:
-        kicker_meta = f'\n          <div class="section-label post-kicker">{escape(kicker_raw)}</div>'
-    else:
-        kicker_meta = ""
 
     post_data = {
         "slug": slug,
@@ -368,16 +364,21 @@ def build_post(src_dir: Path) -> dict | None:
         "twitter_image_meta": twitter_image_meta,
         "twitter_card": twitter_card,
         "kicker": kicker_raw,
-        "kicker_meta": kicker_meta,
     }
 
     # Write HTML to same directory as post.md
     out_dir = src_dir
 
+    # Render kicker meta at template-fill time (consistent with card rendering)
+    kicker_meta = ""
+    if kicker_raw:
+        kicker_meta = f'\n          <div class="section-label post-kicker">{escape(kicker_raw)}</div>'
+
     # Write HTML (escape title/description for HTML attributes)
     html = POST_TEMPLATE.format(
         **{**post_data, "title": escape(post_data["title"]),
-           "description": escape(post_data["description"])}
+           "description": escape(post_data["description"]),
+           "kicker_meta": kicker_meta}
     )
     (out_dir / "index.html").write_text(html, encoding="utf-8")
     print(f"  Built: /blog/{slug}/")
