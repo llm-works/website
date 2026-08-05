@@ -1,6 +1,6 @@
 ---
 layout: single
-title: "xray — Deep Research with a Knowledge Graph"
+title: "xray — Deep Research with Knowledge Graphs"
 kicker: Agent Release
 date: 2026-08-05
 categories: launch
