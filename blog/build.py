@@ -28,11 +28,11 @@ POST_TEMPLATE = """\
   <meta property="og:description" content="{description}">
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://www.llm-works.ai/blog/{slug}/">
-  <meta property="og:site_name" content="LLM Works">
+  <meta property="og:site_name" content="LLM Works">{og_image_meta}
   <meta property="article:published_time" content="{date_iso}">
-  <meta name="twitter:card" content="summary">
+  <meta name="twitter:card" content="{twitter_card}">
   <meta name="twitter:title" content="{title}">
-  <meta name="twitter:description" content="{description}">
+  <meta name="twitter:description" content="{description}">{twitter_image_meta}
   <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
   <link rel="alternate" type="application/rss+xml" title="LLM Works Blog" href="/blog/feed.xml">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2588;</text></svg>">
@@ -53,8 +53,8 @@ POST_TEMPLATE = """\
     <div class="container">
       <a href="/" class="logo">llm-works<span>.ai</span></a>
       <ul class="nav-links">
-        <li><a href="/platform/">Platform</a></li>
         <li><a href="/agents/">Agents</a></li>
+        <li><a href="/platform/">Platform</a></li>
         <li><a href="/work/">Work</a></li>
         <li><a href="/story/">Story</a></li>
         <li><a href="/blog/" aria-current="page">Blog</a></li>
@@ -73,7 +73,9 @@ POST_TEMPLATE = """\
   <article class="post">
     <header class="post-header">
       <div class="container">
-        <p class="post-date">{date_display}</p>
+        <div class="post-meta-row">
+          <p class="post-date">{date_display}</p>{kicker_meta}
+        </div>
         <h1>{title}</h1>
         <p class="post-byline">LLM Works</p>
       </div>
@@ -140,8 +142,8 @@ INDEX_TEMPLATE = """\
     <div class="container">
       <a href="/" class="logo">llm-works<span>.ai</span></a>
       <ul class="nav-links">
-        <li><a href="/platform/">Platform</a></li>
         <li><a href="/agents/">Agents</a></li>
+        <li><a href="/platform/">Platform</a></li>
         <li><a href="/work/">Work</a></li>
         <li><a href="/story/">Story</a></li>
         <li><a href="/blog/" aria-current="page">Blog</a></li>
@@ -159,8 +161,9 @@ INDEX_TEMPLATE = """\
 
   <section class="hero">
     <div class="container">
-      <h1>Blog</h1>
-      <p>Technical writing on AI infrastructure, agent development, and fine-tuning.</p>
+      <div class="section-label">Blog</div>
+      <h1>Technical writing</h1>
+      <p>On AI infrastructure, agent development, and fine-tuning.</p>
     </div>
   </section>
 
@@ -194,7 +197,9 @@ POST_CARD_TEMPLATE = """\
           <img src="/blog/{slug}/assets/{teaser}" alt="" class="blog-dark-only">
           <img src="/blog/{slug}/assets/{teaser_light}" alt="" class="blog-light-only">
           <div class="post-card-content">
-            <time datetime="{date_iso}">{date_display}</time>
+            <div class="post-card-meta-row">
+              <time datetime="{date_iso}">{date_display}</time>{card_kicker_meta}
+            </div>
             <h2>{title}</h2>
           </div>
         </a>"""
@@ -329,6 +334,22 @@ def build_post(src_dir: Path) -> dict | None:
     else:
         teaser_light = teaser
 
+    if teaser:
+        image_url = f"https://www.llm-works.ai/blog/{slug}/assets/{teaser}"
+        og_image_meta = f'\n  <meta property="og:image" content="{image_url}">'
+        twitter_image_meta = f'\n  <meta name="twitter:image" content="{image_url}">'
+        twitter_card = "summary_large_image"
+    else:
+        og_image_meta = ""
+        twitter_image_meta = ""
+        twitter_card = "summary"
+
+    kicker_raw = frontmatter.get("kicker", "")
+    if isinstance(kicker_raw, str):
+        kicker_raw = kicker_raw.strip()
+    else:
+        kicker_raw = ""
+
     post_data = {
         "slug": slug,
         "title": frontmatter["title"],
@@ -339,15 +360,25 @@ def build_post(src_dir: Path) -> dict | None:
         "content": html_content,
         "teaser": teaser,
         "teaser_light": teaser_light,
+        "og_image_meta": og_image_meta,
+        "twitter_image_meta": twitter_image_meta,
+        "twitter_card": twitter_card,
+        "kicker": kicker_raw,
     }
 
     # Write HTML to same directory as post.md
     out_dir = src_dir
 
+    # Render kicker meta at template-fill time (consistent with card rendering)
+    kicker_meta = ""
+    if kicker_raw:
+        kicker_meta = f'\n          <div class="section-label post-kicker">{escape(kicker_raw)}</div>'
+
     # Write HTML (escape title/description for HTML attributes)
     html = POST_TEMPLATE.format(
         **{**post_data, "title": escape(post_data["title"]),
-           "description": escape(post_data["description"])}
+           "description": escape(post_data["description"]),
+           "kicker_meta": kicker_meta}
     )
     (out_dir / "index.html").write_text(html, encoding="utf-8")
     print(f"  Built: /blog/{slug}/")
@@ -371,6 +402,12 @@ def build_index(posts: list[dict]) -> None:
     """Build the blog index page."""
     posts_sorted = sorted(posts, key=lambda p: p["date"], reverse=True)
 
+    def _card_kicker_meta(post: dict) -> str:
+        k = post.get("kicker", "")
+        if not k:
+            return ""
+        return f'\n              <div class="post-card-kicker">{escape(k)}</div>'
+
     cards = "\n".join(
         POST_CARD_TEMPLATE.format(
             slug=p["slug"],
@@ -380,6 +417,7 @@ def build_index(posts: list[dict]) -> None:
             date_display=p["date_display"],
             teaser=p["teaser"],
             teaser_light=p["teaser_light"],
+            card_kicker_meta=_card_kicker_meta(p),
         )
         for p in posts_sorted
     )

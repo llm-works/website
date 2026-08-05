@@ -1,6 +1,7 @@
 ---
 layout: single
-title: "Agent Release: llm-news — AI-Curated Tech News"
+title: "llm-news — AI-Curated Tech News"
+kicker: Agent Release
 date: 2026-03-31
 categories: launch
 tags: news llm curation agents
