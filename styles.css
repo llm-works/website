@@ -125,7 +125,7 @@ nav .container {
   right: 0;
   z-index: 99;
   height: 40px;
-  background: var(--accent);
+  background: var(--accent-dim);
   color: #fff;
   font-size: 13px;
   line-height: 20px;

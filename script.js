@@ -98,6 +98,7 @@
     if (!meta) {
       meta = document.createElement('span');
       meta.className = 'pkg-meta';
+      meta.setAttribute('aria-hidden', 'true');
       host.appendChild(meta);
     }
     var version = meta.querySelector('.pkg-version');
