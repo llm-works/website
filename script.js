@@ -209,6 +209,7 @@
       btn.setAttribute('aria-label', 'Dismiss');
       btn.textContent = '×';
       btn.addEventListener('click', function () {
+        window.removeEventListener('resize', syncBannerTop);
         writeBannerDismissed(key);
         banner.remove();
         document.documentElement.classList.remove('has-release-banner');
