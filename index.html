@@ -44,85 +44,142 @@
     <div class="container">
       <a href="/" class="logo" aria-current="page">llm-works<span>.ai</span></a>
       <ul class="nav-links">
-        <li><a href="/agents/">Agents</a></li>
+        <li><a href="/#agents">Agents</a></li>
         <li><a href="/platform/">Platform</a></li>
-        <li><a href="/work/">Work</a></li>
         <li><a href="/story/">Story</a></li>
         <li><a href="/blog/">Blog</a></li>
         <li><a href="/about/">About</a></li>
       </ul>
     </div>
   </nav>
-
   <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
     <input type="checkbox" id="theme-switch">
     <span class="slider"></span>
   </label>
-
-  <main id="main" tabindex="-1">
+<main id="main" tabindex="-1">
 
   <section class="hero">
     <div class="container">
-      <h1>AI is systems engineering</h1>
-      <div class="quote-reveal" tabindex="0" role="button" aria-expanded="false" onclick="toggleReveal(this,event)">
-        <p class="pull-quote">The hardest part of production AI agents is the infrastructure around the models.</p>
-        <p>The industry is racing to add large language models (LLMs), and their potential is substantial: powering systems that make decisions, learn, and adapt continuously. Although models are increasingly capable, what makes them hold up in production is the infrastructure around them.</p>
+      <div class="hero-lead">
+        <h1>AI is systems engineering</h1>
       </div>
+      <div class="hero-right">
+        <div class="quote-reveal" tabindex="0">
+          <p class="pull-quote">The hardest part of production AI agents is the infrastructure around the models.</p>
+          <p>The industry races to adopt large language models (LLMs) with unbounded potential. While models get more capable, <em>what makes them work in production is the infrastructure around them.</em></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="compact-block llmworks-block">
+    <div class="container">
+      <div class="llmworks-lead">
+        <h2 class="section-label">LLM Works</h2>
+        <p class="hero-statement">An AI infrastructure company building production agents on its open-source platform.</p>
+      </div>
+
+      <div class="home-lanes">
+        <div class="lane-card">
+          <a href="#agents" class="name">Agents</a>
+          <p class="product-desc">Production AI agents that operate fully autonomously without human supervision.</p>
+        </div>
+        <div class="lane-card">
+          <a href="/platform/" class="name">Platform</a>
+          <p class="product-desc">Open-source substrate that powers the agents.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="agents" class="compact-block agents-block">
+    <div class="container">
+      <div class="agents-lead">
+        <h2 class="section-label">Agents</h2>
+        <p class="hero-statement">AI agents running in production.</p>
+      </div>
+
+      <div class="product-grid">
+        <a href="https://news.llm-works.ai" class="product-card">
+          <div class="product-top">
+            <h3>llm-news</h3>
+            <span class="status-pill status-live">Live</span>
+          </div>
+          <p class="product-tagline">A live tech news feed, curated and ranked by AI.</p>
+          <p class="product-desc">
+            Aggregates and ranks tech and AI news from 50+ sources, refreshed hourly. Articles are
+            summarized and rated for relevance; thematic clusters surface evolving stories.
+          </p>
+          <p class="product-meta"><strong>Free.</strong></p>
+          <span class="product-url">news.llm-works.ai →</span>
+        </a>
+
+        <a href="https://xray.llm-works.ai" class="product-card">
+          <div class="product-top">
+            <h3>llm-xray</h3>
+            <span class="status-pill status-live">Live</span>
+          </div>
+          <p class="product-tagline">Deep research powered by AI.</p>
+          <p class="product-desc">
+            Decision-grade research output: calibrated verdicts through self-refining loops, with a
+            plan-as-protagonist architecture that surfaces what was checked, what changed the
+            verdict, and what's still open.
+          </p>
+          <p class="product-meta"><strong>Free signup with welcome credits.</strong></p>
+          <span class="product-url">xray.llm-works.ai →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="compact-block platform-block">
+    <div class="container">
+      <div class="platform-lead">
+        <h2 class="section-label">Platform</h2>
+        <p class="hero-statement">An open-source substrate for the engineering layer around production LLM agents.</p>
+
+        <ul class="solution-list">
+          <li>Five independent modules, each usable on its own.</li>
+          <li>Clean on-LLM / off-LLM boundary via verb pattern.</li>
+          <li>Response guards enforce contracts on model output.</li>
+          <li>Model-agnostic inference across providers.</li>
+          <li>Cost transparency and per-call tracking.</li>
+          <li>Rails for composable and automated agent loops.</li>
+          <li>Clean code, strict typing, ~9k tests, 1:1 test-to-source ratio.</li>
+        </ul>
+      </div>
+
+      <div class="platform-right">
+        <div class="quote-reveal" tabindex="0">
+          <p class="pull-quote">Every agent runs on a modular architecture enabling a clean <span class="nowrap">on-LLM / off-LLM</span> boundary.</p>
+          <p>The engineering layer around the model turns model calls into production agents. The platform builds it once, so every agent inherits the capabilities.</p>
+        </div>
+
+        <div class="problem-grid">
+          <div class="problem-card">
+            <span class="problem-label">Monolithic design</span>
+            <p class="problem-desc">Platforms that ship as one blob are hard to compose, extend, or swap parts of. Adoption is all-or-nothing and hard to walk back.</p>
+          </div>
+          <div class="problem-card">
+            <span class="problem-label">Lack of abstractions</span>
+            <p class="problem-desc">Without higher-level abstractions, business logic becomes complex. Every model call turns into request formatting, response parsing, and retry handling.</p>
+          </div>
+          <div class="problem-card">
+            <span class="problem-label">Maintenance overhead</span>
+            <p class="problem-desc">Every dependency, upgrade, and breaking change costs engineering hours. The maintenance bill grows with the codebase.</p>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
   <section class="compact-block">
     <div class="container">
-      <h2 class="section-label">LLM Works</h2>
-      <p class="pull-quote is-positioning">LLM Works is an AI infrastructure company running production agents on its custom open-source platform.</p>
-
-      <div class="product-line">
-        <a href="/agents/" class="name">Agents</a>
-        <p class="product-desc">Production AI agents that operate fully autonomously without human supervision.</p>
+      <div class="story-lead">
+        <h2 class="section-label">Story</h2>
+        <p class="hero-statement">AI is going through an engineering shift seen in several industries before.</p>
       </div>
-      <div class="product-line">
-        <a href="/platform/" class="name">Platform</a>
-        <p class="product-desc">Open-source substrate that powers the agents.</p>
-      </div>
-      <div class="product-line">
-        <a href="/work/" class="name">Engagements</a>
-        <p class="product-desc">Delivery into customer environments &amp; strategic advisory.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="compact-block">
-    <div class="container">
-      <h2 class="section-label">Agents</h2>
-
-      <div class="product-line">
-        <a href="https://news.llm-works.ai" class="name">llm-news</a>
-        <p class="product-desc">News aggregation agent that scans 50+ tech sources hourly, ranking each article by relevance.</p>
-      </div>
-      <div class="product-line">
-        <a href="https://xray.llm-works.ai" class="name">llm-xray</a>
-        <p class="product-desc">Deep research agent that uses multi-turn exploration and analysis to produce detailed high-quality reports.</p>
-      </div>
-
-      <p class="block-link"><a href="/agents/">More on agents →</a></p>
-    </div>
-  </section>
-
-  <section class="compact-block">
-    <div class="container">
-      <h2 class="section-label">Platform</h2>
-      <div class="quote-reveal" tabindex="0" role="button" aria-expanded="false" onclick="toggleReveal(this,event)">
-        <p class="pull-quote">Every agent runs on a modular architecture enabling a clean <span class="nowrap">on-LLM / off-LLM</span> boundary.</p>
-        <p>The engineering layer around the model is the work that turns model calls into production agents. The platform builds it once, and every agent on top inherits it. It absorbs the engineering work that every production AI team rebuilds in-house.</p>
-      </div>
-      <p class="block-link"><a href="/platform/">Full overview →</a></p>
-    </div>
-  </section>
-
-  <section class="compact-block">
-    <div class="container">
-      <h2 class="section-label">Story</h2>
-      <p class="lead-line">AI is going through an engineering shift seen in several industries before.</p>
       <p class="block-link"><a href="/story/">The full story →</a></p>
     </div>
   </section>
@@ -138,15 +195,6 @@
       </div>
     </div>
   </footer>
-
-  <script>
-  function toggleReveal(el, e) {
-    if (e.target.closest('a')) return;
-    el.classList.toggle('is-open');
-    if (!el.classList.contains('is-open')) el.blur();
-    el.setAttribute('aria-expanded', el.classList.contains('is-open'));
-  }
-  </script>
 
 </body>
 </html>
