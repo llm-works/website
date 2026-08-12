@@ -200,7 +200,7 @@
       recent.forEach(function (e, idx) {
         if (idx > 0) banner.appendChild(document.createTextNode(', '));
         var link = document.createElement('a');
-        link.href = 'https://github.com/llm-works/' + e.pkg;
+        link.href = 'https://github.com/llm-works/' + e.pkg + '/releases/tag/v' + e.version;
         link.textContent = e.pkg + ' v' + e.version;
         banner.appendChild(link);
       });
