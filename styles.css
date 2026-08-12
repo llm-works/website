@@ -302,8 +302,14 @@ p.pull-quote + p {
   margin: 8px 0 0;
 }
 
-.quote-reveal { cursor: pointer; }
-.quote-reveal { position: relative; padding: 0; margin: 0; height: fit-content; }
+.quote-reveal {
+  cursor: pointer;
+  position: relative;
+  padding: 0;
+  margin: 0;
+  height: fit-content;
+  -webkit-tap-highlight-color: transparent;
+}
 
 .quote-reveal p.pull-quote::after {
   content: '\203A';
@@ -314,7 +320,8 @@ p.pull-quote + p {
   margin-left: 12px;
   transition: transform 0.3s ease;
 }
-.quote-reveal:hover p.pull-quote::after {
+.quote-reveal:hover p.pull-quote::after,
+.quote-reveal:focus-within p.pull-quote::after {
   transform: rotate(90deg);
 }
 
@@ -337,7 +344,8 @@ p.pull-quote + p {
   pointer-events: none;
   z-index: 10;
 }
-.quote-reveal:hover p.pull-quote + p {
+.quote-reveal:hover p.pull-quote + p,
+.quote-reveal:focus-within p.pull-quote + p {
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
@@ -350,20 +358,16 @@ html.light-mode .quote-reveal p.pull-quote + p {
 }
 
 @media (hover: hover) {
-  .quote-reveal:hover p.pull-quote::after {
+  .quote-reveal:hover p.pull-quote::after,
+  .quote-reveal:focus-within p.pull-quote::after {
     transform: rotate(90deg);
     transition: transform 0.15s ease;
   }
 }
 
-.quote-reveal { -webkit-tap-highlight-color: transparent; }
-
-/* --- Homepage-scoped tightening (intent-router must fit one viewport) --- */
-/* removed the asymmetric padding-bottom override - hero now uses base 48/48 */
+/* --- Homepage-scoped tightening --- */
 body.home .hero h1 { margin-bottom: 18px; }
 body.home .hero p { margin-bottom: 12px; }
-body.home .compact-block .lead-line { margin-bottom: 10px; }
-body.home .product-line { padding: 4px 0; }
 body.home .block-link { margin-top: 12px; }
 body.home footer { padding: 24px 0; }
 
@@ -1333,6 +1337,8 @@ html.light-mode .blog-neg { color: #dc2626; }
 
 /* --- Mobile --- */
 @media (max-width: 768px) {
+  html { scroll-padding-top: 85px; }
+
   /* Container: fill viewport, drop the 1080 cap */
   body.home .container,
   body.about .container,

@@ -53,9 +53,8 @@ POST_TEMPLATE = """\
     <div class="container">
       <a href="/" class="logo">llm-works<span>.ai</span></a>
       <ul class="nav-links">
-        <li><a href="/agents/">Agents</a></li>
+        <li><a href="/#agents">Agents</a></li>
         <li><a href="/platform/">Platform</a></li>
-        <li><a href="/work/">Work</a></li>
         <li><a href="/story/">Story</a></li>
         <li><a href="/blog/" aria-current="page">Blog</a></li>
         <li><a href="/about/">About</a></li>
@@ -142,9 +141,8 @@ INDEX_TEMPLATE = """\
     <div class="container">
       <a href="/" class="logo">llm-works<span>.ai</span></a>
       <ul class="nav-links">
-        <li><a href="/agents/">Agents</a></li>
+        <li><a href="/#agents">Agents</a></li>
         <li><a href="/platform/">Platform</a></li>
-        <li><a href="/work/">Work</a></li>
         <li><a href="/story/">Story</a></li>
         <li><a href="/blog/" aria-current="page">Blog</a></li>
         <li><a href="/about/">About</a></li>
