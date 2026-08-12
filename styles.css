@@ -302,11 +302,10 @@ p.pull-quote + p {
   margin: 8px 0 0;
 }
 
-.quote-reveal, .engagement-reveal { cursor: pointer; }
+.quote-reveal { cursor: pointer; }
 .quote-reveal { position: relative; padding: 0; margin: 0; height: fit-content; }
 
-.quote-reveal p.pull-quote::after,
-.engagement-reveal h2::after {
+.quote-reveal p.pull-quote::after {
   content: '\203A';
   float: right;
   color: var(--accent);
@@ -315,24 +314,11 @@ p.pull-quote + p {
   margin-left: 12px;
   transition: transform 0.3s ease;
 }
-.engagement-reveal h2 {
-  display: flex;
-  align-items: last baseline;
-  justify-content: space-between;
-  gap: 12px;
-}
-.engagement-reveal h2::after {
-  font-weight: normal;
-  font-size: 24px;
-  float: none;
-  flex-shrink: 0;
-}
-.quote-reveal:hover p.pull-quote::after,
-.engagement-reveal.is-open h2::after {
+.quote-reveal:hover p.pull-quote::after {
   transform: rotate(90deg);
 }
 
-.quote-reveal p.pull-quote { margin: 0 !important; padding-top: 0; padding-bottom: 0; transition: margin-bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+.quote-reveal p.pull-quote { margin: 0; padding-top: 0; padding-bottom: 0; transition: margin-bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
 
 .quote-reveal p.pull-quote + p {
   position: absolute;
@@ -363,54 +349,19 @@ html.light-mode .quote-reveal p.pull-quote + p {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
-.engagement-reveal .prose {
-  max-height: 0;
-  overflow: hidden;
-  opacity: 0;
-  transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-}
-.engagement-reveal h2 {
-  margin-bottom: 0;
-  transition: margin-bottom 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.engagement-reveal.is-open .prose {
-  max-height: 1200px;
-  opacity: 1;
-}
-.engagement-reveal.is-open h2 {
-  margin-bottom: 20px;
-}
-
 @media (hover: hover) {
-  .engagement-reveal:hover .prose,
-  .engagement-reveal:focus-within .prose {
-    max-height: 1200px;
-    opacity: 1;
-    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.5s, opacity 0.45s ease 0.5s;
-  }
-  .engagement-reveal:hover h2,
-  .engagement-reveal:focus-within h2 {
-    margin-bottom: 20px;
-    transition: margin-bottom 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.5s;
-  }
   .quote-reveal:hover p.pull-quote::after {
     transform: rotate(90deg);
     transition: transform 0.15s ease;
   }
-  .engagement-reveal:hover h2::after,
-  .engagement-reveal:focus-within h2::after {
-    transform: rotate(90deg);
-    transition: transform 0.3s ease 0.5s;
-  }
 }
 
-.quote-reveal, .engagement-reveal { -webkit-tap-highlight-color: transparent; }
+.quote-reveal { -webkit-tap-highlight-color: transparent; }
 
 /* --- Homepage-scoped tightening (intent-router must fit one viewport) --- */
 /* removed the asymmetric padding-bottom override - hero now uses base 48/48 */
 body.home .hero h1 { margin-bottom: 18px; }
 body.home .hero p { margin-bottom: 12px; }
-body.work section:not(.hero) { padding: 32px 0; }
 body.home .compact-block .lead-line { margin-bottom: 10px; }
 body.home .product-line { padding: 4px 0; }
 body.home .block-link { margin-top: 12px; }
@@ -903,7 +854,7 @@ a.product-card:hover .product-url { text-decoration: underline; }
   gap: 12px;
 }
 
-.product-card h2 {
+.product-card h3 {
   font-family: var(--mono);
   font-size: 20px;
   font-weight: 600;
