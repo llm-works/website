@@ -45,7 +45,7 @@
     }
 
     hydratePypiVersions();
-    hydrateReleaseBanner();
+    hydrateNewsBanner();
   });
 
   var PACKAGES = ['appinfra', 'llm-saia', 'llm-infer', 'llm-kelt', 'llm-gent'];
@@ -171,38 +171,135 @@
     try { localStorage.setItem(DISMISS_KEY, key); } catch (e) {}
   }
 
-  function hydrateReleaseBanner() {
+  function collectReleaseItem() {
     var promises = PACKAGES.map(function (pkg) {
       return getPackage(pkg).then(function (entry) {
         if (!entry) return null;
         return { pkg: pkg, version: entry.version, uploadedAt: entry.uploadedAt };
       });
     });
-    Promise.all(promises).then(function (entries) {
+    return Promise.all(promises).then(function (entries) {
       var now = Date.now();
       var recent = entries.filter(function (e) {
         return e && typeof e.uploadedAt === 'number' && (now - e.uploadedAt) < NEW_WINDOW_MS;
       }).sort(function (a, b) { return b.uploadedAt - a.uploadedAt; });
+      if (!recent.length) return null;
+      return {
+        type: 'release',
+        date: recent[0].uploadedAt,
+        key: 'release:' + recent.map(function (e) { return e.pkg + '@' + e.version; }).sort().join(','),
+        render: function (parent) {
+          var label = document.createElement('span');
+          label.className = 'release-banner-label';
+          label.textContent = recent.length === 1
+            ? 'New platform lib release: '
+            : 'New platform lib releases: ';
+          parent.appendChild(label);
+          recent.forEach(function (e, idx) {
+            if (idx > 0) parent.appendChild(document.createTextNode(', '));
+            var link = document.createElement('a');
+            link.href = 'https://github.com/llm-works/' + e.pkg + '/releases/tag/v' + e.version;
+            link.textContent = e.pkg + ' v' + e.version;
+            parent.appendChild(link);
+          });
+        }
+      };
+    });
+  }
 
-      if (!recent.length) return;
+  function collectLedgerItems() {
+    var timeout = new Promise(function (resolve) {
+      setTimeout(function () { resolve(null); }, 2000);
+    });
+    var fetchP = fetch('/news.json')
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .catch(function () { return null; });
+    return Promise.race([fetchP, timeout]).then(function (data) {
+      if (!data || typeof data !== 'object') return [];
+      var now = Date.now();
+      var items = [];
+      Object.keys(data).forEach(function (type) {
+        var entry = data[type];
+        if (!entry || !entry.date) return;
+        var t = Date.parse(entry.date);
+        if (isNaN(t) || (now - t) >= NEW_WINDOW_MS) return;
+        var item = ledgerItemFor(type, entry, t);
+        if (item) items.push(item);
+      });
+      return items;
+    });
+  }
 
-      var key = recent.map(function (e) { return e.pkg + '@' + e.version; }).sort().join(',');
+  function ledgerItemFor(type, entry, t) {
+    if (type === 'blog' && entry.title) {
+      return {
+        type: 'blog',
+        date: t,
+        key: 'blog:' + (entry.url || entry.title),
+        render: function (parent) {
+          var label = document.createElement('span');
+          label.className = 'release-banner-label';
+          label.textContent = 'New blog post: ';
+          parent.appendChild(label);
+          if (entry.url) {
+            var link = document.createElement('a');
+            link.href = entry.url;
+            link.textContent = entry.title;
+            parent.appendChild(link);
+          } else {
+            parent.appendChild(document.createTextNode(entry.title));
+          }
+        }
+      };
+    }
+    if (type === 'custom' && entry.text) {
+      return {
+        type: 'custom',
+        date: t,
+        key: 'custom:' + (entry.url || entry.text),
+        render: function (parent) {
+          if (entry.url) {
+            var link = document.createElement('a');
+            link.href = entry.url;
+            link.textContent = entry.text;
+            parent.appendChild(link);
+          } else {
+            parent.appendChild(document.createTextNode(entry.text));
+          }
+        }
+      };
+    }
+    return null;
+  }
+
+  function hydrateNewsBanner() {
+    Promise.all([collectReleaseItem(), collectLedgerItems()]).then(function (results) {
+      var items = [];
+      if (results[0]) items.push(results[0]);
+      results[1].forEach(function (i) { items.push(i); });
+
+      if (!items.length) return;
+
+      items.sort(function (a, b) { return b.date - a.date; });
+
+      var key = items.map(function (i) { return i.key; }).sort().join('|');
       if (readBannerDismissed() === key) return;
 
       var banner = document.createElement('div');
       banner.className = 'release-banner';
       banner.setAttribute('role', 'status');
-      banner.appendChild(document.createTextNode(
-        recent.length === 1
-          ? 'New platform lib release: '
-          : 'New platform lib releases: '
-      ));
-      recent.forEach(function (e, idx) {
-        if (idx > 0) banner.appendChild(document.createTextNode(', '));
-        var link = document.createElement('a');
-        link.href = 'https://github.com/llm-works/' + e.pkg + '/releases/tag/v' + e.version;
-        link.textContent = e.pkg + ' v' + e.version;
-        banner.appendChild(link);
+
+      items.forEach(function (item, idx) {
+        if (idx > 0) {
+          var sep = document.createElement('span');
+          sep.className = 'release-banner-sep';
+          sep.textContent = '|';
+          banner.appendChild(sep);
+        }
+        var row = document.createElement('span');
+        row.className = 'release-banner-item';
+        item.render(row);
+        banner.appendChild(row);
       });
 
       var btn = document.createElement('button');
@@ -210,7 +307,7 @@
       btn.setAttribute('aria-label', 'Dismiss');
       btn.textContent = '×';
       btn.addEventListener('click', function () {
-        window.removeEventListener('resize', syncBannerTop);
+        window.removeEventListener('resize', onResize);
         writeBannerDismissed(key);
         banner.remove();
         document.documentElement.classList.remove('has-release-banner');
@@ -229,7 +326,7 @@
       var nav = document.querySelector('nav');
       var syncBannerTop = function () {
         if (!nav) return;
-        banner.style.top = nav.offsetHeight + 'px';
+        banner.style.top = (nav.offsetHeight - 1) + 'px';
       };
       syncBannerTop();
 
@@ -237,7 +334,13 @@
       var anchor = skipLink ? skipLink.nextSibling : document.body.firstChild;
       document.body.insertBefore(banner, anchor);
 
-      window.addEventListener('resize', syncBannerTop);
+      var updateLayout = function () {
+        banner.classList.remove('stacked');
+        if (banner.scrollWidth > banner.clientWidth + 1) banner.classList.add('stacked');
+      };
+      var onResize = function () { syncBannerTop(); updateLayout(); };
+      requestAnimationFrame(updateLayout);
+      window.addEventListener('resize', onResize);
     });
   }
 })();

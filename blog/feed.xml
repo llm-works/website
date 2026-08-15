@@ -5,8 +5,16 @@
     <link>https://www.llm-works.ai/blog/</link>
     <description>Technical writing on AI infrastructure, agent development, and fine-tuning.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 15 Aug 2026 05:27:34 +0000</lastBuildDate>
+    <lastBuildDate>Sat, 15 Aug 2026 13:02:11 +0000</lastBuildDate>
     <atom:link href="https://www.llm-works.ai/blog/feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Mapping the AI Agent Governance Landscape (August 2026)</title>
+      <link>https://www.llm-works.ai/blog/agent-governance-landscape-aug-2026/</link>
+      <guid isPermaLink="true">https://www.llm-works.ai/blog/agent-governance-landscape-aug-2026/</guid>
+      <pubDate>Sat, 15 Aug 2026 00:00:00 +0000</pubDate>
+      <description>A field guide to the vendors, standards, and failure modes that emerged in the twelve months after AI agent governance stopped being optional. Six categories, 40+ tools, and what the map still misses.
+</description>
+    </item>
     <item>
       <title>xray — Deep Research with Knowledge Graphs</title>
       <link>https://www.llm-works.ai/blog/introducing-xray/</link>

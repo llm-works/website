@@ -290,13 +290,42 @@ def transform_content(body: str) -> str:
     return body
 
 
+HTTP_LINK_RE = re.compile(r'<a\s+href="(https?://[^"]+)"([^>]*)>')
+_TARGET_ATTR_RE = re.compile(r'\s+target="[^"]*"')
+_REL_ATTR_RE = re.compile(r'\s+rel="[^"]*"')
+
+
+def _is_internal(href: str) -> bool:
+    from urllib.parse import urlparse
+    u = urlparse(href)
+    host = u.netloc.lower()
+    if host == "llm-works.ai" or host.endswith(".llm-works.ai"):
+        return True
+    if host == "github.com" and u.path.lower().startswith("/llm-works"):
+        return True
+    return False
+
+
+def normalize_link_targets(html: str) -> str:
+    """Strip any existing target/rel from http(s) links, then add target=_blank
+    to external links only. llm-works family stays in-tab."""
+    def repl(m: re.Match) -> str:
+        href, rest = m.group(1), m.group(2)
+        rest = _TARGET_ATTR_RE.sub("", rest)
+        rest = _REL_ATTR_RE.sub("", rest)
+        if _is_internal(href):
+            return f'<a href="{href}"{rest}>'
+        return f'<a href="{href}"{rest} target="_blank" rel="noopener noreferrer">'
+    return HTTP_LINK_RE.sub(repl, html)
+
+
 def render_markdown(md_content: str) -> str:
     """Convert markdown to HTML."""
     md = markdown.Markdown(extensions=[
         TableExtension(),
         FencedCodeExtension(),
     ])
-    return md.convert(md_content)
+    return normalize_link_targets(md.convert(md_content))
 
 
 def build_post(src_dir: Path) -> dict | None:
