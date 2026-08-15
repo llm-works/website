@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Build blog posts from markdown sources to HTML."""
 
+import hashlib
+import os
 import re
 import shutil
 from datetime import datetime, timezone
@@ -14,7 +16,15 @@ from markdown.extensions.tables import TableExtension
 from markdown.extensions.fenced_code import FencedCodeExtension
 
 ROOT = Path(__file__).parent
-STYLES_CSS = ROOT.parent / "styles.css"
+SITE_ROOT = ROOT.parent
+STYLES_CSS = SITE_ROOT / "styles.css"
+SCRIPT_JS = SITE_ROOT / "script.js"
+
+# Static assets get a ?v=<content-hash> suffix so a deploy immediately
+# invalidates the upstream CDN cache instead of waiting out its 4h TTL.
+HASHED_ASSETS = {"/styles.css": STYLES_CSS, "/script.js": SCRIPT_JS}
+_asset_pattern = "|".join(re.escape(url) for url in HASHED_ASSETS)
+_ASSET_REF_RE = re.compile(rf'(?<![\\w./-])({_asset_pattern})(\\?v=[^\\"\'\\s#>)]*)?(?=[\\"\'\\s#>)])')
 
 POST_TEMPLATE = """\
 <!DOCTYPE html>
@@ -479,6 +489,36 @@ def build_rss(posts: list[dict]) -> None:
     print("  Built: /blog/feed.xml")
 
 
+def _asset_hash(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()[:8]
+
+
+def stamp_assets() -> None:
+    """Rewrite /styles.css and /script.js references across all HTML with
+    ?v=<content-hash> so a deploy invalidates CDN caches immediately.
+    Idempotent: an existing ?v=... suffix is replaced."""
+    hashes = {url: _asset_hash(path) for url, path in HASHED_ASSETS.items()}
+
+    def repl(m: re.Match) -> str:
+        return f"{m.group(1)}?v={hashes[m.group(1)]}"
+
+    stamped = 0
+    for dirpath, dirnames, filenames in os.walk(SITE_ROOT):
+        # Prune hidden dirs and vendored deps before descent.
+        dirnames[:] = [d for d in dirnames if not d.startswith(".") and d != "node_modules"]
+        for fname in filenames:
+            if not fname.endswith(".html"):
+                continue
+            html_path = Path(dirpath) / fname
+            original = html_path.read_text(encoding="utf-8")
+            updated = _ASSET_REF_RE.sub(repl, original)
+            if updated != original:
+                html_path.write_text(updated, encoding="utf-8")
+                stamped += 1
+    print(f"  Stamped assets in {stamped} HTML file(s) "
+          f"(css={hashes['/styles.css']}, js={hashes['/script.js']})")
+
+
 def main() -> None:
     print("Building blog...")
 
@@ -492,6 +532,8 @@ def main() -> None:
     if posts:
         build_index(posts)
         build_rss(posts)
+
+    stamp_assets()
 
     print(f"Done. {len(posts)} posts built.")
 
