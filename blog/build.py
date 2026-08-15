@@ -22,7 +22,8 @@ SCRIPT_JS = SITE_ROOT / "script.js"
 # Static assets get a ?v=<content-hash> suffix so a deploy immediately
 # invalidates the upstream CDN cache instead of waiting out its 4h TTL.
 HASHED_ASSETS = {"/styles.css": STYLES_CSS, "/script.js": SCRIPT_JS}
-_ASSET_REF_RE = re.compile(r'(/(?:styles\.css|script\.js))(\?v=[^"\'\s]*)?')
+_asset_pattern = "|".join(re.escape(url) for url in HASHED_ASSETS)
+_ASSET_REF_RE = re.compile(rf"({_asset_pattern})(\?v=[^\"'\s]*)?")
 
 POST_TEMPLATE = """\
 <!DOCTYPE html>
