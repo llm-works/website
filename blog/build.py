@@ -35,7 +35,8 @@ POST_TEMPLATE = """\
   <meta name="twitter:description" content="{description}">{twitter_image_meta}
   <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
   <link rel="alternate" type="application/rss+xml" title="LLM Works Blog" href="/blog/feed.xml">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2588;</text></svg>">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -95,7 +96,7 @@ POST_TEMPLATE = """\
       <div class="footer-links">
         <a href="/blog/feed.xml">RSS</a>
         <a href="/llms.txt">llms.txt</a>
-        <a href="/terms.html">Terms</a>
+        <a href="/terms/">Terms</a>
       </div>
     </div>
   </footer>
@@ -123,7 +124,8 @@ INDEX_TEMPLATE = """\
   <meta name="twitter:description" content="Technical writing on AI infrastructure, agent development, and fine-tuning.">
   <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
   <link rel="alternate" type="application/rss+xml" title="LLM Works Blog" href="/blog/feed.xml">
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x2588;</text></svg>">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -181,7 +183,7 @@ INDEX_TEMPLATE = """\
       <div class="footer-links">
         <a href="/blog/feed.xml">RSS</a>
         <a href="/llms.txt">llms.txt</a>
-        <a href="/terms.html">Terms</a>
+        <a href="/terms/">Terms</a>
       </div>
     </div>
   </footer>

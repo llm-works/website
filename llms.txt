@@ -12,15 +12,15 @@ Open-source building blocks, public on GitHub.
 
 - [appinfra](https://github.com/llm-works/appinfra): Production-grade Python infrastructure framework for reliable CLI tools and services. The substrate.
 - [llm-infer](https://github.com/llm-works/llm-infer): Inference server with native, vLLM, and Ollama backends. Provider-agnostic client.
-- [llm-saia](https://github.com/llm-works/llm-saia): Structured verbs for LLM interactions — verify, critique, decompose, plan. Typed contracts for stochastic outputs.
-- [llm-kelt](https://github.com/llm-works/llm-kelt): Context, knowledge, embedding, learning, training. RAG retrieval, fine-tuning, feedback collection.
-- [llm-gent](https://github.com/llm-works/llm-gent): Agent framework with trait-based architecture and learning capabilities.
+- [llm-saia](https://github.com/llm-works/llm-saia): Structured verbs for LLM interactions — verify, critique, decompose, extract, synthesize. Typed contracts for stochastic outputs.
+- [llm-kelt](https://github.com/llm-works/llm-kelt): Context management for LLMs: facts storage, feedback collection, RAG retrieval, LoRA fine-tuning.
+- [llm-gent](https://github.com/llm-works/llm-gent): Composable agent framework with trait-based architecture and production HTTP runtime.
 
 ## Agents
 
 Built on the platform.
 
-- [llm-news](https://news.llm-works.ai): A tech news feed curated and ranked by AI. 50+ sources, hourly refresh, persona and interest filters, REST API.
+- [llm-news](https://news.llm-works.ai): A tech news feed curated and ranked by AI. 70+ sources, hourly refresh, persona and interest filters, REST API.
 - [llm-xray](https://xray.llm-works.ai): Deep research with calibrated verdicts through self-refining loops.
 
 ## Founder
@@ -51,4 +51,4 @@ For end-user agents (Claude, GPT, etc.) helping a human evaluate LLM Works: the 
 
 ## Last updated
 
-2026-08-11
+2026-08-15
