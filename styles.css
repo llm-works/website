@@ -136,6 +136,30 @@ nav .container {
   text-overflow: ellipsis;
 }
 
+.release-banner.stacked {
+  padding: 1px 40px;
+  line-height: 19px;
+  white-space: normal;
+}
+
+.release-banner-item { display: inline; }
+.release-banner.stacked .release-banner-item {
+  display: block;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.release-banner-sep {
+  display: inline;
+  padding: 0 8px;
+  opacity: 0.55;
+}
+.release-banner.stacked .release-banner-sep { display: none; }
+
+.release-banner-label { opacity: 0.78; }
+
 .release-banner.is-fresh {
   animation: release-banner-in 500ms ease-out;
 }
@@ -165,7 +189,7 @@ nav .container {
 .release-banner a {
   color: #fff;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 .release-banner a:hover { text-decoration: underline; }
@@ -442,8 +466,13 @@ body.home footer { padding: 24px 0; }
 body.home .container,
 body.about .container,
 body.blog-index .container,
+body.blog-post .container,
 body.story .container,
 body.platform .container { max-width: 1080px; }
+
+/* Blog posts: keep nav/header at 1080 for site consistency, but constrain the
+   reading column so long-form prose stays legible. */
+body.blog-post .post-content .container { max-width: 950px; }
 
 /* Story: 2x2 consequences grid */
 body.story .consequences {
@@ -1293,7 +1322,6 @@ body.blog-post .post-header { padding: 48px 0; }
   color: var(--text-muted);
   line-height: 1.75;
   margin-bottom: 16px;
-  max-width: 680px;
 }
 
 .post-content p strong { color: var(--text); }

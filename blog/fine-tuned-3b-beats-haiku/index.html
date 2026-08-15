@@ -94,13 +94,9 @@
         where quality is subjective but measurable—easy to generate bad jokes, hard to generate good ones.
         It also requires no tooling, making it a clean benchmark for raw generation quality.</p>
         <p><strong>Task.</strong> Generate 1000 jokes, each mutually different (embedding vector similarity &lt; 0.85 cutoff).
-        See the <a
-        href="https://github.com/llm-works/llm-gent/blob/a8431edc02a821c766710daf20a72303e7bcf762/etc/agents/jokester-p.yaml#L74-L89"
-        target="_blank" rel="noopener noreferrer">joke creation prompt</a>.</p>
+        See the <a href="https://github.com/llm-works/llm-gent/blob/a8431edc02a821c766710daf20a72303e7bcf762/etc/agents/jokester-p.yaml#L74-L89">joke creation prompt</a>.</p>
         <p><strong>Evaluation.</strong> Every sample was graded 1-5 stars using Claude Haiku. See the
-        <a
-        href="https://github.com/llm-works/llm-gent/blob/a8431edc02a821c766710daf20a72303e7bcf762/etc/agents/jokester-p.yaml#L110-L136"
-        target="_blank" rel="noopener noreferrer">grading prompt</a>.
+        <a href="https://github.com/llm-works/llm-gent/blob/a8431edc02a821c766710daf20a72303e7bcf762/etc/agents/jokester-p.yaml#L110-L136">grading prompt</a>.
         Using Haiku as the judge gives us a consistent baseline: we're measuring
         whether fine-tuned models can match or beat the same model that's grading them.</p>
         <p><strong>Base models.</strong> Qwen 2.5 Instruct (4-bit quantized): 0.5B, 1.5B, 3B, 7B, 14B, 32B, 72B. We used
@@ -294,8 +290,7 @@
         <p>This experiment is part of a larger stack we're building: infrastructure for permanently running
         agents with well-defined objectives that improve over time. Fine-tuning is one piece of that puzzle.
         More to come.</p>
-        <p><em>Follow along at <a href="https://github.com/llm-works"
-        target="_blank" rel="noopener noreferrer">github.com/llm-works</a></em></p>
+        <p><em>Follow along at <a href="https://github.com/llm-works">github.com/llm-works</a></em></p>
       </div>
     </div>
   </article>

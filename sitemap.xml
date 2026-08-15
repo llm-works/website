@@ -17,13 +17,18 @@
   </url>
   <url>
     <loc>https://www.llm-works.ai/blog/</loc>
-    <lastmod>2026-08-05</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.llm-works.ai/about/</loc>
     <lastmod>2026-06-14</lastmod>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://www.llm-works.ai/blog/agent-governance-landscape-aug-2026/</loc>
+    <lastmod>2026-08-15</lastmod>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://www.llm-works.ai/blog/introducing-xray/</loc>
