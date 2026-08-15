@@ -383,7 +383,7 @@ def build_post(src_dir: Path) -> dict | None:
     post_data = {
         "slug": slug,
         "title": frontmatter["title"],
-        "description": frontmatter.get("description", "").strip(),
+        "description": (frontmatter.get("description") or "").strip(),
         "date": date,
         "date_iso": date.strftime("%Y-%m-%d"),
         "date_display": date.strftime("%B %d, %Y"),

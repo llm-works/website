@@ -313,8 +313,18 @@
     return onResize;
   }
 
+  function withTimeout(promise, ms) {
+    return Promise.race([
+      promise,
+      new Promise(function (resolve) { setTimeout(function () { resolve(null); }, ms); })
+    ]);
+  }
+
   function hydrateNewsBanner() {
-    Promise.all([collectReleaseItem(), collectLedgerItems()]).then(function (results) {
+    Promise.all([
+      withTimeout(collectReleaseItem(), NEWS_FETCH_TIMEOUT_MS),
+      collectLedgerItems()
+    ]).then(function (results) {
       var items = [];
       if (results[0]) items.push(results[0]);
       results[1].forEach(function (i) { items.push(i); });
