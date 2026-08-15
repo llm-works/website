@@ -28,7 +28,7 @@
     gtag('js', new Date());
     gtag('config', 'G-PLTFCVZQ8R');
   </script>
-  <link rel="stylesheet" href="/styles.css?v=9975b47d">
+  <link rel="stylesheet" href="/styles.css?v=78c03599">
   <script src="/script.js?v=31e67f32"></script>
 </head>
 <body class="blog-post">
@@ -73,7 +73,7 @@
         releases or low-substance hype. We wanted a service that does the filtering for us: pull from
         everywhere, surface what actually matters, skip the noise.</p>
         <p>It's live at <a href="https://news.llm-works.ai">news.llm-works.ai</a>.</p>
-        <h2>What It Does</h2>
+        <h2 id="what-it-does">What It Does</h2>
         <p>The service runs a pipeline every hour:</p>
         <ol>
         <li><strong>Collect</strong> — pulls articles from 50+ RSS feeds and aggregators covering AI, programming,
@@ -85,26 +85,26 @@
         </ol>
         <p>Every item links back to its original source. Summaries are AI-generated, not pulled from the
         source.</p>
-        <h2>Personas</h2>
+        <h2 id="personas">Personas</h2>
         <p>Not everyone reads the news the same way. The service offers 10 personas — developer, founder,
         investor, researcher, executive, designer, marketer, student, journalist, lawyer — each filtering
         and ranking the same article pool differently based on what matters to that role.</p>
         <p>A developer's feed surfaces technical releases, benchmarks, and open-source launches. A founder's
         feed highlights market moves, competitive signals, and funding rounds. Same source pool, different
         signal — the articles that matter to you float to the top.</p>
-        <h2>Runs Local</h2>
+        <h2 id="runs-local">Runs Local</h2>
         <p>All AI tasks — summarization, rating, clustering, and digest generation — run on a local Qwen 2.5
         14B model. No article data is sent to third-party AI services.</p>
         <p>The pipeline processes 300-500 articles per day on a single GPU. Running local keeps costs fixed
         and latency predictable — no rate limits, no per-token billing, no third-party data sharing.</p>
-        <h2>Built on Our Stack</h2>
+        <h2 id="built-on-our-stack">Built on Our Stack</h2>
         <p>llm-news is built on our open-source stack:
         <a href="https://github.com/llm-works/llm-saia">llm-saia</a> for structured LLM operations (summarization, rating, and clustering all
         use <a href="/blog/saia-verbs-for-llm-agents/">typed verbs</a> with output guards),
         <a href="https://github.com/llm-works/llm-infer">llm-infer</a> for model-agnostic inference, and
         <a href="https://github.com/llm-works/appinfra">appinfra</a> for service lifecycle. The pipeline swaps between local and remote models
         without code changes.</p>
-        <h2>Try It</h2>
+        <h2 id="try-it">Try It</h2>
         <p>Pick a persona that matches how you consume news and browse today's digest at
         <a href="https://news.llm-works.ai">news.llm-works.ai</a>.</p>
         <p>Feedback welcome at <a href="https://x.com/serendip_ml" target="_blank" rel="noopener noreferrer">@serendip_ml</a>.</p>

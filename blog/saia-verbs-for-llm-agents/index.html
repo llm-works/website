@@ -28,7 +28,7 @@
     gtag('js', new Date());
     gtag('config', 'G-PLTFCVZQ8R');
   </script>
-  <link rel="stylesheet" href="/styles.css?v=9975b47d">
+  <link rel="stylesheet" href="/styles.css?v=78c03599">
   <script src="/script.js?v=31e67f32"></script>
 </head>
 <body class="blog-post">
@@ -72,7 +72,7 @@
         parsing,
         and reimplemented retry logic for every operation. There's a missing layer. Here's how current tools
         approach the problem, and what we're building instead.</p>
-        <h2>Current Approaches</h2>
+        <h2 id="current-approaches">Current Approaches</h2>
         <p><strong>Raw prompting.</strong> The simplest approach: concatenate strings, send to model, parse the response.
         LangChain, most tutorials, and most production agents work this way.</p>
         <pre><code class="language-python">prompt = f&quot;Given this code:\n{code}\n\nDoes it handle null safely? Answer yes or no.&quot;
@@ -137,7 +137,7 @@
         <p><strong>Gap</strong>: orchestrates <em>workflow</em>—which node runs next, when to checkpoint, how to fan out—but
         inside each node, the LLM call itself is still unstructured: no output validation, no retry on
         malformed responses, no typed results.</p>
-        <h2>A Different Layer</h2>
+        <h2 id="a-different-layer">A Different Layer</h2>
         <p>These approaches operate at different levels:</p>
         <ul>
         <li><strong>Tool calling / Instructor</strong>: <em>Syntax</em>—ensuring responses parse correctly</li>
@@ -164,7 +164,7 @@
         <code>classify</code>—are closer to structured output with better defaults. The vocabulary spans both: the
         value isn't that every verb is equally "semantic," but that the full set composes into reusable
         loops.</p>
-        <h2>Our Approach</h2>
+        <h2 id="our-approach">Our Approach</h2>
         <p>We defined a fixed vocabulary of verbs for LLM interactions. The idea draws from SCUMM (1987)—the
         adventure game engine that replaced free-form text parsers with a fixed verb vocabulary (<code>pick up</code>,
         <code>use</code>, <code>talk to</code>). A constrained verb set made tooling, testing, and composition tractable. The same
@@ -188,7 +188,7 @@
         <code>find</code>, <code>constrain</code>, <code>ground</code>, <code>instruct</code>—follow the same pattern: defined semantics, typed return,
         operation-specific prompt strategy and retry logic.
         The <a href="https://github.com/llm-works/llm-saia#readme">full reference</a> covers all 14.</p>
-        <h3>Why These Verbs</h3>
+        <h3 id="why-these-verbs">Why These Verbs</h3>
         <p>We started with ~20 verbs and cut them down. The test: if a verb can be expressed as another verb
         with a specific input, it's a variant, not a primitive.</p>
         <p>Concrete examples of what we cut:</p>
@@ -216,7 +216,7 @@
         <li><strong>Structured extraction</strong>: <code>extract</code> and <code>classify</code> handle pulling typed data from unstructured
           text—the most common operation in production agents.</li>
         </ul>
-        <h2>How This Relates to LangGraph</h2>
+        <h2 id="how-this-relates-to-langgraph">How This Relates to LangGraph</h2>
         <p>LangGraph and SAIA operate at different layers. LangGraph handles <em>workflow orchestration</em>—which
         node runs next, what state to pass, when to checkpoint. SAIA handles <em>what happens inside the
         node</em>—the actual LLM operation.</p>
@@ -237,7 +237,7 @@
         <p>For workflows needing LangGraph's orchestration—checkpointing, parallel branches,
         human-in-the-loop—they
         compose well. For simpler cases needing only semantic operations, SAIA works standalone.</p>
-        <h2>Obstacles</h2>
+        <h2 id="obstacles">Obstacles</h2>
         <p><strong>Backend differences.</strong> Anthropic and OpenAI have different APIs, different tool calling formats,
         different quirks. Local models via vLLM differ again.</p>
         <p>We pushed all provider-specific code into a thin adapter layer. The verb implementations don't know
@@ -267,7 +267,7 @@
         retry more often. We treat this as an acceptable trade-off—a retry that produces correct typed
         output
         is cheaper than debugging a silently wrong result downstream—but it's a real cost to account for.</p>
-        <h2>Current API</h2>
+        <h2 id="current-api">Current API</h2>
         <pre><code class="language-python">from llm_saia import SAIA
 
         saia = SAIA.builder().backend(your_backend).build()
@@ -288,7 +288,7 @@
         </code></pre>
         <p>Pure Python, zero framework dependencies, pluggable backends. Same verb calls work across Claude,
         GPT-4, and local models via vLLM.</p>
-        <h2>What's Next</h2>
+        <h2 id="whats-next">What's Next</h2>
         <p>Every verb call already captures inputs, outputs, latency, and token usage—structured operation
         traces, not chat transcripts. These traces create (verb, prompt, decision) tuples that map directly
         to training examples. We're using them to fine-tune verb-specific adapters: a model trained on
@@ -296,7 +296,7 @@
         counter-arguments. The first target is <code>verify</code>—it has the cleanest signal (boolean outcome +
         reason)
         and the highest call volume in our current agents. Early direction, not results yet.</p>
-        <h2>The Code</h2>
+        <h2 id="the-code">The Code</h2>
         <ul>
         <li>Repository: <a href="https://github.com/llm-works/llm-saia">github.com/llm-works/llm-saia</a></li>
         <li>Documentation: <a href="https://github.com/llm-works/llm-saia#readme">README</a></li>

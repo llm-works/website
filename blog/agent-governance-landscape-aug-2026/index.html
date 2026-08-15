@@ -28,7 +28,7 @@
     gtag('js', new Date());
     gtag('config', 'G-PLTFCVZQ8R');
   </script>
-  <link rel="stylesheet" href="/styles.css?v=9975b47d">
+  <link rel="stylesheet" href="/styles.css?v=78c03599">
   <script src="/script.js?v=31e67f32"></script>
 </head>
 <body class="blog-post">
@@ -69,7 +69,31 @@
       <div class="container">
         <p><em>A field guide to the vendors, standards, and failure modes that emerged in the twelve months
         after governance stopped being optional.</em></p>
-        <h2>Why now</h2>
+        <div class="toc">
+        <ul>
+        <li><a href="#why-now">Why now</a></li>
+        <li><a href="#the-six-categories">The six categories</a><ul>
+        <li><a href="#1-runtime-governance-and-policy-enforcement">1. Runtime governance and policy enforcement</a></li>
+        <li><a href="#2-observability-and-rogue-detection">2. Observability and rogue-detection</a></li>
+        <li><a href="#3-continuous-evaluation-and-regression-management">3. Continuous evaluation and regression management</a></li>
+        <li><a href="#4-verification-guardrails-and-constraint-frameworks">4. Verification, guardrails, and constraint frameworks</a></li>
+        <li><a href="#5-regulatory-and-compliance">5. Regulatory and compliance</a></li>
+        <li><a href="#6-emerging-failure-mode-taxonomy">6. Emerging failure-mode taxonomy</a></li>
+        </ul>
+        </li>
+        <li><a href="#what-the-map-still-misses">What the map still misses</a><ul>
+        <li><a href="#cross-jurisdictional-multi-agent-conflict">Cross-jurisdictional multi-agent conflict</a></li>
+        <li><a href="#bring-your-own-cloud-deployment-shape">Bring-your-own-cloud deployment shape</a></li>
+        <li><a href="#time-boundary-verification">Time-boundary verification</a></li>
+        </ul>
+        </li>
+        <li><a href="#the-pattern-underneath">The pattern underneath</a></li>
+        <li><a href="#what-to-watch-in-the-next-twelve-months">What to watch in the next twelve months</a></li>
+        <li><a href="#using-this-map">Using this map</a></li>
+        <li><a href="#references">References</a></li>
+        </ul>
+        </div>
+        <h2 id="why-now">Why now</h2>
         <p>Twelve months ago, "AI agent governance" was a workshop track and a few voluntary NIST drafts. Today
         it is the EU AI Act's Multi-Agent System provisions in force since August 2025 <a
         href="#ref-1">[1]</a>, an executive
@@ -88,11 +112,11 @@
         <p><em>Scope note: this map covers vendors, standards, and academic work with observable traction,
         adoption, or regulatory weight. Many additional projects and initiatives exist across each
         category. Naming every one would defeat the map's purpose.</em></p>
-        <h2>The six categories</h2>
+        <h2 id="the-six-categories">The six categories</h2>
         <p>The landscape organizes into six categories that increasingly overlap. A few standards (OWASP Top
         10 for Agentic Applications <a href="#ref-3">[3]</a>, OpenTelemetry <a href="#ref-12">[12]</a>,
         OAuth 2.1 <a href="#ref-9">[9]</a>) show up as the connective tissue across all six.</p>
-        <h3>1. Runtime governance and policy enforcement</h3>
+        <h3 id="1-runtime-governance-and-policy-enforcement">1. Runtime governance and policy enforcement</h3>
         <p>Runtime governance covers which principals may take which actions, and how those decisions are
         enforced at the moment an agent invokes a tool. The market splits into vendors purpose-built for
         agents and existing authorization systems that have added agent primitives.</p>
@@ -123,7 +147,7 @@
         Authorization Server Metadata Discovery, Dynamic Client Registration), AuthZEN <a
         href="#ref-10">[10]</a> as the interop protocol, and OPA <a href="#ref-11">[11]</a> as the
         policy-as-code language.</p>
-        <h3>2. Observability and rogue-detection</h3>
+        <h3 id="2-observability-and-rogue-detection">2. Observability and rogue-detection</h3>
         <p>Observability covers reconstructing what an agent actually did and detecting behavior that deviates
         from expectations. The category splits between mature developer-tracing platforms that added agent
         features and newer platforms built specifically around agent-behavior monitoring.</p>
@@ -149,7 +173,7 @@
         <p>The historical split between tracing tools and post-hoc evaluation frameworks is closing. Traces are
         becoming the data-ingestion foundation for continuous evaluation, and passive post-hoc evaluation is
         giving way to real-time stream monitoring plus shift-left pre-deployment scanning.</p>
-        <h3>3. Continuous evaluation and regression management</h3>
+        <h3 id="3-continuous-evaluation-and-regression-management">3. Continuous evaluation and regression management</h3>
         <p>Between observability (which captures what happened) and verification (which enforces what may
         happen), a distinct category solidified over the last twelve months. Its job is turning a production
         failure into a persistent test case, so the same regression cannot ship again. Neither of its
@@ -244,7 +268,7 @@
         inline verification (which enforces at generation and execution time). Refined prompts, updated
         evaluation criteria, and calibrated judges from this layer feed back into runtime guardrails,
         closing the loop that neither observability nor verification could close by itself.</p>
-        <h3>4. Verification, guardrails, and constraint frameworks</h3>
+        <h3 id="4-verification-guardrails-and-constraint-frameworks">4. Verification, guardrails, and constraint frameworks</h3>
         <p>Verification covers keeping the LLM's output inside the constraints set by the calling system. Four
         operational layers have separated out. Most vendors span two or three.</p>
         <p><strong>Pre-LLM filter.</strong> Screens prompts before the model sees them.</p>
@@ -282,7 +306,7 @@
         (Outlines, Guidance,
         Instructor, OpenAI Structured Outputs) has become the emerging standard for making LLM output
         shape-conformant at the moment of generation rather than filtering it afterward.</p>
-        <h3>5. Regulatory and compliance</h3>
+        <h3 id="5-regulatory-and-compliance">5. Regulatory and compliance</h3>
         <p>The last twelve months moved this category from voluntary frameworks to binding law. The EU AI
         Act's Multi-Agent System provisions in August 2025 were the pivot; the US caught up three months
         later with EO 14363; and the most recent shift is toward advisory pressure via congressional
@@ -342,7 +366,7 @@
         <li><strong>Loss of control</strong> (EU AI Act). Systemic-risk category that triggers technical deployment obligations.</li>
         <li><strong>Herding risk</strong> (House Democrats to SEC). Multiple independent AI trading agents executing correlated trades that destabilize public markets.</li>
         </ul>
-        <h3>6. Emerging failure-mode taxonomy</h3>
+        <h3 id="6-emerging-failure-mode-taxonomy">6. Emerging failure-mode taxonomy</h3>
         <p>This category is the field's evolving vocabulary for agent failure modes. Academic literature and
         industry security frameworks are still catching up to each other on the naming.</p>
         <p><strong>Industry standard (OWASP Top 10 for Agentic Applications 2026) <a href="#ref-3">[3]</a>:</strong></p>
@@ -415,22 +439,22 @@
         <li><strong>Confused Deputy</strong> (Hardy 1988). The classical authorization flaw where a privileged agent is manipulated by a less-privileged entity. Cloud Security Alliance and HashiCorp have both raised the pattern in agent contexts, and their guidance converges on the point that LLM system prompts are ineffective as security boundaries.</li>
         <li><strong>Subject Binding</strong>. The security check that confirms an agent presenting an assertion actually controls the credential subject identity. Now formalized in emerging agentic-trust standards including the IETF draft <code>draft-kroehl-agentic-trust-aae-00</code> and the SINT Protocol (Ed25519 capability tokens with delegation depth limits up to 3 hops) <a href="#ref-14">[14]</a>.</li>
         </ul>
-        <h2>What the map still misses</h2>
+        <h2 id="what-the-map-still-misses">What the map still misses</h2>
         <p>Three areas the map above does not yet cover.</p>
-        <h3>Cross-jurisdictional multi-agent conflict</h3>
+        <h3 id="cross-jurisdictional-multi-agent-conflict">Cross-jurisdictional multi-agent conflict</h3>
         <p>When one agent operates under EU AI Act obligations and interacts with another agent operating under
         a US regulatory regime, whose rules resolve the conflict. Singapore's IMDA Model AI Governance
         Framework for Agentic AI (updated May 20, 2026) is the only regulatory document I have seen that
         even treats multi-agent systems as a distinct risk category <a href="#ref-8">[8]</a>. The
         unresolved question is who bears liability while the standards are still absent.</p>
-        <h3>Bring-your-own-cloud deployment shape</h3>
+        <h3 id="bring-your-own-cloud-deployment-shape">Bring-your-own-cloud deployment shape</h3>
         <p>FedRAMP and similar compliance regimes are typically solved by self-hosting. Most teams do not want
         the operational overhead of self-hosting a modern data plane. Bring-your-own-cloud
         (BYOC), where the vendor deploys their control plane into the customer's chosen cloud account and
         region, has become the standard middle ground. Nango and Braintrust support this pattern today.
         Expect more of the observability and verification tier to add BYOC in the next twelve months as
         regulated buyers filter on it.</p>
-        <h3>Time-boundary verification</h3>
+        <h3 id="time-boundary-verification">Time-boundary verification</h3>
         <p>Verification is not one thing. It happens at three distinct times:</p>
         <ul>
         <li><strong>Admission</strong>. What code, configuration, and dependencies may be enabled in this agent build. Insygna's pre-deployment scan lives here.</li>
@@ -441,7 +465,7 @@
         vulnerability scanner does not amount to runtime containment, and runtime policy does not prove that
         the installed tool was trustworthy. Rollback tooling for agent aftermath is where the map remains
         mostly empty.</p>
-        <h2>The pattern underneath</h2>
+        <h2 id="the-pattern-underneath">The pattern underneath</h2>
         <p>Reading the whole map, one design principle recurs. The category-standard primitives that have
         emerged in the last twelve months share the same idea: <strong>do not trust the LLM's own account of
         anything that downstream logic will act on.</strong></p>
@@ -468,7 +492,7 @@
         each, the guarantee lives outside the LLM by construction. Guardrails that use a secondary LLM to
         judge a primary LLM's output apply the principle recursively rather than escaping it, and inherit
         the same judge-drift problem the continuous-evaluation layer exists to manage.</p>
-        <h2>What to watch in the next twelve months</h2>
+        <h2 id="what-to-watch-in-the-next-twelve-months">What to watch in the next twelve months</h2>
         <p>Six developments worth tracking over the next twelve months. Two will move the market more than the
         others: the first agent-specific enforcement action (#1 below), which sets legal precedent, and
         rollback tooling for agent aftermath (#3), the largest empty segment on the map.</p>
@@ -492,14 +516,14 @@
         <p><strong>OWASP ASI11 and beyond.</strong> The academic failure modes not yet in the industry taxonomy will start appearing there. Fail-plausible and trajectory-level hallucination are the leading candidates.</p>
         </li>
         </ol>
-        <h2>Using this map</h2>
+        <h2 id="using-this-map">Using this map</h2>
         <p>For teams evaluating components against this map, four boundaries are operative: identity (who the
         agent is), policy (what it may do), observability (what actually happens when it runs), and
         verification (what it is prevented from doing at generation and execution time). Everything above
         fits into one of those four. Ask vendors that claim to cover more than one to name which boundary
         they own for each claim.</p>
-        <h2>References</h2>
-        <h3>Regulatory and compliance</h3>
+        <h2 id="references">References</h2>
+        <h3 class="no_toc">Regulatory and compliance</h3>
         <p><a id="ref-1"></a>[1] European Commission. <em>EU AI Act: Regulatory Framework for AI</em>. Multi-Agent System provisions in force August 2025. <a href="https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai" target="_blank" rel="noopener noreferrer">https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai</a></p>
         <p><a id="ref-2"></a>[2] The White House. <em>Executive Order 14363: Launching the Genesis Mission</em>. November 24, 2025. <a href="https://www.whitehouse.gov/presidential-actions/2025/11/launching-the-genesis-mission/" target="_blank" rel="noopener noreferrer">https://www.whitehouse.gov/presidential-actions/2025/11/launching-the-genesis-mission/</a></p>
         <p><a id="ref-3"></a>[3] OWASP GenAI Security Project. <em>OWASP Top 10 for Agentic Applications 2026</em>. Published December 9, 2025. <a href="https://genai.owasp.org/llm-top-10-for-agentic-ai/" target="_blank" rel="noopener noreferrer">https://genai.owasp.org/llm-top-10-for-agentic-ai/</a></p>
@@ -511,14 +535,14 @@
         <p><a id="ref-7"></a>[7] Rep. Greg Casar and Rep. Doris Matsui. Letters to Anthropic and OpenAI CEOs on
         rogue-agent behavior. August 10, 2026.</p>
         <p><a id="ref-8"></a>[8] Infocomm Media Development Authority (IMDA), Singapore. <em>Model AI Governance Framework for Agentic AI</em>. Updated May 20, 2026. <a href="https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/press-releases/2026/new-model-ai-governance-framework-for-agentic-ai" target="_blank" rel="noopener noreferrer">https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/press-releases/2026/new-model-ai-governance-framework-for-agentic-ai</a></p>
-        <h3>Standards and protocols</h3>
+        <h3 class="no_toc">Standards and protocols</h3>
         <p><a id="ref-9"></a>[9] IETF. <em>OAuth 2.1 Authorization Framework</em> (with PKCE, Authorization Server Metadata Discovery, Dynamic Client Registration). <a href="https://oauth.net/2.1/" target="_blank" rel="noopener noreferrer">https://oauth.net/2.1/</a></p>
         <p><a id="ref-10"></a>[10] OpenID Foundation. <em>AuthZEN: Authorization interop protocol</em>. <a href="https://openid.net/wg/authzen/" target="_blank" rel="noopener noreferrer">https://openid.net/wg/authzen/</a></p>
         <p><a id="ref-11"></a>[11] Cloud Native Computing Foundation. <em>Open Policy Agent (OPA)</em>. <a href="https://www.openpolicyagent.org/" target="_blank" rel="noopener noreferrer">https://www.openpolicyagent.org/</a></p>
         <p><a id="ref-12"></a>[12] Cloud Native Computing Foundation. <em>OpenTelemetry</em>. <a href="https://opentelemetry.io/" target="_blank" rel="noopener noreferrer">https://opentelemetry.io/</a></p>
         <p><a id="ref-13"></a>[13] Anthropic. <em>Model Context Protocol (MCP) specification</em>. <a href="https://modelcontextprotocol.io/" target="_blank" rel="noopener noreferrer">https://modelcontextprotocol.io/</a></p>
         <p><a id="ref-14"></a>[14] IETF. <em>draft-kroehl-agentic-trust-aae-00: Agentic Trust Assertion and Evaluation (SINT Protocol)</em>. <a href="https://datatracker.ietf.org/doc/draft-kroehl-agentic-trust-aae/" target="_blank" rel="noopener noreferrer">https://datatracker.ietf.org/doc/draft-kroehl-agentic-trust-aae/</a></p>
-        <h3>Runtime governance vendors</h3>
+        <h3 class="no_toc">Runtime governance vendors</h3>
         <p><a id="ref-15"></a>[15] Auth0. <em>Auth0 for AI Agents</em>. <a href="https://auth0.com/ai/agents" target="_blank" rel="noopener noreferrer">https://auth0.com/ai/agents</a></p>
         <p><a id="ref-16"></a>[16] EnforceAuth. <em>AI Security Fabric</em>. <a href="https://enforceauth.com/" target="_blank" rel="noopener noreferrer">https://enforceauth.com/</a></p>
         <p><a id="ref-17"></a>[17] WorkOS. <em>WorkOS FGA</em>. <a href="https://workos.com/fga" target="_blank" rel="noopener noreferrer">https://workos.com/fga</a></p>
@@ -528,7 +552,7 @@
         <p><a id="ref-21"></a>[21] OpenFGA (CNCF). <a href="https://openfga.dev/" target="_blank" rel="noopener noreferrer">https://openfga.dev/</a></p>
         <p><a id="ref-22"></a>[22] Nango. <a href="https://www.nango.dev/" target="_blank" rel="noopener noreferrer">https://www.nango.dev/</a></p>
         <p><a id="ref-23"></a>[23] Cloudflare. <em>WriteGuard (private beta)</em>. <a href="https://blog.cloudflare.com/mcp-portal-writeguard-private-beta" target="_blank" rel="noopener noreferrer">https://blog.cloudflare.com/mcp-portal-writeguard-private-beta</a></p>
-        <h3>Observability vendors</h3>
+        <h3 class="no_toc">Observability vendors</h3>
         <p><a id="ref-24"></a>[24] LangChain. <em>LangSmith</em>. <a href="https://www.langchain.com/langsmith" target="_blank" rel="noopener noreferrer">https://www.langchain.com/langsmith</a></p>
         <p><a id="ref-25"></a>[25] Langfuse. <a href="https://langfuse.com/" target="_blank" rel="noopener noreferrer">https://langfuse.com/</a></p>
         <p><a id="ref-26"></a>[26] Arize AI. <em>Phoenix</em>. <a href="https://phoenix.arize.com/" target="_blank" rel="noopener noreferrer">https://phoenix.arize.com/</a></p>
@@ -537,12 +561,12 @@
         <p><a id="ref-29"></a>[29] AgentOps. <a href="https://www.agentops.ai/" target="_blank" rel="noopener noreferrer">https://www.agentops.ai/</a></p>
         <p><a id="ref-30"></a>[30] Tessary. <a href="https://tessary.ai/" target="_blank" rel="noopener noreferrer">https://tessary.ai/</a></p>
         <p><a id="ref-31"></a>[31] Insygna. <a href="https://insygna.ai/" target="_blank" rel="noopener noreferrer">https://insygna.ai/</a></p>
-        <h3>Continuous-evaluation vendors</h3>
+        <h3 class="no_toc">Continuous-evaluation vendors</h3>
         <p><a id="ref-32"></a>[32] Splunk. <em>Agent Observability</em> (formerly Galileo, rebranded August 7, 2026). <a href="https://agent-observability-docs.splunk.com/" target="_blank" rel="noopener noreferrer">https://agent-observability-docs.splunk.com/</a></p>
         <p><a id="ref-33"></a>[33] Future AGI. <a href="https://futureagi.com/" target="_blank" rel="noopener noreferrer">https://futureagi.com/</a></p>
         <p><a id="ref-34"></a>[34] Maxim. <a href="https://www.getmaxim.ai/" target="_blank" rel="noopener noreferrer">https://www.getmaxim.ai/</a></p>
         <p><a id="ref-35"></a>[35] Comet. <em>Opik</em>. <a href="https://www.comet.com/site/products/opik/" target="_blank" rel="noopener noreferrer">https://www.comet.com/site/products/opik/</a></p>
-        <h3>Verification vendors</h3>
+        <h3 class="no_toc">Verification vendors</h3>
         <p><a id="ref-36"></a>[36] NVIDIA. <em>NeMo Guardrails</em>. <a href="https://github.com/NVIDIA/NeMo-Guardrails" target="_blank" rel="noopener noreferrer">https://github.com/NVIDIA/NeMo-Guardrails</a></p>
         <p><a id="ref-37"></a>[37] Protect AI (Palo Alto Networks). <em>Rebuff</em>. <a href="https://github.com/protectai/rebuff" target="_blank" rel="noopener noreferrer">https://github.com/protectai/rebuff</a></p>
         <p><a id="ref-38"></a>[38] Lakera. <em>Lakera Guard</em>. <a href="https://www.lakera.ai/" target="_blank" rel="noopener noreferrer">https://www.lakera.ai/</a></p>
@@ -555,13 +579,13 @@
         <p><a id="ref-45"></a>[45] OpenAI. <em>Structured Outputs</em>. <a href="https://platform.openai.com/docs/guides/structured-outputs" target="_blank" rel="noopener noreferrer">https://platform.openai.com/docs/guides/structured-outputs</a></p>
         <p><a id="ref-46"></a>[46] DSPy. <em>DSPy Assertions</em>. <a href="https://dspy.ai/learn/programming/7-assertions" target="_blank" rel="noopener noreferrer">https://dspy.ai/learn/programming/7-assertions</a></p>
         <p><a id="ref-47"></a>[47] Docker. <em>Docker Sandboxes (<code>sbx</code> CLI)</em>. <a href="https://docs.docker.com/ai/sandboxes/" target="_blank" rel="noopener noreferrer">https://docs.docker.com/ai/sandboxes/</a></p>
-        <h3>Academic papers (failure-mode taxonomy)</h3>
+        <h3 class="no_toc">Academic papers (failure-mode taxonomy)</h3>
         <p><a id="ref-48"></a>[48] Wu et al. <em>When Errors Become Narratives: A Longitudinal Taxonomy of Silent Failures in a Production LLM Agent Runtime</em> ("Fail Plausible"). arXiv 2606.14589. <a href="https://arxiv.org/abs/2606.14589" target="_blank" rel="noopener noreferrer">https://arxiv.org/abs/2606.14589</a></p>
         <p><a id="ref-49"></a>[49] Trajel framework, AssetOpsBench. <em>Beyond Final Answers: Auditing Trajectory-Level Hallucinations in Multi-Agent Industrial Workflows</em>. arXiv 2605.24219. <a href="https://arxiv.org/abs/2605.24219" target="_blank" rel="noopener noreferrer">https://arxiv.org/abs/2605.24219</a></p>
         <p><a id="ref-50"></a>[50] Babu &amp; Indukuri. <em>Entity Binding Failures in Tool-Augmented Agents</em>. arXiv 2606.30531. <a href="https://arxiv.org/abs/2606.30531" target="_blank" rel="noopener noreferrer">https://arxiv.org/abs/2606.30531</a></p>
         <p><a id="ref-51"></a>[51] Babu &amp; Indukuri. <em>Binding Drift in Multi-Step Tool-Augmented Agents</em>. arXiv 2607.18316. <a href="https://arxiv.org/abs/2607.18316" target="_blank" rel="noopener noreferrer">https://arxiv.org/abs/2607.18316</a></p>
         <p><a id="ref-52"></a>[52] <em>Commitment Drift in Long-Horizon Agents</em>. arXiv 2608.04066. <a href="https://arxiv.org/abs/2608.04066" target="_blank" rel="noopener noreferrer">https://arxiv.org/abs/2608.04066</a></p>
-        <h3>Articles cited for mechanism details</h3>
+        <h3 class="no_toc">Articles cited for mechanism details</h3>
         <p><a id="ref-53"></a>[53] Braintrust. <em>Continuous Evaluation for AI Agents: Trace Classifications</em>. June 9, 2026. <a href="https://www.braintrust.dev/articles/continuous-evaluation-ai-agents-trace-classifications-2026" target="_blank" rel="noopener noreferrer">https://www.braintrust.dev/articles/continuous-evaluation-ai-agents-trace-classifications-2026</a></p>
         <p><a id="ref-54"></a>[54] Future AGI. <em>Best LLM Judge Models 2026</em>. <a href="https://futureagi.com/blog/best-llm-judge-models-2026" target="_blank" rel="noopener noreferrer">https://futureagi.com/blog/best-llm-judge-models-2026</a></p>
         <p><a id="ref-55"></a>[55] Splunk (Galileo). <em>Release Notes: Rebrand to Splunk Agent Observability</em>. August 7, 2026. <a href="https://docs.galileo.ai/release-notes" target="_blank" rel="noopener noreferrer">https://docs.galileo.ai/release-notes</a></p>
