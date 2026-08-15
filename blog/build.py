@@ -2,6 +2,7 @@
 """Build blog posts from markdown sources to HTML."""
 
 import hashlib
+import os
 import re
 import shutil
 from datetime import datetime, timezone
@@ -23,7 +24,7 @@ SCRIPT_JS = SITE_ROOT / "script.js"
 # invalidates the upstream CDN cache instead of waiting out its 4h TTL.
 HASHED_ASSETS = {"/styles.css": STYLES_CSS, "/script.js": SCRIPT_JS}
 _asset_pattern = "|".join(re.escape(url) for url in HASHED_ASSETS)
-_ASSET_REF_RE = re.compile(rf"({_asset_pattern})(\?v=[^\"'\s]*)?")
+_ASSET_REF_RE = re.compile(rf'(?<![\\w./-])({_asset_pattern})(\\?v=[^\\"\'\\s#>)]*)?(?=[\\"\'\\s#>)])')
 
 POST_TEMPLATE = """\
 <!DOCTYPE html>
@@ -502,15 +503,18 @@ def stamp_assets() -> None:
         return f"{m.group(1)}?v={hashes[m.group(1)]}"
 
     stamped = 0
-    for html_path in SITE_ROOT.rglob("*.html"):
-        # Skip anything under a hidden dir (.git, .github, ...) or vendored deps.
-        if any(part.startswith(".") or part == "node_modules" for part in html_path.relative_to(SITE_ROOT).parts):
-            continue
-        original = html_path.read_text(encoding="utf-8")
-        updated = _ASSET_REF_RE.sub(repl, original)
-        if updated != original:
-            html_path.write_text(updated, encoding="utf-8")
-            stamped += 1
+    for dirpath, dirnames, filenames in os.walk(SITE_ROOT):
+        # Prune hidden dirs and vendored deps before descent.
+        dirnames[:] = [d for d in dirnames if not d.startswith(".") and d != "node_modules"]
+        for fname in filenames:
+            if not fname.endswith(".html"):
+                continue
+            html_path = Path(dirpath) / fname
+            original = html_path.read_text(encoding="utf-8")
+            updated = _ASSET_REF_RE.sub(repl, original)
+            if updated != original:
+                html_path.write_text(updated, encoding="utf-8")
+                stamped += 1
     print(f"  Stamped assets in {stamped} HTML file(s) "
           f"(css={hashes['/styles.css']}, js={hashes['/script.js']})")
 
