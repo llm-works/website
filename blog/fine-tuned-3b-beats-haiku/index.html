@@ -28,7 +28,7 @@
     gtag('js', new Date());
     gtag('config', 'G-PLTFCVZQ8R');
   </script>
-  <link rel="stylesheet" href="/styles.css?v=9975b47d">
+  <link rel="stylesheet" href="/styles.css?v=78c03599">
   <script src="/script.js?v=31e67f32"></script>
 </head>
 <body class="blog-post">
@@ -88,7 +88,7 @@
         <p>The fine-tuned 3B model produces an average quality of 2.70 stars, which is already slightly better
         than Haiku at 2.62 stars. The 7B and 14B models clearly pull ahead, reaching 2.84 and 3.07
         respectively.</p>
-        <h2>Experiment</h2>
+        <h2 id="experiment">Experiment</h2>
         <p>We fine-tuned Qwen 2.5 models across seven sizes using SFT and DPO, then compared their output
         quality against Claude Haiku. We chose joke generation because it's a constrained creative task
         where quality is subjective but measurable—easy to generate bad jokes, hard to generate good ones.
@@ -106,7 +106,7 @@
         <p><strong>DPO training.</strong> 300 preference pairs from the SFT model's output, ranked by the same grading
         prompt. DPO learns from the model's own mistakes—comparing its better outputs against its worse
         ones.</p>
-        <h2>Results</h2>
+        <h2 id="results">Results</h2>
         <table>
         <thead>
         <tr>
@@ -249,7 +249,7 @@
         </tr>
         </tbody>
         </table>
-        <h2>Key Findings</h2>
+        <h2 id="key-findings">Key Findings</h2>
         <p><strong>3B is the crossover point.</strong> Fine-tuned 3B (2.70) beats Haiku (2.62). Below 3B, even full
         fine-tuning can't close the gap.</p>
         <p><strong>Sweet spot is 14B.</strong> It beats Haiku by 17%, while 32B shows no improvement—likely underfitting
@@ -258,7 +258,7 @@
         +3-10% on top.</p>
         <p><strong>Fine-tuned small beats base large.</strong> 3B+DPO (2.70) beats 72B base (2.21) by 22%. A 24x smaller
         model wins when trained for the task.</p>
-        <h2>Discussion</h2>
+        <h2 id="discussion">Discussion</h2>
         <p>Joke telling is well suited for evaluating fine-tuned small models: simple and isolated—no tools,
         no multi-step reasoning, no external dependencies—yet non-trivial, requiring creativity and taste.</p>
         <p>Using Haiku as both trainer and judge might seem circular, but it actually puts Haiku at an

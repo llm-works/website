@@ -12,8 +12,10 @@ from urllib.parse import urlparse
 
 import markdown
 import yaml
+from markdown.extensions.attr_list import AttrListExtension
 from markdown.extensions.tables import TableExtension
 from markdown.extensions.fenced_code import FencedCodeExtension
+from markdown.extensions.toc import TocExtension, TocTreeprocessor
 
 ROOT = Path(__file__).parent
 SITE_ROOT = ROOT.parent
@@ -330,11 +332,36 @@ def normalize_link_targets(html: str) -> str:
     return HTTP_LINK_RE.sub(repl, html)
 
 
+_HEADER_TAGS = frozenset({"h1", "h2", "h3", "h4", "h5", "h6"})
+
+
+class _NoTocAwareTreeprocessor(TocTreeprocessor):
+    """TOC processor that skips headings tagged {: .no_toc }."""
+
+    def run(self, doc):
+        muted = []
+        for el in doc.iter():
+            if el.tag in _HEADER_TAGS and "no_toc" in el.get("class", "").split():
+                muted.append((el, el.tag))
+                el.tag = "p"
+        try:
+            super().run(doc)
+        finally:
+            for el, tag in muted:
+                el.tag = tag
+
+
+class _NoTocAwareExtension(TocExtension):
+    TreeProcessorClass = _NoTocAwareTreeprocessor
+
+
 def render_markdown(md_content: str) -> str:
     """Convert markdown to HTML."""
     md = markdown.Markdown(extensions=[
         TableExtension(),
         FencedCodeExtension(),
+        AttrListExtension(),
+        _NoTocAwareExtension(toc_depth="2-3", permalink=False, marker="[TOC]"),
     ])
     return normalize_link_targets(md.convert(md_content))
 

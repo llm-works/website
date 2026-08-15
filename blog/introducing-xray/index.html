@@ -28,7 +28,7 @@
     gtag('js', new Date());
     gtag('config', 'G-PLTFCVZQ8R');
   </script>
-  <link rel="stylesheet" href="/styles.css?v=9975b47d">
+  <link rel="stylesheet" href="/styles.css?v=78c03599">
   <script src="/script.js?v=31e67f32"></script>
 </head>
 <body class="blog-post">
@@ -74,14 +74,14 @@
         confident, where it's guessing, or where sources disagree.</p>
         <p>xray builds that structure as it researches, and the report is derived from it. It's live at
         <a href="https://xray.llm-works.ai">xray.llm-works.ai</a>.</p>
-        <h2>What It Does</h2>
+        <h2 id="what-it-does">What It Does</h2>
         <p>As xray researches a question, it builds a knowledge graph out of what it reads. Companies,
         people, products, events and metrics become typed nodes. Relationships between them (such as
         competitor, acquired-by, correlated-with) become typed edges. Claims are anchored to the sources
         that support them and, where relevant, to sources that contradict them.</p>
         <p>The report at the end is derived from that graph rather than summarized from raw text. The graph
         itself is browsable in the UI, so you can pull apart any claim and see what it's built from.</p>
-        <h2>Structured Extraction</h2>
+        <h2 id="structured-extraction">Structured Extraction</h2>
         <p>xray works from a fixed ontology of entity and relationship types. The extractor knows what a
         "competitor" edge means, what an "acquired" event looks like, what a "revenue-metric" node
         contains. Extraction is constrained rather than free-form paraphrase.</p>
@@ -89,7 +89,7 @@
         It flags claims not backed by extracted evidence, sources that disagree, and metrics that lack a
         source. A separate self-grading pass then scores the report against the same evidence
         structure before it's handed over.</p>
-        <h2>Built on Our Stack</h2>
+        <h2 id="built-on-our-stack">Built on Our Stack</h2>
         <p>xray runs end-to-end on our open-source stack:
         <a href="https://github.com/llm-works/llm-infer">llm-infer</a>
         for model-agnostic inference,
@@ -97,7 +97,7 @@
         for the typed verbs the KG extractor and self-check are built from, and
         <a href="https://github.com/llm-works/appinfra">appinfra</a>
         for service lifecycle.</p>
-        <h2>Try It</h2>
+        <h2 id="try-it">Try It</h2>
         <p>Sign in at
         <a href="https://xray.llm-works.ai">xray.llm-works.ai</a>.
         Free credits are available on sign-up. Credit packs are available for heavier use.</p>

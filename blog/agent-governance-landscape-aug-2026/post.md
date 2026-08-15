@@ -19,6 +19,8 @@ excerpt: >
 *A field guide to the vendors, standards, and failure modes that emerged in the twelve months
 after governance stopped being optional.*
 
+[TOC]
+
 ## Why now
 
 Twelve months ago, "AI agent governance" was a workshop track and a few voluntary NIST drafts. Today
@@ -380,7 +382,7 @@ they own for each claim.
 
 ## References
 
-### Regulatory and compliance
+### Regulatory and compliance {: .no_toc }
 
 <a id="ref-1"></a>[1] European Commission. *EU AI Act: Regulatory Framework for AI*. Multi-Agent System provisions in force August 2025. <https://digital-strategy.ec.europa.eu/en/policies/regulatory-framework-ai>
 
@@ -401,7 +403,7 @@ rogue-agent behavior. August 10, 2026.
 
 <a id="ref-8"></a>[8] Infocomm Media Development Authority (IMDA), Singapore. *Model AI Governance Framework for Agentic AI*. Updated May 20, 2026. <https://www.imda.gov.sg/resources/press-releases-factsheets-and-speeches/press-releases/2026/new-model-ai-governance-framework-for-agentic-ai>
 
-### Standards and protocols
+### Standards and protocols {: .no_toc }
 
 <a id="ref-9"></a>[9] IETF. *OAuth 2.1 Authorization Framework* (with PKCE, Authorization Server Metadata Discovery, Dynamic Client Registration). <https://oauth.net/2.1/>
 
@@ -415,7 +417,7 @@ rogue-agent behavior. August 10, 2026.
 
 <a id="ref-14"></a>[14] IETF. *draft-kroehl-agentic-trust-aae-00: Agentic Trust Assertion and Evaluation (SINT Protocol)*. <https://datatracker.ietf.org/doc/draft-kroehl-agentic-trust-aae/>
 
-### Runtime governance vendors
+### Runtime governance vendors {: .no_toc }
 
 <a id="ref-15"></a>[15] Auth0. *Auth0 for AI Agents*. <https://auth0.com/ai/agents>
 
@@ -435,7 +437,7 @@ rogue-agent behavior. August 10, 2026.
 
 <a id="ref-23"></a>[23] Cloudflare. *WriteGuard (private beta)*. <https://blog.cloudflare.com/mcp-portal-writeguard-private-beta>
 
-### Observability vendors
+### Observability vendors {: .no_toc }
 
 <a id="ref-24"></a>[24] LangChain. *LangSmith*. <https://www.langchain.com/langsmith>
 
@@ -453,7 +455,7 @@ rogue-agent behavior. August 10, 2026.
 
 <a id="ref-31"></a>[31] Insygna. <https://insygna.ai/>
 
-### Continuous-evaluation vendors
+### Continuous-evaluation vendors {: .no_toc }
 
 <a id="ref-32"></a>[32] Splunk. *Agent Observability* (formerly Galileo, rebranded August 7, 2026). <https://agent-observability-docs.splunk.com/>
 
@@ -463,7 +465,7 @@ rogue-agent behavior. August 10, 2026.
 
 <a id="ref-35"></a>[35] Comet. *Opik*. <https://www.comet.com/site/products/opik/>
 
-### Verification vendors
+### Verification vendors {: .no_toc }
 
 <a id="ref-36"></a>[36] NVIDIA. *NeMo Guardrails*. <https://github.com/NVIDIA/NeMo-Guardrails>
 
@@ -489,7 +491,7 @@ rogue-agent behavior. August 10, 2026.
 
 <a id="ref-47"></a>[47] Docker. *Docker Sandboxes (`sbx` CLI)*. <https://docs.docker.com/ai/sandboxes/>
 
-### Academic papers (failure-mode taxonomy)
+### Academic papers (failure-mode taxonomy) {: .no_toc }
 
 <a id="ref-48"></a>[48] Wu et al. *When Errors Become Narratives: A Longitudinal Taxonomy of Silent Failures in a Production LLM Agent Runtime* ("Fail Plausible"). arXiv 2606.14589. <https://arxiv.org/abs/2606.14589>
 
@@ -501,7 +503,7 @@ rogue-agent behavior. August 10, 2026.
 
 <a id="ref-52"></a>[52] *Commitment Drift in Long-Horizon Agents*. arXiv 2608.04066. <https://arxiv.org/abs/2608.04066>
 
-### Articles cited for mechanism details
+### Articles cited for mechanism details {: .no_toc }
 
 <a id="ref-53"></a>[53] Braintrust. *Continuous Evaluation for AI Agents: Trace Classifications*. June 9, 2026. <https://www.braintrust.dev/articles/continuous-evaluation-ai-agents-trace-classifications-2026>
 
