@@ -51,6 +51,7 @@
   var PACKAGES = ['appinfra', 'llm-saia', 'llm-infer', 'llm-kelt', 'llm-gent'];
   var PYPI_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
   var NEW_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
+  var NEWS_FETCH_TIMEOUT_MS = 2000;
   var CACHE_PREFIX = 'llmw:pkg:v2:';
   var DISMISS_KEY = 'llmw:banner-dismissed';
 
@@ -209,7 +210,7 @@
 
   function collectLedgerItems() {
     var timeout = new Promise(function (resolve) {
-      setTimeout(function () { resolve(null); }, 2000);
+      setTimeout(function () { resolve(null); }, NEWS_FETCH_TIMEOUT_MS);
     });
     var fetchP = fetch('/news.json')
       .then(function (r) { return r.ok ? r.json() : null; })
@@ -272,47 +273,66 @@
     return null;
   }
 
+  function buildBannerElement(items) {
+    var banner = document.createElement('div');
+    banner.className = 'release-banner';
+    banner.setAttribute('role', 'status');
+    items.forEach(function (item, idx) {
+      if (idx > 0) {
+        var sep = document.createElement('span');
+        sep.className = 'release-banner-sep';
+        sep.textContent = '|';
+        banner.appendChild(sep);
+      }
+      var row = document.createElement('span');
+      row.className = 'release-banner-item';
+      item.render(row);
+      banner.appendChild(row);
+    });
+    var btn = document.createElement('button');
+    btn.className = 'release-banner-dismiss';
+    btn.setAttribute('aria-label', 'Dismiss');
+    btn.textContent = '×';
+    banner.appendChild(btn);
+    return banner;
+  }
+
+  function attachLayoutHandler(banner) {
+    var nav = document.querySelector('nav');
+    var syncTop = function () {
+      if (nav) banner.style.top = (nav.offsetHeight - 1) + 'px';
+    };
+    var updateLayout = function () {
+      banner.classList.remove('stacked');
+      if (banner.scrollWidth > banner.clientWidth + 1) banner.classList.add('stacked');
+    };
+    var onResize = function () { syncTop(); updateLayout(); };
+    syncTop();
+    requestAnimationFrame(updateLayout);
+    window.addEventListener('resize', onResize);
+    return onResize;
+  }
+
   function hydrateNewsBanner() {
     Promise.all([collectReleaseItem(), collectLedgerItems()]).then(function (results) {
       var items = [];
       if (results[0]) items.push(results[0]);
       results[1].forEach(function (i) { items.push(i); });
-
       if (!items.length) return;
 
       items.sort(function (a, b) { return b.date - a.date; });
-
       var key = items.map(function (i) { return i.key; }).sort().join('|');
       if (readBannerDismissed() === key) return;
 
-      var banner = document.createElement('div');
-      banner.className = 'release-banner';
-      banner.setAttribute('role', 'status');
+      var banner = buildBannerElement(items);
+      var onResize = attachLayoutHandler(banner);
 
-      items.forEach(function (item, idx) {
-        if (idx > 0) {
-          var sep = document.createElement('span');
-          sep.className = 'release-banner-sep';
-          sep.textContent = '|';
-          banner.appendChild(sep);
-        }
-        var row = document.createElement('span');
-        row.className = 'release-banner-item';
-        item.render(row);
-        banner.appendChild(row);
-      });
-
-      var btn = document.createElement('button');
-      btn.className = 'release-banner-dismiss';
-      btn.setAttribute('aria-label', 'Dismiss');
-      btn.textContent = '×';
-      btn.addEventListener('click', function () {
+      banner.querySelector('.release-banner-dismiss').addEventListener('click', function () {
         window.removeEventListener('resize', onResize);
         writeBannerDismissed(key);
         banner.remove();
         document.documentElement.classList.remove('has-release-banner');
       });
-      banner.appendChild(btn);
 
       var seen = false;
       try { seen = sessionStorage.getItem('llmw:banner-seen') === '1'; } catch (e) {}
@@ -322,25 +342,9 @@
       }
 
       document.documentElement.classList.add('has-release-banner');
-
-      var nav = document.querySelector('nav');
-      var syncBannerTop = function () {
-        if (!nav) return;
-        banner.style.top = (nav.offsetHeight - 1) + 'px';
-      };
-      syncBannerTop();
-
       var skipLink = document.querySelector('.skip-link');
       var anchor = skipLink ? skipLink.nextSibling : document.body.firstChild;
       document.body.insertBefore(banner, anchor);
-
-      var updateLayout = function () {
-        banner.classList.remove('stacked');
-        if (banner.scrollWidth > banner.clientWidth + 1) banner.classList.add('stacked');
-      };
-      var onResize = function () { syncBannerTop(); updateLayout(); };
-      requestAnimationFrame(updateLayout);
-      window.addEventListener('resize', onResize);
     });
   }
 })();

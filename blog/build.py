@@ -6,6 +6,7 @@ import shutil
 from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
+from urllib.parse import urlparse
 
 import markdown
 import yaml
@@ -296,12 +297,12 @@ _REL_ATTR_RE = re.compile(r'\s+rel="[^"]*"')
 
 
 def _is_internal(href: str) -> bool:
-    from urllib.parse import urlparse
     u = urlparse(href)
     host = u.netloc.lower()
     if host == "llm-works.ai" or host.endswith(".llm-works.ai"):
         return True
-    if host == "github.com" and u.path.lower().startswith("/llm-works"):
+    path_lower = u.path.lower()
+    if host == "github.com" and (path_lower.startswith("/llm-works/") or path_lower == "/llm-works"):
         return True
     return False
 
@@ -382,7 +383,7 @@ def build_post(src_dir: Path) -> dict | None:
     post_data = {
         "slug": slug,
         "title": frontmatter["title"],
-        "description": frontmatter.get("description", ""),
+        "description": frontmatter.get("description", "").strip(),
         "date": date,
         "date_iso": date.strftime("%Y-%m-%d"),
         "date_display": date.strftime("%B %d, %Y"),
