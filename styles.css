@@ -1581,7 +1581,7 @@ html.light-mode .blog-neg { color: #dc2626; }
   .rigor-table td:first-child { white-space: normal; }
 
   /* Blog: stack post-card content */
-  .post-card-content { padding: 20px; }
+  .post-card-content { padding: var(--card-pad); }
   .post-content { padding: 24px 0 48px; }
 
   /* Story: consequence cards stack */
