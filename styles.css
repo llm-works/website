@@ -6,7 +6,7 @@
   --bg: #0a0a0b;
   --bg-raised: #1a1a1d;
   --bg-subtle: #2a2a2f;
-  --border: #3a3a3f;
+  --border: #505055;
   --text: #e4e4e7;
   --text-muted: #a1a1aa;
   --accent: #3b82f6;
@@ -1131,7 +1131,7 @@ html.light-mode {
   --bg: #ffffff;
   --bg-raised: #f4f4f5;
   --bg-subtle: #dcdce0;
-  --border: #bcbcc0;
+  --border: #a5a5aa;
   --text: #27272a;
   --text-muted: #52525b;
   --accent: #2563eb;
