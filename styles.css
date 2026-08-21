@@ -8,8 +8,11 @@
   --bg-subtle: #2a2a2f;
   --border: #505055;
   --edge-step: 0.15;
+  --edge-raised: #353538;
   --edge-raised: oklch(from var(--bg-raised) calc(l + var(--edge-step)) c h);
+  --edge-subtle: #454548;
   --edge-subtle: oklch(from var(--bg-subtle) calc(l + var(--edge-step)) c h);
+  --edge-red:    #504548;
   --edge-red:    oklch(from var(--red-bg)    calc(l + var(--edge-step)) c h);
   --text: #e4e4e7;
   --text-muted: #a1a1aa;
@@ -532,7 +535,8 @@ body.home .hero .quote-reveal { max-width: none; }
   transition: border-color 0.15s;
 }
 
-a.lane-card:hover {
+a.lane-card:hover,
+a.lane-card:focus-visible {
   border-color: var(--accent);
   outline: 2px solid var(--accent);
   outline-offset: -2px;
@@ -779,14 +783,15 @@ body.home .compact-block { padding: var(--section-pad) 0; }
   display: block;
   --surface: var(--bg-raised);
   background: var(--surface);
-  border: 1px solid var(--edge-subtle);
+  border: 1px solid var(--edge-raised);
   border-radius: 6px;
   padding: var(--card-pad);
   text-decoration: none;
   transition: border-color 0.15s;
 }
 
-a.stack-item:hover {
+a.stack-item:hover,
+a.stack-item:focus-visible {
   border-color: var(--accent);
   outline: 2px solid var(--accent);
   outline-offset: -2px;
@@ -979,7 +984,8 @@ a.stack-item:hover {
   transition: border-color 0.15s;
 }
 
-a.product-card:hover {
+a.product-card:hover,
+a.product-card:focus-visible {
   border-color: var(--accent);
   outline: 2px solid var(--accent);
   outline-offset: -2px;
@@ -1037,7 +1043,7 @@ a.product-card:hover .product-url { text-decoration: underline; }
 .code-example {
   --surface: var(--bg-raised);
   background: var(--surface);
-  border: 1px solid var(--edge-subtle);
+  border: 1px solid var(--edge-raised);
   border-radius: 6px;
   padding: 20px 24px;
   overflow-x: auto;
@@ -1146,6 +1152,12 @@ html.light-mode {
   --bg-subtle: #dcdce0;
   --border: #a5a5aa;
   --edge-step: -0.17;
+  --edge-raised: #c8c8ca;
+  --edge-raised: oklch(from var(--bg-raised) calc(l + var(--edge-step)) c h);
+  --edge-subtle: #b0b0b5;
+  --edge-subtle: oklch(from var(--bg-subtle) calc(l + var(--edge-step)) c h);
+  --edge-red:    #b0a5a8;
+  --edge-red:    oklch(from var(--red-bg)    calc(l + var(--edge-step)) c h);
   --text: #27272a;
   --text-muted: #52525b;
   --accent: #2563eb;
@@ -1230,7 +1242,8 @@ body.blog-index .hero p { font-size: 16px; color: var(--text-muted); }
   transition: border-color 0.15s;
 }
 
-.post-card:hover {
+.post-card:hover,
+.post-card:focus-visible {
   border-color: var(--accent);
   outline: 2px solid var(--accent);
   outline-offset: -2px;
