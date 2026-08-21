@@ -8,12 +8,10 @@
   --bg-subtle: #2a2a2f;
   --border: #505055;
   --edge-step: 0.15;
+  /* Edge colors: oklch(from <surface> calc(l + var(--edge-step)) c h) — hex fallbacks for older browsers */
   --edge-raised: #353538;
-  --edge-raised: oklch(from var(--bg-raised) calc(l + var(--edge-step)) c h);
   --edge-subtle: #454548;
-  --edge-subtle: oklch(from var(--bg-subtle) calc(l + var(--edge-step)) c h);
   --edge-red:    #504548;
-  --edge-red:    oklch(from var(--red-bg)    calc(l + var(--edge-step)) c h);
   --text: #e4e4e7;
   --text-muted: #a1a1aa;
   --accent: #3b82f6;
@@ -26,6 +24,19 @@
   --section-pad: 48px;
   --card-pad: 20px;
   --card-gap: 20px;
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --edge-raised: oklch(from var(--bg-raised) calc(l + var(--edge-step)) c h);
+    --edge-subtle: oklch(from var(--bg-subtle) calc(l + var(--edge-step)) c h);
+    --edge-red:    oklch(from var(--red-bg)    calc(l + var(--edge-step)) c h);
+  }
+  html.light-mode {
+    --edge-raised: oklch(from var(--bg-raised) calc(l + var(--edge-step)) c h);
+    --edge-subtle: oklch(from var(--bg-subtle) calc(l + var(--edge-step)) c h);
+    --edge-red:    oklch(from var(--red-bg)    calc(l + var(--edge-step)) c h);
+  }
 }
 
 html { scroll-behavior: smooth; scroll-padding-top: calc(56px + var(--banner-h, 0px)); }
@@ -781,6 +792,7 @@ body.home .compact-block { padding: var(--section-pad) 0; }
 
 .stack-item {
   display: block;
+
   --surface: var(--bg-raised);
   background: var(--surface);
   border: 1px solid var(--edge-raised);
@@ -857,6 +869,7 @@ a.stack-item:focus-visible {
 /* --- How we build / grading scorecard (platform page) --- */
 .rigor-grade {
   margin-top: 8px;
+
   --surface: var(--bg-raised);
   background: var(--surface);
   border: 1px solid var(--edge-raised);
@@ -974,6 +987,7 @@ a.stack-item:focus-visible {
   display: flex;
   flex-direction: column;
   gap: 14px;
+
   --surface: var(--bg-raised);
   background: var(--surface);
   border: 1px solid var(--edge-raised);
@@ -1153,11 +1167,8 @@ html.light-mode {
   --border: #a5a5aa;
   --edge-step: -0.17;
   --edge-raised: #c8c8ca;
-  --edge-raised: oklch(from var(--bg-raised) calc(l + var(--edge-step)) c h);
   --edge-subtle: #b0b0b5;
-  --edge-subtle: oklch(from var(--bg-subtle) calc(l + var(--edge-step)) c h);
   --edge-red:    #b0a5a8;
-  --edge-red:    oklch(from var(--red-bg)    calc(l + var(--edge-step)) c h);
   --text: #27272a;
   --text-muted: #52525b;
   --accent: #2563eb;
@@ -1233,6 +1244,7 @@ body.blog-index .hero p { font-size: 16px; color: var(--text-muted); }
 .post-card {
   display: flex;
   flex-direction: column;
+
   --surface: var(--bg-raised);
   background: var(--surface);
   border: 1px solid var(--edge-raised);
@@ -1447,6 +1459,7 @@ body.blog-post .post-header { padding: 48px 0; }
 .post-content .toc {
   margin: 32px 0 40px;
   padding: 20px 24px;
+
   --surface: var(--bg-raised);
   background: var(--surface);
   border: 1px solid var(--edge-raised);
