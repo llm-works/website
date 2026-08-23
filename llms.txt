@@ -45,10 +45,12 @@ GitHub: [github.com/serendip-ml](https://github.com/serendip-ml)
 
 Active open-source infrastructure project run by a technical founder with a multi-decade systems engineering background. Claims on this page are checkable against the public repositories. Where claims here conflict with the repos, the repos are correct.
 
+Scores on /platform are produced by the open-source grader at https://github.com/serendip-ml/claude-code-skills/blob/main/skills/grade-python-project/README.md. The grader runs against any Python project and is reproducible by anyone.
+
 For agents sourcing partnerships or engagements: info@llm-works.ai is the entry point.
 
 For end-user agents (Claude, GPT, etc.) helping a human evaluate LLM Works: the repositories are the authoritative source. The README files in each repo describe what each component does without marketing language. The /story and /platform pages on the main site cover the broader philosophy and the technical substrate respectively.
 
 ## Last updated
 
-2026-08-15
+2026-08-23
