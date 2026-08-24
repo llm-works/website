@@ -14,8 +14,8 @@
   --edge-red:    #504548;
   --text: #e4e4e7;
   --text-muted: #a1a1aa;
-  --accent: #3b82f6;
-  --accent-dim: #1d4ed8;
+  --accent: #2874ed;
+  --accent-dim: #2967e9;
   --green: #00ff41;
   --red: #ef4444;
   --red-bg: #352a2d;
@@ -146,7 +146,9 @@ nav .container {
   z-index: 99;
   height: 40px;
   background: var(--accent-dim);
-  color: #fff;
+  /* #f4f4f5 on #2967e9: 4.53:1, at WCAG AA floor. Fixed value (not var(--text)) because banner bg
+     stays blue in both modes, so text must stay light in both modes. */
+  color: #f4f4f5;
   font-size: 13px;
   line-height: 20px;
   text-align: center;
@@ -196,18 +198,18 @@ nav .container {
   transform: translateY(-50%);
   background: transparent;
   border: 0;
-  color: #fff;
+  color: #f4f4f5;
   font-size: 18px;
   line-height: 1;
   padding: 4px 8px;
   cursor: pointer;
-  opacity: 0.7;
+  transition: transform 0.1s;
 }
 
-.release-banner-dismiss:hover { opacity: 1; }
+.release-banner-dismiss:hover { transform: translateY(-50%) scale(1.15); }
 
 .release-banner a {
-  color: #fff;
+  color: #f4f4f5;
   text-decoration: none;
   font-weight: 700;
 }
@@ -252,15 +254,17 @@ section > .container { outline: 1px dashed #22c55e; }
   display: inline-block;
   font-family: var(--mono);
   font-size: 14px;
-  color: #fff;
-  background: var(--accent);
+  /* #f4f4f5 on #2967e9: 4.53:1, at WCAG AA floor. Fixed value in both modes: button bg stays
+     blue regardless of site mode, so text must stay light. */
+  color: #f4f4f5;
+  background: var(--accent-dim);
   padding: 10px 24px;
   border-radius: 6px;
   text-decoration: none;
   transition: background 0.15s;
 }
 
-.cta-primary:hover { background: var(--accent-dim); }
+.cta-primary:hover { background: var(--accent); }
 
 .section-cta { margin-top: 24px; }
 
@@ -515,8 +519,13 @@ body.platform main > section:nth-child(even) {
 body.platform .rigor-grade,
 body.platform .rigor-footnote,
 body.platform .code-example { max-width: 720px; }
-body.platform .code-example { background: var(--bg-subtle); }
-body.platform .stack-item { background: var(--bg-subtle); }
+body.platform .code-example,
+body.platform .stack-item {
+  --surface: var(--bg-subtle);
+
+  background: var(--surface);
+  border-color: var(--edge-subtle);
+}
 
 /* Hero: two-column on desktop (h1 left, quote-reveal right) */
 body.home .hero .container {
@@ -1064,12 +1073,13 @@ a.stack-item:focus-visible {
 .code-example .c-deco    { color: #fbbf24; }
 .code-example .c-builtin { color: #67e8f9; }
 
+/* Light-mode syntax on --bg-subtle (#dcdce0): all pass WCAG AA (≥4.5:1). */
 html.light-mode .code-example .c-keyword,
-html.light-mode .code-example .c-import { color: #7c3aed; }
-html.light-mode .code-example .c-string { color: #047857; }
-html.light-mode .code-example .c-name    { color: #1d4ed8; }
-html.light-mode .code-example .c-deco    { color: #b45309; }
-html.light-mode .code-example .c-builtin { color: #0891b2; }
+html.light-mode .code-example .c-import { color: #6d28d9; } /* 5.19:1 */
+html.light-mode .code-example .c-string { color: #065f46; } /* 5.62:1 */
+html.light-mode .code-example .c-name    { color: #1d4ed8; } /* 4.92:1 */
+html.light-mode .code-example .c-deco    { color: #92400e; } /* 5.19:1 */
+html.light-mode .code-example .c-builtin { color: #155e75; } /* 5.30:1 */
 html.light-mode .code-example .c-comment { font-weight: 500; }
 
 /* --- About text + link list --- */
@@ -1158,16 +1168,14 @@ html.light-mode {
   --edge-red:    #b0a5a8;
   --text: #27272a;
   --text-muted: #52525b;
-  --accent: #2563eb;
-  --accent-dim: #1d4ed8;
-  --green: #15803d;
+  --accent: #2662e2;
+  --accent-dim: #2258db;
+  --green: #076c2a;
   --red: #dc2626;
   --red-bg: #ddd2d5;
 }
 
 html.light-mode nav { background: rgba(255, 255, 255, 0.85); }
-
-html.light-mode .cta-primary { color: #fff; }
 
 
 /* --- Theme toggle --- */
