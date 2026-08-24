@@ -14,7 +14,7 @@
   --edge-red:    #504548;
   --text: #e4e4e7;
   --text-muted: #a1a1aa;
-  --accent: #3b7ef1;
+  --accent: #2874ed;
   --accent-dim: #2967e9;
   --green: #00ff41;
   --red: #ef4444;
@@ -203,10 +203,10 @@ nav .container {
   line-height: 1;
   padding: 4px 8px;
   cursor: pointer;
-  opacity: 0.7;
+  transition: transform 0.1s;
 }
 
-.release-banner-dismiss:hover { opacity: 1; }
+.release-banner-dismiss:hover { transform: translateY(-50%) scale(1.15); }
 
 .release-banner a {
   color: #f4f4f5;
@@ -1168,7 +1168,7 @@ html.light-mode {
   --edge-red:    #b0a5a8;
   --text: #27272a;
   --text-muted: #52525b;
-  --accent: #2f68e5;
+  --accent: #2662e2;
   --accent-dim: #2258db;
   --green: #076c2a;
   --red: #dc2626;
