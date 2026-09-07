@@ -26,7 +26,7 @@ SCRIPT_JS = SITE_ROOT / "script.js"
 # invalidates the upstream CDN cache instead of waiting out its 4h TTL.
 HASHED_ASSETS = {"/styles.css": STYLES_CSS, "/script.js": SCRIPT_JS}
 _asset_pattern = "|".join(re.escape(url) for url in HASHED_ASSETS)
-_ASSET_REF_RE = re.compile(rf'(?<![\\w./-])({_asset_pattern})(\\?v=[^\\"\'\\s#>)]*)?(?=[\\"\'\\s#>)])')
+_ASSET_REF_RE = re.compile(rf'(?<![\w./-])({_asset_pattern})(\?v=[^"\'\s#>)]*)?(?=["\'\s#>)])')
 
 POST_TEMPLATE = """\
 <!DOCTYPE html>
@@ -182,6 +182,7 @@ INDEX_TEMPLATE = """\
 
   <section class="blog-list">
     <div class="container">
+      <div class="blog-hero" hidden></div>
       <div class="post-grid">
 {posts}
       </div>
@@ -366,6 +367,23 @@ def render_markdown(md_content: str) -> str:
     return normalize_link_targets(md.convert(md_content))
 
 
+def _indent_html(html: str, indent: str = "        ") -> str:
+    """Indent rendered HTML for the page template while leaving lines inside
+    <pre> blocks untouched, since they render leading whitespace as content."""
+    out = []
+    in_pre = False
+    for line in html.split("\n"):
+        if in_pre:
+            out.append(line)
+            if "</pre>" in line:
+                in_pre = False
+        else:
+            out.append(f"{indent}{line}" if line else "")
+            if "<pre" in line and "</pre>" not in line:
+                in_pre = True
+    return "\n".join(out)
+
+
 def build_post(src_dir: Path) -> dict | None:
     """Build a single post from its source directory."""
     post_md = src_dir / "post.md"
@@ -385,11 +403,7 @@ def build_post(src_dir: Path) -> dict | None:
         date = datetime.strptime(raw_date, "%Y-%m-%d")
     else:
         date = datetime.combine(raw_date, datetime.min.time())
-    body = transform_content(body)
-    html_content = render_markdown(body)
-
-    # Indent content for template
-    html_content = "\n".join(f"        {line}" if line else "" for line in html_content.split("\n"))
+    html_content = _indent_html(render_markdown(transform_content(body)))
 
     # Extract teaser filename from header_teaser path
     teaser_path = frontmatter.get("header_teaser", "")

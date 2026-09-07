@@ -28,8 +28,8 @@
     gtag('js', new Date());
     gtag('config', 'G-PLTFCVZQ8R');
   </script>
-  <link rel="stylesheet" href="/styles.css?v=bust123">
-  <script src="/script.js?v=31e67f32"></script>
+  <link rel="stylesheet" href="/styles.css?v=49cfa205">
+  <script src="/script.js?v=2414088a"></script>
 </head>
 <body class="blog-post">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -76,25 +76,25 @@
         <p><strong>Raw prompting.</strong> The simplest approach: concatenate strings, send to model, parse the response.
         LangChain, most tutorials, and most production agents work this way.</p>
         <pre><code class="language-python">prompt = f&quot;Given this code:\n{code}\n\nDoes it handle null safely? Answer yes or no.&quot;
-        response = await llm.complete(prompt)
-        is_safe = &quot;yes&quot; in response.lower()
-        </code></pre>
+response = await llm.complete(prompt)
+is_safe = &quot;yes&quot; in response.lower()
+</code></pre>
         <p><strong>Strengths</strong>: flexible, no abstractions to learn. <strong>Gap</strong>: no structure—every call requires
         hand-parsing and reimplemented error handling.</p>
         <p><strong>Tool/function calling.</strong> OpenAI and Anthropic provide structured tool calling: define a schema,
         the model returns JSON matching that schema.</p>
         <pre><code class="language-python">tools = [{
-            &quot;name&quot;: &quot;check_null_safety&quot;,
-            &quot;parameters&quot;: {
-                &quot;type&quot;: &quot;object&quot;,
-                &quot;properties&quot;: {
-                    &quot;is_safe&quot;: {&quot;type&quot;: &quot;boolean&quot;},
-                    &quot;reason&quot;: {&quot;type&quot;: &quot;string&quot;}
-                }
-            }
-        }]
-        response = await llm.complete(prompt, tools=tools)
-        </code></pre>
+    &quot;name&quot;: &quot;check_null_safety&quot;,
+    &quot;parameters&quot;: {
+        &quot;type&quot;: &quot;object&quot;,
+        &quot;properties&quot;: {
+            &quot;is_safe&quot;: {&quot;type&quot;: &quot;boolean&quot;},
+            &quot;reason&quot;: {&quot;type&quot;: &quot;string&quot;}
+        }
+    }
+}]
+response = await llm.complete(prompt, tools=tools)
+</code></pre>
         <p><strong>Strengths</strong>: structured output, model understands intent. <strong>Gap</strong>: defines <em>syntax</em> not
         <em>semantics</em>—the JSON is structured, but prompt construction, retries, and provider differences
         remain
@@ -102,35 +102,35 @@
         <p><strong>Structured output libraries.</strong> Instructor, Outlines, and similar libraries allow defining
         Pydantic models and getting typed responses.</p>
         <pre><code class="language-python">class SafetyCheck(BaseModel):
-            is_safe: bool
-            reason: str
+    is_safe: bool
+    reason: str
 
-        result = await client.chat.completions.create(
-            response_model=SafetyCheck,
-            messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt}]
-        )
-        </code></pre>
+result = await client.chat.completions.create(
+    response_model=SafetyCheck,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: prompt}]
+)
+</code></pre>
         <p><strong>Strengths</strong>: type safety, clean API. <strong>Gap</strong>: defines <em>what shape the answer has</em>
         (<code>SafetyCheck</code>) but not <em>what cognitive operation to perform</em>. A Pydantic model carries no prompt
         strategy, no retry semantics specific to the operation, no validation logic for
         yes/no-with-reasoning vs. structured-critique. Prompt crafting and per-call logic remain manual.</p>
         <p><strong>DSPy.</strong> Takes a different approach: define signatures and let the framework optimize prompts.</p>
         <pre><code class="language-python">class CheckSafety(dspy.Signature):
-            code: str = dspy.InputField()
-            is_safe: bool = dspy.OutputField()
-            reason: str = dspy.OutputField()
-        </code></pre>
+    code: str = dspy.InputField()
+    is_safe: bool = dspy.OutputField()
+    reason: str = dspy.OutputField()
+</code></pre>
         <p><strong>Strengths</strong>: prompt optimization, composable modules. <strong>Gap</strong>: optimizes prompts but requires
         labeled data and adds abstraction layers that can obscure what's happening.</p>
         <p><strong>LangGraph.</strong> Models agent workflows as graphs: nodes are functions, edges define control flow,
         state flows through the system.</p>
         <pre><code class="language-python">from langgraph.graph import StateGraph
 
-        graph = StateGraph(AgentState)
-        graph.add_node(&quot;check_safety&quot;, check_safety_node)
-        graph.add_node(&quot;fix_issues&quot;, fix_issues_node)
-        graph.add_conditional_edges(&quot;check_safety&quot;, route_based_on_result)
-        </code></pre>
+graph = StateGraph(AgentState)
+graph.add_node(&quot;check_safety&quot;, check_safety_node)
+graph.add_node(&quot;fix_issues&quot;, fix_issues_node)
+graph.add_conditional_edges(&quot;check_safety&quot;, route_based_on_result)
+</code></pre>
         <p><strong>Strengths</strong>: explicit control flow, checkpointing, human-in-the-loop patterns, parallel execution
         via <code>Send</code>. The <code>langgraph-prebuilt</code> package adds helpers like <code>create_react_agent</code>, <code>ToolNode</code>, and
         <code>ValidationNode</code>.</p>
@@ -172,18 +172,18 @@
         <p>Each verb has defined semantics and a typed return value. Here are the core ones:</p>
         <p><strong><code>verify</code></strong> — Does X satisfy predicate Y? Returns <code>VerifyResult(passed: bool, reason: str)</code>.</p>
         <pre><code class="language-python">result = await saia.verify(code, &quot;handles null input safely&quot;)
-        # result.passed = False
-        # result.reason = &quot;Line 12 dereferences user.name without a null check&quot;
-        </code></pre>
+# result.passed = False
+# result.reason = &quot;Line 12 dereferences user.name without a null check&quot;
+</code></pre>
         <p><strong><code>critique</code></strong> — What's the strongest argument against X? Returns
         <code>Critique(counter_argument: str, weaknesses: list[str])</code>.</p>
         <pre><code class="language-python">critique = await saia.critique(proposal)
-        # critique.counter_argument = &quot;This assumes network latency is constant...&quot;
-        # critique.weaknesses = [&quot;No retry budget&quot;, &quot;Silent failure on timeout&quot;]
-        </code></pre>
+# critique.counter_argument = &quot;This assumes network latency is constant...&quot;
+# critique.weaknesses = [&quot;No retry budget&quot;, &quot;Silent failure on timeout&quot;]
+</code></pre>
         <p><strong><code>refine</code></strong> — Improve X given feedback Y. Returns the improved artifact.</p>
         <pre><code class="language-python">improved = await saia.refine(proposal, &quot;\n&quot;.join(critique.weaknesses))
-        </code></pre>
+</code></pre>
         <p>The remaining verbs—<code>extract</code>, <code>complete</code>, <code>decompose</code>, <code>classify</code>, <code>choose</code>, <code>ask</code>, <code>synthesize</code>,
         <code>find</code>, <code>constrain</code>, <code>ground</code>, <code>instruct</code>—follow the same pattern: defined semantics, typed return,
         operation-specific prompt strategy and retry logic.
@@ -222,16 +222,16 @@
         node</em>—the actual LLM operation.</p>
         <p>They compose naturally:</p>
         <pre><code class="language-python"># LangGraph node using SAIA verbs
-        async def review_node(state: AgentState) -&gt; AgentState:
-            result = await saia.verify(state[&quot;code&quot;], &quot;handles errors correctly&quot;)
-            if not result.passed:
-                critique = await saia.critique(state[&quot;code&quot;])
-                state[&quot;feedback&quot;] = critique.weaknesses
-            return state
+async def review_node(state: AgentState) -&gt; AgentState:
+    result = await saia.verify(state[&quot;code&quot;], &quot;handles errors correctly&quot;)
+    if not result.passed:
+        critique = await saia.critique(state[&quot;code&quot;])
+        state[&quot;feedback&quot;] = critique.weaknesses
+    return state
 
-        graph.add_node(&quot;review&quot;, review_node)
-        graph.add_conditional_edges(&quot;review&quot;, lambda s: &quot;fix&quot; if s.get(&quot;feedback&quot;) else &quot;done&quot;)
-        </code></pre>
+graph.add_node(&quot;review&quot;, review_node)
+graph.add_conditional_edges(&quot;review&quot;, lambda s: &quot;fix&quot; if s.get(&quot;feedback&quot;) else &quot;done&quot;)
+</code></pre>
         <p>LangGraph decides "run review, then conditionally route to fix or done." SAIA decides "verify the
         code, and if it fails, generate a critique." Different concerns, same workflow.</p>
         <p>For workflows needing LangGraph's orchestration—checkpointing, parallel branches,
@@ -270,22 +270,22 @@
         <h2 id="current-api">Current API</h2>
         <pre><code class="language-python">from llm_saia import SAIA
 
-        saia = SAIA.builder().backend(your_backend).build()
+saia = SAIA.builder().backend(your_backend).build()
 
-        # Verify a claim
-        result = await saia.verify(code, &quot;handles null input safely&quot;)
+# Verify a claim
+result = await saia.verify(code, &quot;handles null input safely&quot;)
 
-        # Chain operations
-        critique = await saia.critique(claim)
-        improved = await saia.refine(claim, &quot;\n&quot;.join(critique.weaknesses))
+# Chain operations
+critique = await saia.critique(claim)
+improved = await saia.refine(claim, &quot;\n&quot;.join(critique.weaknesses))
 
-        # Multi-model: cheap generates, expensive validates
-        local = SAIA.builder().backend(local_backend).build()
-        smart = SAIA.builder().backend(anthropic_backend).build()
+# Multi-model: cheap generates, expensive validates
+local = SAIA.builder().backend(local_backend).build()
+smart = SAIA.builder().backend(anthropic_backend).build()
 
-        draft = await local.instruct(&quot;Write a function to parse dates&quot;)
-        result = await smart.verify(draft, &quot;handles edge cases correctly&quot;)
-        </code></pre>
+draft = await local.instruct(&quot;Write a function to parse dates&quot;)
+result = await smart.verify(draft, &quot;handles edge cases correctly&quot;)
+</code></pre>
         <p>Pure Python, zero framework dependencies, pluggable backends. Same verb calls work across Claude,
         GPT-4, and local models via vLLM.</p>
         <h2 id="whats-next">What's Next</h2>
