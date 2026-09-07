@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ontology-driven multi-role LLM loops in production — LLM Works</title>
+  <meta name="description" content="Field notes from running an ontology-driven multi-role LLM research loop in xray for over a month. What works, where ontology non-determinism at generation time bites, and where mitigation is heading.">
+  <link rel="canonical" href="https://www.llm-works.ai/blog/ontology-driven-multi-role-llm-loops/">
+  <meta property="og:title" content="Ontology-driven multi-role LLM loops in production">
+  <meta property="og:description" content="Field notes from running an ontology-driven multi-role LLM research loop in xray for over a month. What works, where ontology non-determinism at generation time bites, and where mitigation is heading.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.llm-works.ai/blog/ontology-driven-multi-role-llm-loops/">
+  <meta property="og:site_name" content="LLM Works">
+  <meta property="og:image" content="https://www.llm-works.ai/blog/ontology-driven-multi-role-llm-loops/assets/teaser.png">
+  <meta property="article:published_time" content="2026-09-07">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ontology-driven multi-role LLM loops in production">
+  <meta name="twitter:description" content="Field notes from running an ontology-driven multi-role LLM research loop in xray for over a month. What works, where ontology non-determinism at generation time bites, and where mitigation is heading.">
+  <meta name="twitter:image" content="https://www.llm-works.ai/blog/ontology-driven-multi-role-llm-loops/assets/teaser.png">
+  <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
+  <link rel="alternate" type="application/rss+xml" title="LLM Works Blog" href="/blog/feed.xml">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-PLTFCVZQ8R');
+  </script>
+  <link rel="stylesheet" href="/styles.css?v=49cfa205">
+  <script src="/script.js?v=2414088a"></script>
+</head>
+<body class="blog-post">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav aria-label="Primary">
+    <div class="container">
+      <a href="/" class="logo">llm-works<span>.ai</span></a>
+      <ul class="nav-links">
+        <li><a href="/#agents">Agents</a></li>
+        <li><a href="/platform/">Platform</a></li>
+        <li><a href="/story/">Story</a></li>
+        <li><a href="/blog/" aria-current="page">Blog</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+    <input type="checkbox" id="theme-switch">
+    <span class="slider"></span>
+  </label>
+
+  <main id="main" tabindex="-1">
+
+  <article class="post">
+    <header class="post-header">
+      <div class="container">
+        <div class="post-meta-row">
+          <p class="post-date">September 07, 2026</p>
+        </div>
+        <h1>Ontology-driven multi-role LLM loops in production</h1>
+        <p class="post-byline">LLM Works</p>
+      </div>
+    </header>
+
+    <div class="post-content">
+      <div class="container">
+        <p>For over a month, we have been running an ontology-driven multi-role LLM research loop in our
+        xray production agent. It delivers structured, typed extraction and cleanly composable
+        multi-role synthesis. It also surfaces the hard engineering problem of ontology non-determinism
+        at the generation step.</p>
+        <h2 id="introduction">Introduction</h2>
+        <p>Frank Coyle at UC Berkeley recently gave a talk called
+        <a href="https://www.youtube.com/watch?v=Sir59K8ZDPU" target="_blank" rel="noopener noreferrer">"Why Agentic Systems Need Ontologies"</a>. His broader
+        argument is neuro-symbolic, pairing a probabilistic LLM with formal ontology reasoning as a
+        guardrail, and he summed the idea up in one line: <em>"Pydantic at the door, ontology at the ledger."</em></p>
+        <p>We have been running the lighter, schema-based version of this (typed schema, not the full
+        RDFS/OWL formalism) as part of our research agent at <a href="https://xray.llm-works.ai">xray.llm-works.ai</a>.</p>
+        <h2 id="what-an-ontology-is-in-this-context">What an ontology is (in this context)</h2>
+        <p>In practice, an ontology is nothing more than a schema of typed entities, their attributes, and
+        how those entities relate to each other. To make that concrete, consider a query like:</p>
+        <blockquote>
+        <p><em>What are the current pricing tiers for OpenAI, Anthropic, and Google's flagship API models?</em></p>
+        </blockquote>
+        <p>An ontology for it might look like:</p>
+        <pre><code>Provider: name
+Model: name, input_cost_per_1M_tokens, output_cost_per_1M_tokens, context_window
+Relationship: Model belongs-to Provider
+</code></pre>
+        <p>The typed structure earns its keep downstream. Every step past ontology generation gets to
+        work against the same explicit contract instead of against free-form text, which means
+        extraction preserves distinctions that plain-prompt approaches routinely collapse (three
+        related dollar amounts stay separate), and synthesis produces output whose structure any
+        downstream consumer can rely on programmatically.</p>
+        <h2 id="the-5-step-loop">The 5-step loop</h2>
+        <p>Our loop has five steps, all of which are realized through LLM calls:</p>
+        <ol>
+        <li><strong>Ontology generation.</strong> The LLM proposes an ontology based on the input prompt. This turns
+           a generic research request into a structure the rest of the loop can work against.</li>
+        <li><strong>Planning.</strong> The LLM breaks the problem into a set of concrete queries against the ontology.
+           Each query targets a specific attribute on a specific entity.</li>
+        <li><strong>Inner reasoning loop.</strong> Each planned query runs an inner reasoning loop with a set of
+           tools, gathering the evidence needed to answer that query. The plan drives the outer
+           sequence, and the ontology drives the plan.</li>
+        <li><strong>Typed extraction.</strong> Results are extracted into the ontology. Values land in named
+           attributes on named entities, not in a free-form blob.</li>
+        <li><strong>Synthesis.</strong> The final summary reads the filled ontology and produces an answer that matches
+           its structure.</li>
+        </ol>
+        <p>Realizing every step through an LLM call is deliberate. The different steps carry different
+        quality-cost tradeoffs, which makes model-per-role a natural configuration. The role separation
+        also makes each step independently debuggable and replaceable. A single monolithic prompt buys
+        none of that.</p>
+        <h2 id="implementation">Implementation</h2>
+        <p>The 5-step loop above is intentionally abstract. A few details from the production version
+        matter before the analysis below.</p>
+        <p><strong>Constrain the ontology-generation step.</strong> Step 1 runs at low temperature behind schema
+        guardrails and retries. That catches malformed or off-target ontologies before they reach the
+        planner, but it does not remove run-to-run drift in attribute and type names. Structured-output
+        constraints on this step are the next thing to try.</p>
+        <p><strong>Model per role, not one model for everything.</strong> Extraction and per-query planning tolerate
+        weaker models cleanly. Ontology generation and final synthesis benefit significantly from a
+        stronger model. Running the whole loop against a single frontier model works but is wasteful, and
+        running it against a single weaker model degrades ontology quality in ways that cascade.</p>
+        <p><strong>Tools fail, so the loop has to degrade gracefully.</strong> Web search, fetch, and DB queries all
+        have transient failure rates that show up at scale. This is handled by retries that live at
+        multiple layers of the stack (inference-side in llm-infer, guard-side in llm-saia). When
+        retries do exhaust, the affected attributes are marked unresolved and synthesis notes the gap
+        without aborting the run.</p>
+        <p><strong>A wrong ontology is expensive.</strong> If step 1 misreads the query, every downstream call is wasted
+        work. We therefore use the strongest model and the tightest constraints for ontology generation.</p>
+        <p><strong>The ontology stays smaller than people expect.</strong> Most queries we have seen resolve into
+        ontologies with 3 to 8 entity types and somewhere between 5 and 20 attributes in total. Deeper
+        ontologies are possible, but extraction cost grows roughly linearly in the attribute count per
+        source, so there is a natural pull toward keeping the schema tight.</p>
+        <h2 id="what-works-well-in-production">What works well in production</h2>
+        <p><strong>The planner is purpose-driven.</strong> Because the plan is derived from a typed ontology and not
+        from the prompt directly, iteration chases exactly the attributes the ontology defines. Drift
+        into tangents is less likely, and so is premature stopping while attributes are still empty.</p>
+        <p><strong>Extraction preserves structure.</strong> Without an ontology, an LLM asked "what's the deal size?"
+        happily collapses <code>$X valuation</code>, <code>$Y to founders</code>, and <code>$Z to investors</code> into a single number.
+        With an ontology, those become three distinct attributes on their respective entities, and
+        downstream code
+        can actually use them.</p>
+        <p><strong>Synthesis composes.</strong> Because the synthesis role knows the ontology, its output follows the
+        ontology's structure even if the wording varies. That makes multi-role composition
+        more effective, since any downstream stage can consume the output programmatically, e.g.,
+        feeding a visualization, chaining another ontology-driven loop, or anything else that processes
+        the results.</p>
+        <p>Debugging and tracing also get easier. Because every value lives on a named slot, wrong answers
+        trace cleanly back to the extraction step that produced them.</p>
+        <h2 id="what-still-needs-work">What still needs work</h2>
+        <p><strong>Ontology non-determinism.</strong> Step 1 produces a different ontology every time, even for the
+        same prompt. Attribute names and type names drift between runs, and sometimes the number of
+        types themselves changes. This is the real hard problem, because everything downstream that
+        assumed a stable schema does not get that stability. A stored artifact from yesterday might not
+        match
+        today's ontology for the same query.</p>
+        <p><strong>Cost overhead is meaningful but bounded.</strong> Adding ontology generation, planning, typed
+        extraction, and synthesis on top of a generic tool-loop runs roughly 20 to 30% more expensive at
+        comparable iteration depth. In our workload the inner tool loop (search + fetch + read) still
+        dominates, so the cost overhead is manageable. Workloads with cheaper inner loops will feel it
+        more prominently.</p>
+        <h2 id="where-mitigation-is-heading">Where mitigation is heading</h2>
+        <p>Beyond the guardrails mentioned above, a number of further directions came from discussions
+        with the wider practitioner community. None is a finished answer, but taken together, they point
+        toward a registry-anchored architecture that quarantines and versions candidates before use.</p>
+        <p><strong>Stable registry + novel residue.</strong> A more ambitious direction is to maintain a stable registry
+        of predicates and types, followed by a deterministic lookup for known classes on every query,
+        and only invoke the LLM for the <em>novel residue</em>. Against a mature registry, most queries would
+        never touch the model at all. The catch is that queries are arbitrary, and a slightly different
+        phrasing can map to an entirely new ontology, so the lookup becomes a classification problem
+        that is expensive to build well. Caching the first ontology generated for a query pattern is
+        the naive form of the same idea, and buys the same stability at the cost of freezing whatever
+        the model produced first, validated or not.</p>
+        <p><strong>Quarantine and promote.</strong> When the LLM does propose a new class, it does not go straight into
+        the registry. It sits in quarantine until it passes an admission test, e.g., generate the
+        candidate, run one extraction round, check that fields fill stably, and only then promote it. A
+        fill-round-trip is a cheap way to catch a candidate that looked plausible but was actually
+        incoherent.</p>
+        <p><strong>Version + compat.</strong> Each ontology can be treated as a versioned artifact with stable
+        identifiers and explicit compatibility rules to its downstream consumers. Later queries map
+        into a version or propose a versioned change; they don't silently redefine the structure that
+        extraction and synthesis depend on.</p>
+        <p><strong>Fixed schema for known domains.</strong> Where the domain is known in advance, the schema can be
+        written by hand and the generation step dropped entirely. The LLM fills slots but never defines
+        them, which removes drift at the source. The open case remains the arbitrary query, where the
+        domain is not known until the request arrives.</p>
+        <p>What these directions share is a gradual withdrawal of direct LLM authority over schema
+        generation, towards schemas that are validated, versioned, and reused across queries rather than
+        generated per query.</p>
+        <h2 id="conclusion">Conclusion</h2>
+        <p>Ontologies are a powerful primitive that elevates the output quality of traditional LLM loops,
+        by giving them more structure and guarantees. Techniques like multi-role composition,
+        model-per-role, and slot-level debugging become more reliable when a typed schema is in play,
+        since planning, extraction, and synthesis all operate against a shared explicit contract. In
+        our setup, we've observed a ~20-30% cost overhead across the ontology generation, planning,
+        extraction, and synthesis steps, and this pays for itself in extraction quality. Interest in
+        ontology-driven design is growing across the practitioner community, and non-determinism at
+        generation time is where much of the near-term engineering will happen.</p>
+        <h2 id="see-also">See also</h2>
+        <ul>
+        <li><a href="https://xray.llm-works.ai">xray.llm-works.ai</a></li>
+        <li><a href="https://www.reddit.com/r/LLMDevs/comments/1w4nee4/ontologydriven_multirole_llm_loops_in_production" target="_blank" rel="noopener noreferrer">r/LLMDevs discussion</a></li>
+        </ul>
+      </div>
+    </div>
+  </article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <span>&copy; 2026 LLM Works LLC</span>
+      <div class="footer-links">
+        <a href="/blog/feed.xml">RSS</a>
+        <a href="/llms.txt">llms.txt</a>
+        <a href="/terms/">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -46,6 +46,7 @@
 
     hydratePypiVersions();
     hydrateNewsBanner();
+    hydrateBlogHero();
   });
 
   var PACKAGES = ['appinfra', 'llm-saia', 'llm-infer', 'llm-kelt', 'llm-gent'];
@@ -356,5 +357,17 @@
       var anchor = skipLink ? skipLink.nextSibling : document.body.firstChild;
       document.body.insertBefore(banner, anchor);
     });
+  }
+
+  function hydrateBlogHero() {
+    var hero = document.querySelector('.blog-hero');
+    if (!hero) return;
+    var card = document.querySelector('.post-grid a.post-card');
+    var time = card ? card.querySelector('time[datetime]') : null;
+    if (!time) return;
+    var t = Date.parse(time.getAttribute('datetime'));
+    if (isNaN(t) || (Date.now() - t) >= NEW_WINDOW_MS) return;
+    hero.appendChild(card);
+    hero.hidden = false;
   }
 })();

@@ -24,6 +24,8 @@
   --section-pad: 48px;
   --card-pad: 20px;
   --card-gap: 20px;
+  --post-grid-cols: 3;
+  --blog-hero-scale: 1.15;
 }
 
 @supports (color: oklch(from red l c h)) {
@@ -1240,9 +1242,19 @@ body.blog-index .hero p { font-size: 16px; color: var(--text-muted); }
 
 .blog-list { padding: var(--section-pad) 0 64px; }
 
+.blog-hero:not([hidden]) {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--section-pad);
+}
+
+.blog-hero .post-card {
+  width: calc(((100% - (var(--post-grid-cols) - 1) * var(--card-gap)) / var(--post-grid-cols)) * var(--blog-hero-scale));
+}
+
 .post-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(var(--post-grid-cols), 1fr);
   gap: var(--card-gap);
 }
 
@@ -1582,6 +1594,7 @@ html.light-mode .blog-neg { color: #dc2626; }
   .agents-block .product-grid { grid-template-columns: 1fr; }
   body.story .consequences { grid-template-columns: 1fr; }
   .post-grid { grid-template-columns: 1fr; }
+  .blog-hero .post-card { width: 100%; }
 
   /* Platform stack-grid → single column, drop the explicit row/col placement */
   .stack-grid { grid-template-columns: 1fr; }
