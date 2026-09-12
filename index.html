@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LLM Works — AI is systems engineering</title>
-  <meta name="description" content="Open-source infrastructure and agents for production AI. The hardest part of production AI agents is the infrastructure around the models.">
+  <title>LLM Works — AI agents, from research to production.</title>
+  <meta name="description" content="LLM Works builds AI agents on its own open-source substrate, and turns the newest research into production-grade systems that power existing pipelines or create new ones from scratch.">
   <link rel="canonical" href="https://www.llm-works.ai/">
-  <meta property="og:title" content="LLM Works — AI is systems engineering">
-  <meta property="og:description" content="Open-source infrastructure and agents for production AI.">
+  <meta property="og:title" content="LLM Works — AI agents, from research to production.">
+  <meta property="og:description" content="LLM Works builds AI agents on its own open-source substrate, and turns the newest research into production-grade systems that power existing pipelines or create new ones from scratch.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://www.llm-works.ai/">
   <meta property="og:site_name" content="LLM Works">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="LLM Works — AI is systems engineering">
-  <meta name="twitter:description" content="Open-source infrastructure and agents for production AI.">
+  <meta name="twitter:title" content="LLM Works — AI agents, from research to production.">
+  <meta name="twitter:description" content="LLM Works builds AI agents on its own open-source substrate, and turns the newest research into production-grade systems that power existing pipelines or create new ones from scratch.">
   <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
@@ -23,7 +23,14 @@
     "@type": "Organization",
     "name": "LLM Works",
     "url": "https://www.llm-works.ai/",
-    "description": "Open-source infrastructure and agents for production AI.",
+    "description": "LLM Works builds AI agents on its own open-source substrate, and turns the newest research into production-grade systems that power existing pipelines or create new ones from scratch.",
+    "foundingDate": "2026-03",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Knoxville",
+      "addressRegion": "Tennessee",
+      "addressCountry": "US"
+    },
     "email": "info@llm-works.ai",
     "sameAs": ["https://github.com/llm-works", "https://www.linkedin.com/company/llm-works"]
   }
@@ -38,7 +45,7 @@
   <link rel="stylesheet" href="/styles.css?v=49cfa205">
   <script src="/script.js?v=2414088a"></script>
 </head>
-<body class="home">
+<body class="home reframe">
   <a class="skip-link" href="#main">Skip to content</a>
 
   <nav aria-label="Primary">
@@ -59,77 +66,90 @@
   </label>
 <main id="main" tabindex="-1">
 
-  <section class="hero">
+  <section class="compact-block hero-block">
     <div class="container">
-      <div class="hero-lead">
-        <h1>AI is systems engineering</h1>
-      </div>
-      <div class="hero-right">
-        <div class="quote-reveal" tabindex="0">
-          <p class="pull-quote">The hardest part of production AI agents is the infrastructure around the models.</p>
-          <p>The industry races to adopt large language models (LLMs) with unbounded potential. While models get more capable, <em>what makes them work in production is the infrastructure around them.</em></p>
-        </div>
-      </div>
+      <p class="section-label">LLM Works</p>
+      <h1 class="claim">AI agents, from research to production.</h1>
+      <p class="threshold-sub">LLM Works builds AI agents on its own open-source substrate, and turns the newest research into production-grade systems that power existing pipelines or create new ones from scratch.</p>
     </div>
   </section>
 
-  <section class="compact-block llmworks-block">
+  <section class="doors">
     <div class="container">
-      <div class="llmworks-lead">
-        <h2 class="section-label">LLM Works</h2>
-        <p class="hero-statement">The next-generation <br class="hero-break">open-source architecture <br class="hero-break">for AI agents</p>
-      </div>
+      <div class="door-grid">
+        <div class="door door--warm">
+          <span class="door-kicker">Get something built</span>
+          <h2>Agents built from cutting-edge research, running in your production pipeline.</h2>
+          <p class="door-body">New agent methods appear every month, but very few reach real-world production. We distill the best of them into our platform, hardened and ready to deploy in your pipeline, with you.</p>
+          <p class="door-tell">Built on the open source substrate. What we deploy stays yours.</p>
+          <div class="door-actions">
+            <a href="mailto:info@llm-works.ai?subject=Consultation%20request" class="cta-primary">Book a free consultation →</a>
+          </div>
+        </div>
 
-      <div class="home-lanes">
-        <a href="#agents" class="lane-card">
-          <span class="name">Agents</span>
-          <p class="product-desc">Long-running processes with domain-specialized skill. Each produces decision-grade artifacts on a continuous basis.</p>
-        </a>
-        <a href="#platform" class="lane-card">
-          <span class="name">Platform</span>
-          <p class="product-desc">Multi-layer open-source stack covering all aspects of semi-autonomous agents implementation.</p>
-          <p class="product-desc">infrastructure · inference · memory &amp; tuning · loops · flow</p>
-        </a>
+        <div class="door">
+          <span class="door-kicker">See what it runs on</span>
+          <h2>The next-generation open-source architecture for AI agents.</h2>
+          <p class="door-body">Multi-layer library stack covering all aspects of semi-autonomous agents implementation: typed contracts around the model, verification loops, tracing, memory and learning.</p>
+          <p class="door-tell">Reasoning stays in the model. Guarantees live outside it.</p>
+          <div class="door-actions">
+            <a href="#platform" class="cta-primary">Platform →</a>
+            <a href="/blog/" class="door-link">Writing →</a>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <section id="agents" class="compact-block agents-block">
     <div class="container">
-      <div class="agents-lead">
-        <h2 class="section-label">Agents</h2>
-        <p class="hero-statement">AI agents running in production</p>
-      </div>
+      <h2 class="section-label">Agents</h2>
+      <p class="hero-statement">Highly refined &amp; purpose-built loops.</p>
+      <p class="agents-caption">Our production agents are custom-built and optimized to solve a specific problem. We deploy state-of-the-art loop techniques and combine them with suitable existing methods from science and technology, such as k-means clustering and knowledge graphs.</p>
 
-      <div class="product-grid">
-        <div class="product-card">
-          <div class="product-top">
-            <h3>llm-news</h3>
-            <span class="status-pill status-live">Live</span>
+      <div class="agent-rows">
+        <article class="agent-row">
+          <div class="agent-shot">
+            <img src="/assets/news-feed-univisium-light.jpg" class="show-in-dark" alt="llm-news feed" loading="lazy" width="1600" height="800">
+            <img src="/assets/news-feed-univisium.jpg" class="show-in-light" alt="llm-news feed" loading="lazy" width="1600" height="800">
           </div>
-          <p class="product-tagline">A live tech news feed, curated and ranked by AI.</p>
-          <p class="product-desc">
-            Aggregates and ranks tech and AI news from 70+ sources, refreshed hourly. Articles are
-            summarized and rated for relevance; thematic clusters surface evolving stories.
-          </p>
-          <p class="product-meta"><strong>Free.</strong></p>
-          <a href="https://news.llm-works.ai" class="cta-primary product-cta">Try news.llm-works.ai →</a>
-        </div>
+          <div class="agent-info">
+            <div class="agent-name">
+              <h3>llm-news</h3>
+              <span class="status-pill status-live">Live</span>
+            </div>
+            <p class="agent-tagline">A live tech news feed, curated and ranked by AI.</p>
+            <p class="agent-desc">Aggregates and ranks tech and AI news from 70+ sources, refreshed hourly. Articles are summarized and rated for relevance; thematic clusters surface evolving stories.</p>
+            <p class="agent-meta"><strong>Free.</strong></p>
+            <p class="section-cta"><a href="https://news.llm-works.ai" class="cta-primary">Try news.llm-works.ai →</a></p>
+          </div>
+        </article>
 
-        <div class="product-card">
-          <div class="product-top">
-            <h3>llm-xray</h3>
-            <span class="status-pill status-live">Live</span>
+        <article class="agent-row">
+          <div class="agent-shot">
+            <img src="/assets/xray-intro-univisium-light.png" class="show-in-dark" alt="llm-xray brand card" loading="lazy" width="1600" height="800">
+            <img src="/assets/xray-intro-univisium.png" class="show-in-light" alt="llm-xray brand card" loading="lazy" width="1600" height="800">
           </div>
-          <p class="product-tagline">Deep research powered by AI.</p>
-          <p class="product-desc">
-            Decision-grade research output: calibrated verdicts through self-refining loops, with a
-            plan-as-protagonist architecture that surfaces what was checked, what changed the
-            verdict, and what's still open.
-          </p>
-          <p class="product-meta"><strong>Free signup with welcome credits.</strong></p>
-          <a href="https://xray.llm-works.ai" class="cta-primary product-cta">Try xray.llm-works.ai →</a>
-        </div>
+          <div class="agent-info">
+            <div class="agent-name">
+              <h3>llm-xray</h3>
+              <span class="status-pill status-live">Live</span>
+            </div>
+            <p class="agent-tagline">Deep research powered by AI.</p>
+            <p class="agent-desc">Decision-grade research output: calibrated verdicts through self-refining loops, with a plan-as-protagonist architecture that surfaces what was checked, what changed the verdict, and what's still open.</p>
+            <p class="agent-meta"><strong>Free signup with welcome credits.</strong></p>
+            <div class="agent-actions">
+              <a href="https://xray.llm-works.ai" class="cta-primary">Try xray.llm-works.ai →</a>
+              <span class="preview-wrap">
+                <a href="https://xray.llm-works.ai/s/1JPBCTX19HA" class="door-link">See an example report →</a>
+                <span class="link-preview" aria-hidden="true">
+                  <img src="/assets/xray-findings-preview-light.jpg" class="show-in-dark" alt="llm-xray report: findings card" loading="lazy" width="900" height="675">
+                  <img src="/assets/xray-findings-preview.jpg" class="show-in-light" alt="llm-xray report: findings card" loading="lazy" width="900" height="675">
+                </span>
+              </span>
+            </div>
+          </div>
+        </article>
       </div>
     </div>
   </section>

@@ -1,10 +1,8 @@
 # LLM Works
 
-> AI is systems engineering. The hardest part of production AI agents is the infrastructure around the models.
+> LLM Works builds AI agents on its own open-source substrate, and turns the newest research into production-grade systems that power existing pipelines or create new ones from scratch.
 
-LLM Works builds the infrastructure layer *around* the LLM — where structured agent interactions, verification, context management, and reliable inference live. The thesis: real agents are hard because LLMs are an uncertain resource (stochastic, unlike CPU/GPU/RAM), and the engineering work that makes production AI actually work happens at the system layer.
-
-LLM Works is an AI infrastructure company running production agents on its custom open-source platform.
+LLM Works has two sides. On one, agents built from current research and deployed in customers' pipelines on the open-source substrate. On the other, the substrate itself: typed contracts around the model, verification loops, tracing, memory and learning. Reasoning in the model, guarantees outside it.
 
 ## Platform
 
@@ -21,13 +19,13 @@ Open-source building blocks, public on GitHub.
 Built on the platform.
 
 - [llm-news](https://news.llm-works.ai): A tech news feed curated and ranked by AI. 70+ sources, hourly refresh, persona and interest filters, REST API.
-- [llm-xray](https://xray.llm-works.ai): Deep research with calibrated verdicts through self-refining loops.
+- [llm-xray](https://xray.llm-works.ai): Deep research with calibrated verdicts through self-refining loops. Public example report: https://xray.llm-works.ai/s/1JPBCTX19HA
 
 ## Founder
 
-Architect & founder. PhD in CS covering signal processing, compression, and 3D graphics. Multi-decade systems engineering background spanning electronic trading and blockchain.
+Tilo Ochotta, architect & founder. PhD in CS covering signal processing, compression, and 3D graphics. Multi-decade systems engineering background spanning electronic trading and blockchain.
 
-GitHub: [github.com/serendip-ml](https://github.com/serendip-ml)
+Links: [LinkedIn](https://www.linkedin.com/in/ochotta), [GitHub](https://github.com/serendip-ml)
 
 ## Operating principles
 
@@ -53,4 +51,4 @@ For end-user agents (Claude, GPT, etc.) helping a human evaluate LLM Works: the 
 
 ## Last updated
 
-2026-08-23
+2026-09-13
