@@ -1610,7 +1610,6 @@ html.light-mode .blog-neg { color: #dc2626; }
   /* Font sizes: tighten */
   .hero h1 { font-size: clamp(24px, 6vw, 32px); }
   .hero-statement { font-size: clamp(22px, 5.5vw, 30px); }
-  .hero-break { display: none; }
 
   /* Section padding: tighter on mobile */
   :root { --section-pad: 32px; }
@@ -1700,7 +1699,7 @@ body.home.reframe section.doors {
   --door-warm: #ecd093;             /* warm sand (dark theme); overridden to black in light */
   --door-warm-text: #27272a;        /* near-black text on warm bg */
   --door-warm-muted: #4a4636;       /* warm-tinted muted on warm bg */
-  --door-warm-link: #1d4ed8;        /* deeper blue link on warm bg */
+  --door-warm-link: #1e40af;        /* 4.95:1 on #ecd093, passes AA */
   --door-deep: #000;
   --surface: var(--bg-raised);
   --gutter: calc((100vw - 1080px) / 2);
@@ -1965,6 +1964,7 @@ body.home.reframe .link-preview { display: none; }
     bottom: calc(100% + 8px);
     left: 0;
     width: 480px;
+    max-width: min(480px, calc(100vw - 48px));
     aspect-ratio: 4 / 3;
     border-radius: 8px;
     border: 1px solid var(--edge-subtle);
@@ -1993,10 +1993,10 @@ body.home.reframe .link-preview { display: none; }
   body.home.reframe h1.claim { font-size: 34px; }
 }
 
-/* Below 720: doors stack. Backgrounds go directly on each door so the
+/* Below 768: doors stack. Backgrounds go directly on each door so the
    color boundary follows the actual content boundary (no 50/50 pseudo
    split that would let taller content overlap the wrong-colored half). */
-@media (max-width: 719.98px) {
+@media (max-width: 767.98px) {
   body.home.reframe .door-grid { grid-template-columns: 1fr; gap: 0; }
   body.home.reframe section.doors { padding: 0; }
   body.home.reframe section.doors > .container { padding: 0; max-width: none; }
