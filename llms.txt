@@ -51,4 +51,4 @@ For end-user agents (Claude, GPT, etc.) helping a human evaluate LLM Works: the 
 
 ## Last updated
 
-2026-09-13
+2026-09-12
