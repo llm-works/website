@@ -2,6 +2,7 @@
 """Build blog posts from markdown sources to HTML."""
 
 import hashlib
+import json
 import os
 import re
 import shutil
@@ -16,6 +17,15 @@ from markdown.extensions.attr_list import AttrListExtension
 from markdown.extensions.tables import TableExtension
 from markdown.extensions.fenced_code import FencedCodeExtension
 from markdown.extensions.toc import TocExtension, TocTreeprocessor
+
+try:
+    from PIL import Image
+    _HAS_PIL = True
+except ImportError:
+    _HAS_PIL = False
+
+SITE_URL = "https://www.llm-works.ai"
+ORG_ID = f"{SITE_URL}/#organization"
 
 ROOT = Path(__file__).parent
 SITE_ROOT = ROOT.parent
@@ -43,6 +53,8 @@ POST_TEMPLATE = """\
   <meta property="og:url" content="https://www.llm-works.ai/blog/{slug}/">
   <meta property="og:site_name" content="LLM Works">{og_image_meta}
   <meta property="article:published_time" content="{date_iso}">
+  <meta property="article:modified_time" content="{modified_iso}">
+  <meta property="article:author" content="https://www.llm-works.ai/">
   <meta name="twitter:card" content="{twitter_card}">
   <meta name="twitter:title" content="{title}">
   <meta name="twitter:description" content="{description}">{twitter_image_meta}
@@ -50,6 +62,10 @@ POST_TEMPLATE = """\
   <link rel="alternate" type="application/rss+xml" title="LLM Works Blog" href="/blog/feed.xml">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <script type="application/ld+json">
+{post_jsonld}
+  </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -139,6 +155,10 @@ INDEX_TEMPLATE = """\
   <link rel="alternate" type="application/rss+xml" title="LLM Works Blog" href="/blog/feed.xml">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <script type="application/ld+json">
+{index_jsonld}
+  </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -220,7 +240,7 @@ POST_CARD_TEMPLATE = """\
 
 RSS_TEMPLATE = """\
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
   <channel>
     <title>LLM Works Blog</title>
     <link>https://www.llm-works.ai/blog/</link>
@@ -239,7 +259,7 @@ RSS_ITEM_TEMPLATE = """\
       <link>https://www.llm-works.ai/blog/{slug}/</link>
       <guid isPermaLink="true">https://www.llm-works.ai/blog/{slug}/</guid>
       <pubDate>{pub_date}</pubDate>
-      <description>{description}</description>
+      <description>{description}</description>{enclosure}
     </item>"""
 
 REDIRECT_TEMPLATE = """\
@@ -282,10 +302,19 @@ def parse_frontmatter(content: str) -> tuple[dict, str]:
     return frontmatter, parts[2].strip()
 
 
+TOP_LEVEL_ROUTES = frozenset({"platform", "about", "story", "blog", "terms", "agents"})
+
+
 def transform_content(body: str) -> str:
     """Transform markdown content for new site structure."""
-    # Fix internal blog links: /slug/ -> /blog/slug/
-    body = re.sub(r'\]\(/([a-z0-9-]+)/\)', r'](/blog/\1/)', body)
+    # Legacy blog cross-links used `/slug/` — rewrite to `/blog/slug/`.
+    # Top-level site routes (/platform/, /about/, …) must pass through unchanged.
+    def _rewrite_internal(m: re.Match) -> str:
+        slug = m.group(1)
+        if slug in TOP_LEVEL_ROUTES:
+            return m.group(0)
+        return f'](/blog/{slug}/)'
+    body = re.sub(r'\]\(/([a-z0-9-]+)/\)', _rewrite_internal, body)
     # Fix image paths: /assets/images/ -> assets/ (HTML and Markdown)
     body = body.replace('src="/assets/images/', 'src="assets/')
     body = body.replace('](/assets/images/', '](assets/')
@@ -367,6 +396,124 @@ def render_markdown(md_content: str) -> str:
     return normalize_link_targets(md.convert(md_content))
 
 
+_IMAGE_MIME = {
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".gif": "image/gif",
+    ".webp": "image/webp",
+    ".svg": "image/svg+xml",
+}
+
+
+def _asset_path(slug: str, teaser_filename: str) -> Path:
+    """Filesystem path to a post's teaser asset."""
+    return ROOT / slug / "assets" / teaser_filename
+
+
+def _resolve_og_teaser(slug: str, teaser_filename: str) -> str:
+    """Prefer a PNG counterpart for og:image when the frontmatter names an SVG.
+    Most social crawlers don't render SVG previews; PNG is the safe default."""
+    if not teaser_filename or not teaser_filename.lower().endswith(".svg"):
+        return teaser_filename
+    stem = teaser_filename[:-4]
+    png_alt = _asset_path(slug, stem + ".png")
+    if png_alt.exists():
+        return stem + ".png"
+    return teaser_filename
+
+
+def _image_dims(path: Path) -> tuple[int, int] | None:
+    """Return (width, height) for a raster teaser, else None. SVG dims are
+    intentionally not read — declaring width/height on a scalable image is
+    misleading, and social crawlers ignore SVG anyway."""
+    if not _HAS_PIL or not path.exists():
+        return None
+    if path.suffix.lower() not in {".png", ".jpg", ".jpeg", ".gif", ".webp"}:
+        return None
+    try:
+        with Image.open(path) as im:
+            return im.size
+    except Exception:
+        return None
+
+
+def _org_node() -> dict:
+    """Minimal Organization node for inclusion in per-page @graph blocks.
+    The full Organization declaration lives on the Home page; other pages
+    only need enough for validators to resolve author/publisher refs."""
+    return {
+        "@type": "Organization",
+        "@id": ORG_ID,
+        "name": "LLM Works",
+        "url": f"{SITE_URL}/",
+        "logo": f"{SITE_URL}/assets/favicon-32x32.png",
+    }
+
+
+def _post_jsonld(post: dict) -> str:
+    """BlogPosting + Organization @graph for a single post page."""
+    slug = post["slug"]
+    url = f"{SITE_URL}/blog/{slug}/"
+    image_url = (f"{SITE_URL}/blog/{slug}/assets/{post['og_teaser']}"
+                 if post.get("og_teaser") else None)
+    posting = {
+        "@type": "BlogPosting",
+        "@id": f"{url}#post",
+        "url": url,
+        "mainEntityOfPage": {"@id": url},
+        "headline": post["title"],
+        "description": post["description"],
+        "datePublished": post["date_iso"],
+        "dateModified": post["modified_iso"],
+        "inLanguage": "en",
+        "author": {"@id": ORG_ID},
+        "publisher": {"@id": ORG_ID},
+    }
+    if image_url:
+        posting["image"] = image_url
+    graph = {"@context": "https://schema.org", "@graph": [_org_node(), posting]}
+    return _indent_json(graph)
+
+
+def _index_jsonld(posts: list[dict]) -> str:
+    """Blog + ItemList + Organization @graph for the blog index page."""
+    blog_url = f"{SITE_URL}/blog/"
+    posts_sorted = sorted(posts, key=lambda p: p["date"], reverse=True)
+    blog_posts = [{"@id": f"{SITE_URL}/blog/{p['slug']}/#post"} for p in posts_sorted]
+    item_list = [
+        {"@type": "ListItem", "position": i + 1,
+         "url": f"{SITE_URL}/blog/{p['slug']}/", "name": p["title"]}
+        for i, p in enumerate(posts_sorted)
+    ]
+    blog_node = {
+        "@type": "Blog",
+        "@id": f"{blog_url}#blog",
+        "url": blog_url,
+        "name": "LLM Works Blog",
+        "description": "Technical writing on AI infrastructure, agent development, and fine-tuning.",
+        "publisher": {"@id": ORG_ID},
+        "inLanguage": "en",
+        "blogPost": blog_posts,
+    }
+    itemlist_node = {
+        "@type": "ItemList",
+        "@id": f"{blog_url}#itemlist",
+        "itemListElement": item_list,
+    }
+    graph = {"@context": "https://schema.org",
+             "@graph": [_org_node(), blog_node, itemlist_node]}
+    return _indent_json(graph)
+
+
+def _indent_json(obj: dict) -> str:
+    """JSON dump indented for the template. `</script>` in string values must
+    be escaped so it can't terminate the surrounding <script> tag."""
+    text = json.dumps(obj, ensure_ascii=False, indent=2)
+    text = text.replace("</", "<\\/")
+    return "\n".join("  " + line for line in text.split("\n"))
+
+
 def _indent_html(html: str, indent: str = "        ") -> str:
     """Indent rendered HTML for the page template while leaving lines inside
     <pre> blocks untouched, since they render leading whitespace as content."""
@@ -403,6 +550,11 @@ def build_post(src_dir: Path) -> dict | None:
         date = datetime.strptime(raw_date, "%Y-%m-%d")
     else:
         date = datetime.combine(raw_date, datetime.min.time())
+    raw_modified = frontmatter.get("modified_date") or frontmatter.get("date")
+    if isinstance(raw_modified, str):
+        modified = datetime.strptime(raw_modified, "%Y-%m-%d")
+    else:
+        modified = datetime.combine(raw_modified, datetime.min.time())
     html_content = _indent_html(render_markdown(transform_content(body)))
 
     # Extract teaser filename from header_teaser path
@@ -415,9 +567,24 @@ def build_post(src_dir: Path) -> dict | None:
     else:
         teaser_light = teaser
 
-    if teaser:
-        image_url = f"https://www.llm-works.ai/blog/{slug}/assets/{teaser}"
-        og_image_meta = f'\n  <meta property="og:image" content="{image_url}">'
+    # The card can use the (potentially SVG) teaser; og:image switches to a PNG
+    # counterpart when available, since social crawlers don't render SVG.
+    og_teaser = _resolve_og_teaser(slug, teaser)
+
+    if teaser and og_teaser:
+        image_url = f"https://www.llm-works.ai/blog/{slug}/assets/{og_teaser}"
+        dims = _image_dims(_asset_path(slug, og_teaser))
+        dims_meta = ""
+        if dims:
+            w, h = dims
+            dims_meta = (
+                f'\n  <meta property="og:image:width" content="{w}">'
+                f'\n  <meta property="og:image:height" content="{h}">'
+            )
+        og_image_meta = (
+            f'\n  <meta property="og:image" content="{image_url}">'
+            f'{dims_meta}'
+        )
         twitter_image_meta = f'\n  <meta name="twitter:image" content="{image_url}">'
         twitter_card = "summary_large_image"
     else:
@@ -438,9 +605,12 @@ def build_post(src_dir: Path) -> dict | None:
         "date": date,
         "date_iso": date.strftime("%Y-%m-%d"),
         "date_display": date.strftime("%B %d, %Y"),
+        "modified": modified,
+        "modified_iso": modified.strftime("%Y-%m-%d"),
         "content": html_content,
         "teaser": teaser,
         "teaser_light": teaser_light,
+        "og_teaser": og_teaser,
         "og_image_meta": og_image_meta,
         "twitter_image_meta": twitter_image_meta,
         "twitter_card": twitter_card,
@@ -455,11 +625,13 @@ def build_post(src_dir: Path) -> dict | None:
     if kicker_raw:
         kicker_meta = f'\n          <div class="section-label post-kicker">{escape(kicker_raw)}</div>'
 
-    # Write HTML (escape title/description for HTML attributes)
+    # Write HTML (escape title/description for HTML attributes; JSON-LD gets
+    # the raw values via json.dumps which handles quoting).
     html = POST_TEMPLATE.format(
         **{**post_data, "title": escape(post_data["title"]),
            "description": escape(post_data["description"]),
-           "kicker_meta": kicker_meta}
+           "kicker_meta": kicker_meta,
+           "post_jsonld": _post_jsonld(post_data)}
     )
     (out_dir / "index.html").write_text(html, encoding="utf-8")
     print(f"  Built: /blog/{slug}/")
@@ -503,7 +675,7 @@ def build_index(posts: list[dict]) -> None:
         for p in posts_sorted
     )
 
-    html = INDEX_TEMPLATE.format(posts=cards)
+    html = INDEX_TEMPLATE.format(posts=cards, index_jsonld=_index_jsonld(posts))
     (ROOT / "index.html").write_text(html, encoding="utf-8")
     print("  Built: /blog/")
 
@@ -512,12 +684,29 @@ def build_rss(posts: list[dict]) -> None:
     """Build the RSS feed."""
     posts_sorted = sorted(posts, key=lambda p: p["date"], reverse=True)
 
+    def _enclosure(p: dict) -> str:
+        teaser = p.get("og_teaser") or ""
+        if not teaser:
+            return ""
+        path = _asset_path(p["slug"], teaser)
+        if not path.exists():
+            return ""
+        ext = "." + teaser.rsplit(".", 1)[-1].lower()
+        mime = _IMAGE_MIME.get(ext, "application/octet-stream")
+        url = f"{SITE_URL}/blog/{p['slug']}/assets/{teaser}"
+        length = path.stat().st_size
+        return (
+            f'\n      <enclosure url="{url}" length="{length}" type="{mime}"/>'
+            f'\n      <media:content url="{url}" medium="image" type="{mime}"/>'
+        )
+
     items = "\n".join(
         RSS_ITEM_TEMPLATE.format(
             slug=p["slug"],
             title=escape(p["title"]),
             description=escape(p["description"]),
             pub_date=p["date"].strftime("%a, %d %b %Y 00:00:00 +0000"),
+            enclosure=_enclosure(p),
         )
         for p in posts_sorted
     )
@@ -531,7 +720,9 @@ def build_rss(posts: list[dict]) -> None:
 
 
 def _asset_hash(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()[:8]
+    # md5[:8] to stay consistent with the Makefile's `bump-css` / `bump-js`
+    # targets, so either mechanism produces the same cache-busting tag.
+    return hashlib.md5(path.read_bytes()).hexdigest()[:8]
 
 
 def stamp_assets() -> None:

@@ -12,7 +12,11 @@
   <meta property="og:url" content="https://www.llm-works.ai/blog/ontology-driven-multi-role-llm-loops/">
   <meta property="og:site_name" content="LLM Works">
   <meta property="og:image" content="https://www.llm-works.ai/blog/ontology-driven-multi-role-llm-loops/assets/teaser.png">
+  <meta property="og:image:width" content="1500">
+  <meta property="og:image:height" content="900">
   <meta property="article:published_time" content="2026-09-07">
+  <meta property="article:modified_time" content="2026-09-07">
+  <meta property="article:author" content="https://www.llm-works.ai/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Ontology-driven multi-role LLM loops in production">
   <meta name="twitter:description" content="Field notes from running an ontology-driven multi-role LLM research loop in xray for over a month. What works, where ontology non-determinism at generation time bites, and where mitigation is heading.">
@@ -21,6 +25,41 @@
   <link rel="alternate" type="application/rss+xml" title="LLM Works Blog" href="/blog/feed.xml">
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.llm-works.ai/#organization",
+        "name": "LLM Works",
+        "url": "https://www.llm-works.ai/",
+        "logo": "https://www.llm-works.ai/assets/favicon-32x32.png"
+      },
+      {
+        "@type": "BlogPosting",
+        "@id": "https://www.llm-works.ai/blog/ontology-driven-multi-role-llm-loops/#post",
+        "url": "https://www.llm-works.ai/blog/ontology-driven-multi-role-llm-loops/",
+        "mainEntityOfPage": {
+          "@id": "https://www.llm-works.ai/blog/ontology-driven-multi-role-llm-loops/"
+        },
+        "headline": "Ontology-driven multi-role LLM loops in production",
+        "description": "Field notes from running an ontology-driven multi-role LLM research loop in xray for over a month. What works, where ontology non-determinism at generation time bites, and where mitigation is heading.",
+        "datePublished": "2026-09-07",
+        "dateModified": "2026-09-07",
+        "inLanguage": "en",
+        "author": {
+          "@id": "https://www.llm-works.ai/#organization"
+        },
+        "publisher": {
+          "@id": "https://www.llm-works.ai/#organization"
+        },
+        "image": "https://www.llm-works.ai/blog/ontology-driven-multi-role-llm-loops/assets/teaser.png"
+      }
+    ]
+  }
+  </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -28,8 +67,8 @@
     gtag('js', new Date());
     gtag('config', 'G-PLTFCVZQ8R');
   </script>
-  <link rel="stylesheet" href="/styles.css?v=388bacbc">
-  <script src="/script.js?v=2414088a"></script>
+  <link rel="stylesheet" href="/styles.css?v=eb7bcc1e">
+  <script src="/script.js?v=4ac37969"></script>
 </head>
 <body class="blog-post">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -126,7 +165,8 @@ Relationship: Model belongs-to Provider
         running it against a single weaker model degrades ontology quality in ways that cascade.</p>
         <p><strong>Tools fail, so the loop has to degrade gracefully.</strong> Web search, fetch, and DB queries all
         have transient failure rates that show up at scale. This is handled by retries that live at
-        multiple layers of the stack (inference-side in llm-infer, guard-side in llm-saia). When
+        multiple layers of the stack (inference-side in <a href="/platform/">llm-infer</a>, guard-side in
+        <a href="/platform/">llm-saia</a>). When
         retries do exhaust, the affected attributes are marked unresolved and synthesis notes the gap
         without aborting the run.</p>
         <p><strong>A wrong ontology is expensive.</strong> If step 1 misreads the query, every downstream call is wasted
