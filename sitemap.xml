@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://www.llm-works.ai/</loc>
-    <lastmod>2026-09-12</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <priority>1.0</priority>
   </url>
   <url>
@@ -17,47 +17,47 @@
   </url>
   <url>
     <loc>https://www.llm-works.ai/blog/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://www.llm-works.ai/about/</loc>
-    <lastmod>2026-09-12</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.llm-works.ai/blog/ontology-driven-multi-role-llm-loops/</loc>
-    <lastmod>2026-09-07</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://www.llm-works.ai/blog/agent-governance-landscape-aug-2026/</loc>
-    <lastmod>2026-08-15</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://www.llm-works.ai/blog/introducing-xray/</loc>
-    <lastmod>2026-08-05</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://www.llm-works.ai/blog/introducing-llm-news/</loc>
-    <lastmod>2026-03-31</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://www.llm-works.ai/blog/saia-verbs-for-llm-agents/</loc>
-    <lastmod>2026-03-27</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://www.llm-works.ai/blog/building-agent-infrastructure/</loc>
-    <lastmod>2026-03-19</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://www.llm-works.ai/blog/fine-tuned-3b-beats-haiku/</loc>
-    <lastmod>2026-03-12</lastmod>
+    <lastmod>2026-09-13</lastmod>
     <priority>0.5</priority>
   </url>
 </urlset>

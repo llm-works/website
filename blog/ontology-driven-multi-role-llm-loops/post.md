@@ -91,7 +91,8 @@ running it against a single weaker model degrades ontology quality in ways that 
 
 **Tools fail, so the loop has to degrade gracefully.** Web search, fetch, and DB queries all
 have transient failure rates that show up at scale. This is handled by retries that live at
-multiple layers of the stack (inference-side in llm-infer, guard-side in llm-saia). When
+multiple layers of the stack (inference-side in [llm-infer](/platform/), guard-side in
+[llm-saia](/platform/)). When
 retries do exhaust, the affected attributes are marked unresolved and synthesis notes the gap
 without aborting the run.
 

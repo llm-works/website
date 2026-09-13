@@ -1096,6 +1096,27 @@ html.light-mode .code-example .c-comment { font-weight: 500; }
 
 .about-direction { font-style: italic; }
 
+body.about .why-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  max-width: 900px;
+}
+
+body.about .why-list li {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+body.about .why-list li strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
 .link-list {
   margin-top: 24px;
   display: flex;
