@@ -447,7 +447,12 @@ def _org_node() -> dict:
         "@id": ORG_ID,
         "name": "LLM Works",
         "url": f"{SITE_URL}/",
-        "logo": f"{SITE_URL}/assets/favicon-32x32.png",
+        "logo": {
+            "@type": "ImageObject",
+            "url": f"{SITE_URL}/assets/logo-512.png",
+            "width": 512,
+            "height": 512,
+        },
     }
 
 
@@ -567,9 +572,12 @@ def build_post(src_dir: Path) -> dict | None:
     else:
         teaser_light = teaser
 
-    # The card can use the (potentially SVG) teaser; og:image switches to a PNG
-    # counterpart when available, since social crawlers don't render SVG.
-    og_teaser = _resolve_og_teaser(slug, teaser)
+    # og:image prefers explicit header.og_image, falls back to teaser.
+    # Either way, resolve SVG to PNG since social crawlers don't render SVG.
+    og_image_path = frontmatter.get("header_og_image", "")
+    og_image = og_image_path.split("/")[-1] if og_image_path else ""
+    og_source = og_image or teaser
+    og_teaser = _resolve_og_teaser(slug, og_source)
 
     if teaser and og_teaser:
         image_url = f"https://www.llm-works.ai/blog/{slug}/assets/{og_teaser}"
