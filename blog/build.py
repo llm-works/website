@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
 from urllib.parse import urlparse
+from zoneinfo import ZoneInfo
 
 import markdown
 import yaml
@@ -26,6 +27,24 @@ except ImportError:
 
 SITE_URL = "https://www.llm-works.ai"
 ORG_ID = f"{SITE_URL}/#organization"
+
+# Post frontmatter carries date-only values. Google's Rich Results test rejects
+# date-only datePublished / dateModified as invalid — needs a full ISO 8601
+# datetime with an offset. All posts are authored in Knoxville, TN; anchor to
+# America/New_York so the offset shifts with DST rather than hardcoding EDT.
+_POST_TZ = ZoneInfo("America/New_York")
+
+
+def _post_iso(d: datetime) -> str:
+    """Render a naive post date as ISO 8601 at local midnight with offset."""
+    return d.replace(hour=0, minute=0, second=0, tzinfo=_POST_TZ).isoformat(timespec="seconds")
+
+
+def _post_rfc822(d: datetime) -> str:
+    """Render a naive post date as RFC 822 at local midnight with offset."""
+    aware = d.replace(hour=0, minute=0, second=0, tzinfo=_POST_TZ)
+    return aware.strftime("%a, %d %b %Y %H:%M:%S %z")
+
 
 ROOT = Path(__file__).parent
 SITE_ROOT = ROOT.parent
@@ -482,13 +501,19 @@ def _post_jsonld(post: dict) -> str:
 
 
 def _index_jsonld(posts: list[dict]) -> str:
-    """Blog + ItemList + Organization @graph for the blog index page."""
+    """Blog + ItemList + Organization @graph for the blog index page.
+
+    The ItemList follows Google's summary-page carousel form (position + url
+    only). Emitting the Blog node with an inline `blogPost` array of @id refs
+    trips the Rich Results tester into evaluating each ref as an incomplete
+    Article — the referenced BlogPosting nodes live on the individual post
+    pages, not in this graph — so the Blog node here stays free of that field.
+    """
     blog_url = f"{SITE_URL}/blog/"
     posts_sorted = sorted(posts, key=lambda p: p["date"], reverse=True)
-    blog_posts = [{"@id": f"{SITE_URL}/blog/{p['slug']}/#post"} for p in posts_sorted]
     item_list = [
         {"@type": "ListItem", "position": i + 1,
-         "url": f"{SITE_URL}/blog/{p['slug']}/", "name": p["title"]}
+         "url": f"{SITE_URL}/blog/{p['slug']}/"}
         for i, p in enumerate(posts_sorted)
     ]
     blog_node = {
@@ -499,7 +524,6 @@ def _index_jsonld(posts: list[dict]) -> str:
         "description": "Technical writing on AI infrastructure, agent development, and fine-tuning.",
         "publisher": {"@id": ORG_ID},
         "inLanguage": "en",
-        "blogPost": blog_posts,
     }
     itemlist_node = {
         "@type": "ItemList",
@@ -611,10 +635,10 @@ def build_post(src_dir: Path) -> dict | None:
         "title": frontmatter["title"],
         "description": (frontmatter.get("description") or "").strip(),
         "date": date,
-        "date_iso": date.strftime("%Y-%m-%d"),
+        "date_iso": _post_iso(date),
         "date_display": date.strftime("%B %d, %Y"),
         "modified": modified,
-        "modified_iso": modified.strftime("%Y-%m-%d"),
+        "modified_iso": _post_iso(modified),
         "content": html_content,
         "teaser": teaser,
         "teaser_light": teaser_light,
@@ -713,7 +737,7 @@ def build_rss(posts: list[dict]) -> None:
             slug=p["slug"],
             title=escape(p["title"]),
             description=escape(p["description"]),
-            pub_date=p["date"].strftime("%a, %d %b %Y 00:00:00 +0000"),
+            pub_date=_post_rfc822(p["date"]),
             enclosure=_enclosure(p),
         )
         for p in posts_sorted

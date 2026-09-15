@@ -18,6 +18,35 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.llm-works.ai/#organization",
+        "name": "LLM Works",
+        "url": "https://www.llm-works.ai/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.llm-works.ai/assets/logo-512.png",
+          "width": 512,
+          "height": 512
+        },
+        "founder": { "@id": "https://www.llm-works.ai/about/#person" }
+      },
+      {
+        "@type": "Person",
+        "@id": "https://www.llm-works.ai/about/#person",
+        "name": "Tilo Ochotta",
+        "jobTitle": "Architect & founder",
+        "url": "https://www.linkedin.com/in/ochotta",
+        "sameAs": ["https://github.com/serendip-ml"],
+        "worksFor": { "@id": "https://www.llm-works.ai/#organization" }
+      }
+    ]
+  }
+  </script>
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
