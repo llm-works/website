@@ -21,8 +21,8 @@ feeds. Keeping up means scanning hundreds of articles daily, most of which are r
 releases or low-substance hype. We wanted a service that does the filtering for us: pull from
 everywhere, surface what actually matters, skip the noise.
 
-It's live at <a href="https://news.llm-works.ai" target="_blank" rel="noopener
-noreferrer">news.llm-works.ai</a>.
+It's live at <a href="https://llm-news.ai" target="_blank" rel="noopener
+noreferrer">llm-news.ai</a>.
 
 ## What It Does
 
@@ -71,8 +71,8 @@ without code changes.
 ## Try It
 
 Pick a persona that matches how you consume news and browse today's digest at
-<a href="https://news.llm-works.ai" target="_blank" rel="noopener
-noreferrer">news.llm-works.ai</a>.
+<a href="https://llm-news.ai" target="_blank" rel="noopener
+noreferrer">llm-news.ai</a>.
 
 Feedback welcome at <a href="https://x.com/serendip_ml" target="_blank" rel="noopener
 noreferrer">@serendip_ml</a>.
