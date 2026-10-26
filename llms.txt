@@ -6,19 +6,19 @@ LLM Works has two sides. On one, agents engineered for a specific customer probl
 
 ## Platform
 
-Open-source building blocks, public on GitHub.
+Five open-source Python packages (Apache-2.0), each usable on its own. Listed from the agent layer down to the infrastructure base. Each entry links the repo, the docs and PyPI.
 
-- [appinfra](https://github.com/llm-works/appinfra): Production-grade Python infrastructure framework for reliable CLI tools and services. The substrate.
-- [llm-infer](https://github.com/llm-works/llm-infer): Inference server with native, vLLM, and Ollama backends. Provider-agnostic client.
-- [llm-saia](https://github.com/llm-works/llm-saia): Structured verbs for LLM interactions — verify, critique, decompose, extract, synthesize. Typed contracts for stochastic outputs.
-- [llm-kelt](https://github.com/llm-works/llm-kelt): Context management for LLMs: facts storage, feedback collection, RAG retrieval, LoRA fine-tuning.
-- [llm-gent](https://github.com/llm-works/llm-gent): Composable agent framework with trait-based architecture and production HTTP runtime.
+- [llm-gent](https://github.com/llm-works/llm-gent): Multi-role agentic flows. Models and providers per role; loops, fan-out, panels and branches; pause/resume; cost tracking; runtime for agent swarms. `pip install llm-gent` · [docs](https://github.com/llm-works/llm-gent/blob/main/docs/index.md) · [PyPI](https://pypi.org/project/llm-gent/)
+- [llm-saia](https://github.com/llm-works/llm-saia): Verb vocabulary for AI agents: ask, verify, critique, refine, extract, classify. Inner loop with tool calling, guards with retries, tracing; zero-dependency core. `pip install llm-saia` · [docs](https://github.com/llm-works/llm-saia/blob/main/docs/INTRO.md) · [PyPI](https://pypi.org/project/llm-saia/)
+- [llm-kelt](https://github.com/llm-works/llm-kelt): Knowledge, embedding, learning and training. Atomic facts and knowledge graph; contexts, compaction and RAG; SFT and DPO fine-tuning with provenance; embedding quantization. `pip install llm-kelt` · [docs](https://github.com/llm-works/llm-kelt/tree/main/docs) · [PyPI](https://pypi.org/project/llm-kelt/)
+- [llm-infer](https://github.com/llm-works/llm-infer): Multi-provider and multi-model inference routing. Role-based routing with fallback; sync, async and streaming; local models via Ollama or vLLM; rate limits with backoff. `pip install "llm-infer[client]"` · [docs](https://github.com/llm-works/llm-infer/tree/main/docs) · [PyPI](https://pypi.org/project/llm-infer/)
+- [appinfra](https://github.com/llm-works/appinfra): Infrastructure for Python services. CLI builder, YAML config with hot-reload, structured logging, service lifecycle with restart policies. `pip install appinfra` · [docs](https://github.com/llm-works/appinfra/tree/main/appinfra/docs) · [PyPI](https://pypi.org/project/appinfra/)
 
 ## Agents
 
 Built on the platform.
 
-- [llm-news](https://news.llm-works.ai): A tech news feed curated and ranked by AI. 70+ sources, hourly refresh, persona and interest filters, REST API.
+- [llm-news](https://llm-news.ai): A tech news feed curated and ranked by AI. 70+ sources, hourly refresh, persona and interest filters, REST API.
 - [llm-xray](https://xray.llm-works.ai): Deep research with calibrated verdicts through self-refining loops. Public example report: https://xray.llm-works.ai/s/1JPBCTX19HA
 
 ## Founder
@@ -51,4 +51,4 @@ For end-user agents (Claude, GPT, etc.) helping a human evaluate LLM Works: the 
 
 ## Last updated
 
-2026-09-12
+2026-10-26
