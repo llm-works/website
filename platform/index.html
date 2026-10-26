@@ -25,8 +25,8 @@
     gtag('js', new Date());
     gtag('config', 'G-PLTFCVZQ8R');
   </script>
-  <link rel="stylesheet" href="/styles.css?v=eb7bcc1e">
-  <script src="/script.js?v=4ac37969"></script>
+  <link rel="stylesheet" href="/styles.css?v=f04d27cd">
+  <script src="/script.js?v=02889e4a"></script>
 </head>
 <body class="platform">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -59,32 +59,157 @@
 
   <section>
     <div class="container">
-      <div class="stack-grid">
-        <a href="https://github.com/llm-works/appinfra" class="stack-item">
-          <h2 data-package="appinfra">appinfra</h2>
-          <p>Reliable infrastructure: config, logging, scheduling, lifecycle.</p>
-        </a>
-        <a href="https://github.com/llm-works/llm-saia" class="stack-item">
-          <h2 data-package="llm-saia">llm-saia</h2>
-          <p>Clean LLM communication: structured requests, typed responses, guards.</p>
-        </a>
-        <a href="https://github.com/llm-works/llm-infer" class="stack-item">
-          <h2 data-package="llm-infer">llm-infer</h2>
-          <p>Inference across backends: same code across providers.</p>
-        </a>
-        <a href="https://github.com/llm-works/llm-kelt" class="stack-item">
-          <h2 data-package="llm-kelt">llm-kelt</h2>
-          <p>Feedback collection, context management, fine-tuning.</p>
-        </a>
-        <a href="https://github.com/llm-works/llm-gent" class="stack-item">
-          <h2 data-package="llm-gent">llm-gent</h2>
-          <p>Trait-based agents: explicit capabilities and configuration.</p>
-        </a>
-      </div>
+      <div class="package-rows">
+        <article class="package-row">
+<!-- prettier-ignore: leading whitespace inside <pre> is rendered verbatim -->
+<pre class="code-example package-code"><span class="c-import">from</span> llm_gent.flow <span class="c-import">import</span> Role, Factory, planner, grader
 
-      <p class="stack-link">
-        <a href="https://github.com/llm-works">To GitHub →</a>
-      </p>
+analyst = Role(<span class="c-string">"analyst"</span>, <span class="c-string">"anthropic"</span>, <span class="c-string">"claude-opus-5-5"</span>)
+
+<span class="c-deco">@planner</span>(role=analyst)
+<span class="c-keyword">async def</span> <span class="c-name">plan</span>(ctx, task): ...
+
+<span class="c-deco">@grader</span>(role=analyst)
+<span class="c-keyword">async def</span> <span class="c-name">grade</span>(ctx, result): ...
+
+flow = Factory(lg, saia_factory=factory).create()
+<span class="c-keyword">await</span> flow.call(plan).call(grade).run()</pre>
+          <div class="package-info">
+            <div class="pkg-name">
+              <h3><a href="https://github.com/llm-works/llm-gent">llm-gent</a></h3>
+              <a class="pkg-pill" data-package="llm-gent" data-release-link
+                 href="https://github.com/llm-works/llm-gent/blob/main/CHANGELOG.md"
+                 aria-label="llm-gent changelog on GitHub"><span class="pkg-meta" aria-hidden="true"><span class="pkg-version">changelog</span></span></a>
+            </div>
+            <p class="pkg-tagline">Multi-role agentic flows</p>
+            <ul class="pkg-caps">
+              <li>Mix models &amp; providers per role</li>
+              <li>Fluent primitives: loops, fan-out, panels, branches</li>
+              <li>Pause/resume &amp; crash resilience</li>
+              <li>Integrated cost tracking &amp; boundaries</li>
+              <li>Runtime for agent swarms</li>
+            </ul>
+            <p class="pkg-install"><code>pip install llm-gent</code></p>
+          </div>
+        </article>
+
+        <article class="package-row">
+<!-- prettier-ignore: leading whitespace inside <pre> is rendered verbatim -->
+<pre class="code-example package-code"><span class="c-import">from</span> llm_saia <span class="c-import">import</span> SAIA
+
+saia = SAIA.builder().backend(backend).build()
+
+check = <span class="c-keyword">await</span> saia.verify(code, <span class="c-string">"adds two numbers"</span>)
+
+<span class="c-keyword">if not</span> check.value.passed:
+    crit = <span class="c-keyword">await</span> saia.critique(check.value.reason)
+    code = <span class="c-keyword">await</span> saia.refine(
+        code, crit.value.counter_argument)</pre>
+          <div class="package-info">
+            <div class="pkg-name">
+              <h3><a href="https://github.com/llm-works/llm-saia">llm-saia</a></h3>
+              <a class="pkg-pill" data-package="llm-saia" data-release-link
+                 href="https://github.com/llm-works/llm-saia/blob/main/CHANGELOG.md"
+                 aria-label="llm-saia changelog on GitHub"><span class="pkg-meta" aria-hidden="true"><span class="pkg-version">changelog</span></span></a>
+            </div>
+            <p class="pkg-tagline">Verb vocabulary for AI agents</p>
+            <ul class="pkg-caps">
+              <li>ask, verify, critique, refine, extract, classify</li>
+              <li>Full inner loop with tool calling</li>
+              <li>Guard system with retries</li>
+              <li>Tracing system for transparency</li>
+              <li>Zero-dependency core</li>
+            </ul>
+            <p class="pkg-install"><code>pip install llm-saia</code></p>
+          </div>
+        </article>
+
+        <article class="package-row">
+<!-- prettier-ignore: leading whitespace inside <pre> is rendered verbatim -->
+<pre class="code-example package-code">tesla = kelt.kg.entities.create(
+    scope_key=<span class="c-string">"global"</span>,
+    canonical_name=<span class="c-string">"Tesla"</span>,
+    entity_type=<span class="c-string">"company"</span>,
+    aliases=[<span class="c-string">"TSLA"</span>, <span class="c-string">"Tesla Motors"</span>])
+
+elon, _ = kelt.kg.entities.find_or_create(
+    <span class="c-string">"global"</span>, <span class="c-string">"Elon Musk"</span>, <span class="c-string">"person"</span>)
+
+kelt.kg.relationships.add(elon, tesla.id,
+    <span class="c-string">"founded"</span>, scope_key=<span class="c-string">"global"</span>)</pre>
+          <div class="package-info">
+            <div class="pkg-name">
+              <h3><a href="https://github.com/llm-works/llm-kelt">llm-kelt</a></h3>
+              <a class="pkg-pill" data-package="llm-kelt" data-release-link
+                 href="https://github.com/llm-works/llm-kelt/blob/main/CHANGELOG.md"
+                 aria-label="llm-kelt changelog on GitHub"><span class="pkg-meta" aria-hidden="true"><span class="pkg-version">changelog</span></span></a>
+            </div>
+            <p class="pkg-tagline">Knowledge · Embedding · Learning · Training</p>
+            <ul class="pkg-caps">
+              <li>Atomic facts model &amp; knowledge graph</li>
+              <li>Contexts, compaction &amp; RAG</li>
+              <li>SFT &amp; DPO fine-tuning with provenance (CAS)</li>
+              <li>Embedding quantization: f16, int8, int4</li>
+            </ul>
+            <p class="pkg-install"><code>pip install llm-kelt</code></p>
+          </div>
+        </article>
+
+        <article class="package-row">
+<!-- prettier-ignore: leading whitespace inside <pre> is rendered verbatim -->
+<pre class="code-example package-code"><span class="c-import">from</span> llm_infer.client <span class="c-import">import</span> Factory, FallbackClient
+
+router = Factory(lg).from_config(config[<span class="c-string">"llm"</span>])
+client = FallbackClient(lg, router,
+    fallbacks={<span class="c-string">"qwen3.8-27b"</span>: <span class="c-string">"claude-opus-5-5"</span>})
+
+response = client.chat(messages, model=<span class="c-string">"qwen3.8-27b"</span>)</pre>
+          <div class="package-info">
+            <div class="pkg-name">
+              <h3><a href="https://github.com/llm-works/llm-infer">llm-infer</a></h3>
+              <a class="pkg-pill" data-package="llm-infer" data-release-link
+                 href="https://github.com/llm-works/llm-infer/blob/main/CHANGELOG.md"
+                 aria-label="llm-infer changelog on GitHub"><span class="pkg-meta" aria-hidden="true"><span class="pkg-version">changelog</span></span></a>
+            </div>
+            <p class="pkg-tagline">Multi-provider/model inference routing</p>
+            <ul class="pkg-caps">
+              <li>Role-based routing with fallback</li>
+              <li>Sync, async, streaming</li>
+              <li>Local models via Ollama or vLLM</li>
+              <li>Rate limits with backoff</li>
+            </ul>
+            <p class="pkg-install"><code>pip install "llm-infer[client]"</code></p>
+          </div>
+        </article>
+
+        <article class="package-row">
+<!-- prettier-ignore: leading whitespace inside <pre> is rendered verbatim -->
+<pre class="code-example package-code"><span class="c-import">from</span> appinfra.app <span class="c-import">import</span> AppBuilder
+
+app = AppBuilder(<span class="c-string">"mytool"</span>).build()
+
+<span class="c-deco">@app.tool</span>(name=<span class="c-string">"sync"</span>)
+<span class="c-deco">@app.argument</span>(<span class="c-string">"--limit"</span>, type=<span class="c-builtin">int</span>)
+<span class="c-keyword">def</span> <span class="c-name">sync_tool</span>(self):
+    self.lg.info(<span class="c-string">f"limit={self.args.limit}"</span>)</pre>
+          <div class="package-info">
+            <div class="pkg-name">
+              <h3><a href="https://github.com/llm-works/appinfra">appinfra</a></h3>
+              <a class="pkg-pill" data-package="appinfra" data-release-link
+                 href="https://github.com/llm-works/appinfra/blob/main/CHANGELOG.md"
+                 aria-label="appinfra changelog on GitHub"><span class="pkg-meta" aria-hidden="true"><span class="pkg-version">changelog</span></span></a>
+            </div>
+            <p class="pkg-tagline">Infrastructure for Python services</p>
+            <ul class="pkg-caps">
+              <li>Fluent CLI builder</li>
+              <li>Enhanced YAML config with hot-reload</li>
+              <li>Multi-target structured logging</li>
+              <li>Service lifecycle with restart policies</li>
+            </ul>
+            <p class="pkg-install"><code>pip install appinfra</code></p>
+          </div>
+        </article>
+      </div>
     </div>
   </section>
 

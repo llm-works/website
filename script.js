@@ -95,7 +95,20 @@
     return earliest;
   }
 
+  // CHANGELOG.md at the release tag: its top entry is that release, unlike the
+  // GitHub release page, which lists every merged PR.
+  function changelogUrl(pkg, version) {
+    return 'https://github.com/llm-works/' + pkg + '/blob/v' + version + '/CHANGELOG.md';
+  }
+
   function renderPackage(host, entry) {
+    var pkg = host.getAttribute('data-package');
+    // Hosts marked data-release-link point at the release's changelog once the
+    // version is known. The static fallback href (CHANGELOG.md on main, the release
+    // branch) stays valid until then.
+    if (pkg && host.tagName === 'A' && host.hasAttribute('data-release-link')) {
+      host.setAttribute('href', changelogUrl(pkg, entry.version));
+    }
     var meta = host.querySelector('.pkg-meta');
     if (!meta) {
       meta = document.createElement('span');
@@ -123,7 +136,7 @@
       pill = document.createElement('span');
       pill.className = 'pkg-new';
       pill.textContent = 'new';
-      meta.insertBefore(pill, version);
+      meta.appendChild(pill);
     } else if (!isNew && pill) {
       pill.remove();
     }
@@ -173,6 +186,40 @@
     try { localStorage.setItem(DISMISS_KEY, key); } catch (e) {}
   }
 
+  function renderReleaseFull(recent) {
+    var full = document.createElement('span');
+    full.className = 'release-banner-full';
+    var label = document.createElement('span');
+    label.className = 'release-banner-label';
+    label.textContent = recent.length === 1
+      ? 'New platform lib release: '
+      : 'New platform lib releases: ';
+    full.appendChild(label);
+    recent.forEach(function (e, idx) {
+      if (idx > 0) full.appendChild(document.createTextNode(', '));
+      var link = document.createElement('a');
+      link.href = changelogUrl(e.pkg, e.version);
+      link.textContent = e.pkg + ' v' + e.version;
+      full.appendChild(link);
+    });
+    return full;
+  }
+
+  // Shown instead of the full list when it doesn't fit (phones); the platform
+  // page's version pills carry each release's version and changelog link.
+  function renderReleaseCompact(recent) {
+    var link = document.createElement('a');
+    link.className = 'release-banner-compact';
+    if (recent.length === 1) {
+      link.href = changelogUrl(recent[0].pkg, recent[0].version);
+      link.textContent = recent[0].pkg + ' v' + recent[0].version + ' released';
+    } else {
+      link.href = '/platform/';
+      link.textContent = recent.length + ' new platform lib releases →';
+    }
+    return link;
+  }
+
   function collectReleaseItem() {
     var promises = PACKAGES.map(function (pkg) {
       return getPackage(pkg).then(function (entry) {
@@ -191,19 +238,8 @@
         date: recent[0].uploadedAt,
         key: 'release:' + recent.map(function (e) { return e.pkg + '@' + e.version; }).sort().join(','),
         render: function (parent) {
-          var label = document.createElement('span');
-          label.className = 'release-banner-label';
-          label.textContent = recent.length === 1
-            ? 'New platform lib release: '
-            : 'New platform lib releases: ';
-          parent.appendChild(label);
-          recent.forEach(function (e, idx) {
-            if (idx > 0) parent.appendChild(document.createTextNode(', '));
-            var link = document.createElement('a');
-            link.href = 'https://github.com/llm-works/' + e.pkg + '/releases/tag/v' + e.version;
-            link.textContent = e.pkg + ' v' + e.version;
-            parent.appendChild(link);
-          });
+          parent.appendChild(renderReleaseFull(recent));
+          parent.appendChild(renderReleaseCompact(recent));
         }
       };
     });
@@ -303,9 +339,11 @@
     var syncTop = function () {
       if (nav) banner.style.top = (nav.offsetHeight - 1) + 'px';
     };
+    var overflows = function () { return banner.scrollWidth > banner.clientWidth + 1; };
     var updateLayout = function () {
-      banner.classList.remove('stacked');
-      if (banner.scrollWidth > banner.clientWidth + 1) banner.classList.add('stacked');
+      banner.classList.remove('stacked', 'compact');
+      if (overflows()) banner.classList.add('compact');
+      if (overflows()) banner.classList.add('stacked');
     };
     var onResize = function () { syncTop(); updateLayout(); };
     syncTop();

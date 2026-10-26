@@ -160,11 +160,19 @@ nav .container {
   text-overflow: ellipsis;
 }
 
+/* Rows centered in the fixed 40px so one row sits mid-banner and two rows fill it. */
 .release-banner.stacked {
-  padding: 1px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 40px;
   line-height: 19px;
   white-space: normal;
 }
+
+.release-banner-compact { display: none; }
+.release-banner.compact .release-banner-full { display: none; }
+.release-banner.compact .release-banner-compact { display: inline; }
 
 .release-banner-item { display: inline; }
 .release-banner.stacked .release-banner-item {
@@ -873,17 +881,185 @@ a.stack-item:focus-visible {
   line-height: 1.5;
 }
 
-.stack-link {
-  margin-top: 20px;
-  font-size: 14px;
+
+/* --- Platform package rows (row-per-package layout, code on the left) --- */
+body.platform .package-rows {
+  display: flex;
+  flex-direction: column;
 }
 
-.stack-link a {
-  color: var(--accent);
+body.platform .package-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+  padding: calc(var(--card-pad) + 4px) 0;
+}
+
+body.platform .package-row + .package-row {
+  border-top: 1px solid var(--edge-raised);
+}
+
+body.platform .package-code {
+  min-width: 0;
+  margin: 0;
+  padding: 16px 20px;
+  font-size: 12px;
+  line-height: 1.6;
+  align-self: stretch;
+  /* No wrap — code samples are hand-formatted with Python multiline
+     conventions so every line fits the column. If a line ever overflows,
+     that's a bug in the sample, not something CSS should paper over. */
+}
+
+body.platform .package-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+body.platform .pkg-name {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0;
+}
+
+body.platform .pkg-name h3 {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+body.platform .pkg-name h3 a {
+  color: inherit;
   text-decoration: none;
 }
 
-.stack-link a:hover { text-decoration: underline; }
+body.platform .pkg-name h3 a:hover,
+body.platform .pkg-name h3 a:focus-visible {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+body.platform a.pkg-pill {
+  display: inline-flex;
+  align-items: baseline;
+  text-decoration: none;
+}
+
+body.platform a.pkg-pill .pkg-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+body.platform a.pkg-pill .pkg-version {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+body.platform a.pkg-pill:hover .pkg-version,
+body.platform a.pkg-pill:focus-visible .pkg-version {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+body.platform a.pkg-pill:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+body.platform a.pkg-pill .pkg-new {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 1px 5px;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+body.platform .pkg-tagline {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.55;
+  margin: 0;
+}
+
+body.platform .pkg-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+body.platform .pkg-desc code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--text);
+  background: var(--bg-subtle);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+body.platform .pkg-caps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+body.platform .pkg-caps li {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.55;
+  padding-left: 20px;
+  position: relative;
+}
+
+body.platform .pkg-caps li::before {
+  content: "\2714";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--green);
+  font-weight: 900;
+}
+
+body.platform .pkg-install {
+  margin: 4px 0 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* Pseudo-element prompt stays out of the clipboard when the command is copied. */
+body.platform .pkg-install code::before {
+  content: "$ ";
+  color: var(--text-muted);
+}
+
+body.platform .package-interim {
+  margin-top: 24px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
 
 /* --- How we build / grading scorecard (platform page) --- */
 .rigor-grade {
@@ -1627,6 +1803,17 @@ html.light-mode .blog-neg { color: #dc2626; }
   .stack-grid > *:nth-child(4),
   .stack-grid > *:nth-child(5) { grid-column: 1; grid-row: auto; }
   .stack-grid .stack-item { min-height: auto; }
+
+  /* Platform package rows: stack code above info, no horizontal page scroll */
+  body.platform .package-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  body.platform .package-code {
+    font-size: 11px;
+    padding: 14px 16px;
+  }
 
   /* Font sizes: tighten */
   .hero h1 { font-size: clamp(24px, 6vw, 32px); }
