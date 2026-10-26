@@ -108,6 +108,7 @@
     // branch) stays valid until then.
     if (pkg && host.tagName === 'A' && host.hasAttribute('data-release-link')) {
       host.setAttribute('href', changelogUrl(pkg, entry.version));
+      host.setAttribute('aria-label', pkg + ' v' + entry.version + ' changelog on GitHub');
     }
     var meta = host.querySelector('.pkg-meta');
     if (!meta) {
