@@ -85,13 +85,6 @@ POST_TEMPLATE = """\
   <script type="application/ld+json">
 {post_jsonld}
   </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){{dataLayer.push(arguments);}}
-    gtag('js', new Date());
-    gtag('config', 'G-PLTFCVZQ8R');
-  </script>
   <link rel="stylesheet" href="/styles.css">
   <script src="/script.js"></script>
 </head>
@@ -177,13 +170,6 @@ INDEX_TEMPLATE = """\
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
   <script type="application/ld+json">
 {index_jsonld}
-  </script>
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PLTFCVZQ8R"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){{dataLayer.push(arguments);}}
-    gtag('js', new Date());
-    gtag('config', 'G-PLTFCVZQ8R');
   </script>
   <link rel="stylesheet" href="/styles.css">
   <script src="/script.js"></script>
