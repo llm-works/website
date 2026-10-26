@@ -160,11 +160,19 @@ nav .container {
   text-overflow: ellipsis;
 }
 
+/* Rows centered in the fixed 40px so one row sits mid-banner and two rows fill it. */
 .release-banner.stacked {
-  padding: 1px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 40px;
   line-height: 19px;
   white-space: normal;
 }
+
+.release-banner-compact { display: none; }
+.release-banner.compact .release-banner-full { display: none; }
+.release-banner.compact .release-banner-compact { display: inline; }
 
 .release-banner-item { display: inline; }
 .release-banner.stacked .release-banner-item {
@@ -507,6 +515,8 @@ body.story .consequences {
   gap: var(--card-gap);
 }
 body.story .consequence { padding: var(--card-pad) calc(var(--card-pad) + 4px); border-bottom: none; }
+/* Last grid row ends on --section-pad alone. */
+body.story .consequence:nth-last-child(-n+2) { padding-bottom: 0; }
 
 /* Alternating section backgrounds: even sections raised.
    Edges come from the global section + section rule; the tonal step + one hairline defines the boundary. */
@@ -873,17 +883,189 @@ a.stack-item:focus-visible {
   line-height: 1.5;
 }
 
-.stack-link {
-  margin-top: 20px;
-  font-size: 14px;
+
+/* --- Platform package rows (row-per-package layout, code on the left) --- */
+body.platform .package-rows {
+  display: flex;
+  flex-direction: column;
 }
 
-.stack-link a {
-  color: var(--accent);
+body.platform .package-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: center;
+  padding: calc(var(--card-pad) + 4px) 0;
+}
+
+body.platform .package-row + .package-row {
+  border-top: 1px solid var(--edge-raised);
+}
+
+/* Row padding separates rows; at the section edges --section-pad alone applies. */
+body.platform .package-row:first-child { padding-top: 0; }
+body.platform .package-row:last-child { padding-bottom: 0; }
+
+body.platform .package-code {
+  min-width: 0;
+  margin: 0;
+  padding: 16px 20px;
+  font-size: 12px;
+  line-height: 1.6;
+  align-self: stretch;
+  /* No wrap — code samples are hand-formatted with Python multiline
+     conventions so every line fits the column. If a line ever overflows,
+     that's a bug in the sample, not something CSS should paper over. */
+}
+
+body.platform .package-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+body.platform .pkg-name {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin: 0;
+}
+
+body.platform .pkg-name h2 {
+  font-family: var(--mono);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+  margin: 0;
+}
+
+body.platform .pkg-name h2 a {
+  color: inherit;
   text-decoration: none;
 }
 
-.stack-link a:hover { text-decoration: underline; }
+body.platform .pkg-name h2 a:hover,
+body.platform .pkg-name h2 a:focus-visible {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+body.platform a.pkg-pill {
+  display: inline-flex;
+  align-items: baseline;
+  text-decoration: none;
+}
+
+body.platform a.pkg-pill .pkg-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+
+body.platform a.pkg-pill .pkg-version {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--green);
+}
+
+body.platform a.pkg-pill:hover .pkg-version,
+body.platform a.pkg-pill:focus-visible .pkg-version {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+body.platform a.pkg-pill:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+body.platform a.pkg-pill .pkg-new {
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--bg);
+  background: var(--accent);
+  padding: 1px 5px;
+  border-radius: 3px;
+  line-height: 1;
+}
+
+body.platform .pkg-tagline {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.55;
+  margin: 0;
+}
+
+body.platform .pkg-desc {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin: 0;
+}
+
+body.platform .pkg-desc code {
+  font-family: var(--mono);
+  font-size: 12.5px;
+  color: var(--text);
+  background: var(--bg-subtle);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+body.platform .pkg-caps {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+body.platform .pkg-caps li {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.55;
+  padding-left: 20px;
+  position: relative;
+}
+
+body.platform .pkg-caps li::before {
+  content: "\2714";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--green);
+  font-weight: 900;
+}
+
+body.platform .pkg-install {
+  margin: 4px 0 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+}
+
+/* Pseudo-element prompt stays out of the clipboard when the command is copied. */
+body.platform .pkg-install code::before {
+  content: "$ ";
+  color: var(--text-muted);
+}
+
+body.platform .package-interim {
+  margin-top: 24px;
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
 
 /* --- How we build / grading scorecard (platform page) --- */
 .rigor-grade {
@@ -1263,7 +1445,7 @@ html.light-mode nav { background: rgba(255, 255, 255, 0.85); }
 body.blog-index .hero h1 { font-size: 32px; margin-bottom: 12px; }
 body.blog-index .hero p { font-size: 16px; color: var(--text-muted); }
 
-.blog-list { padding: var(--section-pad) 0 64px; }
+.blog-list { padding: var(--section-pad) 0; }
 
 .blog-hero:not([hidden]) {
   display: flex;
@@ -1338,7 +1520,7 @@ body.blog-index .hero p { font-size: 16px; color: var(--text-muted); }
 }
 
 /* --- Blog post --- */
-body.blog-post .post-header { padding: 48px 0; }
+body.blog-post .post-header { padding: var(--section-pad) 0 48px; }
 
 .post-header .post-date {
   font-family: var(--mono);
@@ -1392,9 +1574,12 @@ body.blog-post .post-header { padding: 48px 0; }
 }
 
 .post-content {
-  padding: 32px 0 64px;
+  padding: 32px 0 var(--section-pad);
   border-top: 1px solid var(--edge-raised);
 }
+
+.post-content .container > :last-child,
+.post-content .container > :last-child > :last-child { margin-bottom: 0; }
 
 .post-content h2 {
   font-size: 22px;
@@ -1628,6 +1813,17 @@ html.light-mode .blog-neg { color: #dc2626; }
   .stack-grid > *:nth-child(5) { grid-column: 1; grid-row: auto; }
   .stack-grid .stack-item { min-height: auto; }
 
+  /* Platform package rows: stack code above info, no horizontal page scroll */
+  body.platform .package-row {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  body.platform .package-code {
+    font-size: 11px;
+    padding: 14px 16px;
+  }
+
   /* Font sizes: tighten */
   .hero h1 { font-size: clamp(24px, 6vw, 32px); }
   .hero-statement { font-size: clamp(22px, 5.5vw, 30px); }
@@ -1674,10 +1870,12 @@ html.light-mode .blog-neg { color: #dc2626; }
 
   /* Blog: stack post-card content */
   .post-card-content { padding: var(--card-pad); }
-  .post-content { padding: 24px 0 48px; }
+  .post-content { padding: 24px 0 var(--section-pad); }
 
   /* Story: consequence cards stack */
   body.story .consequence { padding: 16px 0; }
+  /* Single column: only the last item ends the section. */
+  body.story .consequence:nth-last-child(2) { padding-bottom: 16px; }
   .timeline-item { padding-left: 20px; }
 
   /* About/Contact link-list: label on one line, link indented on next */
@@ -1889,6 +2087,9 @@ body.home.reframe .agent-row {
 body.home.reframe .agent-row + .agent-row {
   border-top: 1px solid var(--edge-raised);
 }
+
+/* Last row ends on --section-pad alone, like every other section. */
+body.home.reframe .agent-row:last-child { padding-bottom: 0; }
 
 body.home.reframe .agent-shot {
   min-width: 0;
