@@ -1,5 +1,14 @@
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
+/* Oswald (SIL OFL 1.1, assets/fonts/OFL-Oswald.txt): variable latin subset covering 600-700. */
+@font-face {
+  font-family: "Oswald";
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+  src: url("/assets/fonts/oswald-latin.woff2") format("woff2");
+}
+
 .nowrap { white-space: nowrap; }
 
 :root {
@@ -11,14 +20,12 @@
   /* Edge colors: oklch(from <surface> calc(l + var(--edge-step)) c h) — hex fallbacks for older browsers */
   --edge-raised: #353538;
   --edge-subtle: #454548;
-  --edge-red:    #504548;
   --text: #e4e4e7;
   --text-muted: #a1a1aa;
   --accent: #2874ed;
   --accent-dim: #2967e9;
   --green: #00ff41;
   --red: #ef4444;
-  --red-bg: #352a2d;
   --mono: "SF Mono", "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
   --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --section-pad: 48px;
@@ -32,12 +39,10 @@
   :root {
     --edge-raised: oklch(from var(--bg-raised) calc(l + var(--edge-step)) c h);
     --edge-subtle: oklch(from var(--bg-subtle) calc(l + var(--edge-step)) c h);
-    --edge-red:    oklch(from var(--red-bg)    calc(l + var(--edge-step)) c h);
   }
   html.light-mode {
     --edge-raised: oklch(from var(--bg-raised) calc(l + var(--edge-step)) c h);
     --edge-subtle: oklch(from var(--bg-subtle) calc(l + var(--edge-step)) c h);
-    --edge-red:    oklch(from var(--red-bg)    calc(l + var(--edge-step)) c h);
   }
 }
 
@@ -647,13 +652,13 @@ body.home .platform-block .container {
   align-items: stretch;
 }
 
-.problem-grid {
+.trait-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: var(--card-gap);
 }
 
-body.home .platform-block .problem-grid {
+body.home .platform-block .trait-grid {
   grid-template-columns: 1fr;
   grid-auto-rows: auto;
   gap: var(--card-gap);
@@ -692,18 +697,19 @@ body.home .platform-block .problem-grid {
   line-height: 1;
 }
 
-.problem-card {
-  --surface: var(--red-bg);
+/* One surface step above the raised platform block. */
+.trait-card {
+  --surface: var(--bg-subtle);
 
   background: var(--surface);
-  border: 1px solid var(--edge-red);
+  border: 1px solid var(--edge-subtle);
   border-radius: 8px;
   padding: var(--card-pad) calc(var(--card-pad) + 4px);
   display: flex;
   flex-direction: column;
 }
 
-.problem-card .problem-label {
+.trait-card .trait-label {
   font-family: var(--mono);
   font-size: 14px;
   font-weight: 700;
@@ -712,7 +718,7 @@ body.home .platform-block .problem-grid {
   margin-bottom: 10px;
 }
 
-.problem-card .problem-desc {
+.trait-card .trait-desc {
   font-size: 14px;
   color: var(--text-muted);
   line-height: 1.65;
@@ -1382,14 +1388,12 @@ html.light-mode {
   --edge-step: -0.17;
   --edge-raised: #c8c8ca;
   --edge-subtle: #b0b0b5;
-  --edge-red:    #b0a5a8;
   --text: #27272a;
   --text-muted: #52525b;
   --accent: #2662e2;
   --accent-dim: #2258db;
   --green: #076c2a;
   --red: #dc2626;
-  --red-bg: #ddd2d5;
 }
 
 html.light-mode nav { background: rgba(255, 255, 255, 0.85); }
@@ -1798,7 +1802,7 @@ html.light-mode .blog-neg { color: #dc2626; }
     align-items: start;
   }
   body.home .llmworks-block .home-lanes { grid-template-columns: 1fr; }
-  body.home .platform-block .problem-grid { grid-template-columns: 1fr; }
+  body.home .platform-block .trait-grid { grid-template-columns: 1fr; }
   .agents-block .product-grid { grid-template-columns: 1fr; }
   body.story .consequences { grid-template-columns: 1fr; }
   .post-grid { grid-template-columns: 1fr; }
@@ -1886,28 +1890,47 @@ html.light-mode .blog-neg { color: #dc2626; }
 
 /* --- Reframe: two-doors home (prototype, branch reframe/two-doors) ---
    All rules scoped to body.home.reframe. Uses live tokens only; no new
-   palette values. The "warm door" borrows the existing warm surface
-   (--red-bg / --edge-red) already tuned for problem-cards. */
+   palette values. */
 
 body.home.reframe .container { max-width: 1080px; }
 
-body.home.reframe h1.claim {
-  font-size: 44px;
-  font-weight: 800;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
-  color: var(--text);
-  margin: 8px 0 0;
-  max-width: 900px;
+/* Home, Platform and Story titles use a condensed grotesque in caps; Blog and About keep the
+   system sans. Package names, section labels and small card titles stay as they are. */
+body.home.reframe h1.claim,
+body.home.reframe .door h2,
+body.home.reframe .hero-statement,
+body.platform .hero h1,
+body.story .hero h1,
+body.story section h2:not(.section-label) {
+  font-family: "Oswald", "Arial Narrow", sans-serif;
+  text-transform: uppercase;
 }
 
-body.home.reframe .threshold-sub {
-  font-size: 17px;
-  color: var(--text-muted);
-  line-height: 1.55;
-  margin: 16px 0 0;
-  max-width: 780px;
+/* The gothic face has exactly two sizes: page headline and title. */
+body.home.reframe h1.claim,
+body.platform .hero h1,
+body.story .hero h1 {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.005em;
 }
+
+body.home.reframe .door h2,
+body.home.reframe .hero-statement,
+body.story section h2:not(.section-label) {
+  font-size: clamp(26px, 3.6vw, 38px);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.005em;
+}
+
+body.home.reframe h1.claim {
+  color: var(--text);
+  margin: 8px 0 0;
+}
+
+body.home.reframe .title-accent { color: var(--accent); }
 
 /* Doors: two solid halves meeting at a 1px divider at 50% of the viewport.
    Left = --door-warm (sand), right = --door-deep. Under the 1080 content
@@ -1998,7 +2021,7 @@ body.home.reframe .door-grid {
 body.home.reframe .door {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 22px;
 }
 
 /* Warm door: locally redefine --text / --text-muted so every child text
@@ -2023,25 +2046,15 @@ body.home.reframe .door-kicker {
 }
 
 body.home.reframe .door h2 {
-  font-size: 20px;
-  font-weight: 700;
   color: var(--text);
-  letter-spacing: -0.01em;
-  line-height: 1.35;
   margin: 0;
+  text-wrap: balance;
 }
 
 body.home.reframe .door-body {
   font-size: 14px;
   color: var(--text-muted);
   line-height: 1.65;
-  margin: 0;
-}
-
-body.home.reframe .door-tell {
-  font-size: 13px;
-  color: var(--text-muted);
-  font-style: italic;
   margin: 0;
 }
 
@@ -2212,7 +2225,12 @@ body.home.reframe .link-preview { display: none; }
 
 @media (max-width: 900px) {
   body.home.reframe .agent-row { grid-template-columns: 1fr; gap: 20px; }
-  body.home.reframe h1.claim { font-size: 34px; }
+  body.home.reframe h1.claim,
+  body.platform .hero h1,
+  body.story .hero h1 { font-size: 40px; }
+  body.home.reframe .door h2,
+  body.home.reframe .hero-statement,
+  body.story section h2:not(.section-label) { font-size: clamp(24px, 6.5vw, 30px); }
 }
 
 /* Below 768: doors stack. Backgrounds go directly on each door so the
