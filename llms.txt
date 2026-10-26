@@ -1,8 +1,8 @@
 # LLM Works
 
-> LLM Works builds AI agents on its own open-source substrate, and turns the newest research into production-grade systems that power existing pipelines or create new ones from scratch.
+> LLM Works engineers AI agents to solve specific problems, built on its own open-source platform and run in production.
 
-LLM Works has two sides. On one, agents built from current research and deployed in customers' pipelines on the open-source substrate. On the other, the substrate itself: typed contracts around the model, verification loops, tracing, memory and learning. Reasoning in the model, guarantees outside it.
+LLM Works has two sides. On one, agents engineered for a specific customer problem and deployed in their pipelines on the open-source substrate. On the other, the substrate itself: typed contracts around the model, verification loops, tracing, memory and learning. Reasoning in the model, guarantees outside it.
 
 ## Platform
 
