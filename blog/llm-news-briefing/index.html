@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>llm-news gets an AI editor for hourly briefings — LLM Works</title>
+  <meta name="description" content="llm-news now reads 70+ sources every hour and writes a briefing of the day on top of its rated feed, with a local model as the editor.">
+  <link rel="canonical" href="https://www.llm-works.ai/blog/llm-news-briefing/">
+  <meta property="og:title" content="llm-news gets an AI editor for hourly briefings">
+  <meta property="og:description" content="llm-news now reads 70+ sources every hour and writes a briefing of the day on top of its rated feed, with a local model as the editor.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://www.llm-works.ai/blog/llm-news-briefing/">
+  <meta property="og:site_name" content="LLM Works">
+  <meta property="og:image" content="https://www.llm-works.ai/blog/llm-news-briefing/assets/news-front.png">
+  <meta property="og:image:width" content="1500">
+  <meta property="og:image:height" content="900">
+  <meta property="article:published_time" content="2026-11-11T00:00:00-05:00">
+  <meta property="article:modified_time" content="2026-11-11T00:00:00-05:00">
+  <meta property="article:author" content="https://www.llm-works.ai/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="llm-news gets an AI editor for hourly briefings">
+  <meta name="twitter:description" content="llm-news now reads 70+ sources every hour and writes a briefing of the day on top of its rated feed, with a local model as the editor.">
+  <meta name="twitter:image" content="https://www.llm-works.ai/blog/llm-news-briefing/assets/news-front.png">
+  <link rel="alternate" type="text/plain" title="llms.txt" href="/llms.txt">
+  <link rel="alternate" type="application/rss+xml" title="LLM Works Blog" href="/blog/feed.xml">
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://www.llm-works.ai/#organization",
+        "name": "LLM Works",
+        "url": "https://www.llm-works.ai/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://www.llm-works.ai/assets/logo-512.png",
+          "width": 512,
+          "height": 512
+        }
+      },
+      {
+        "@type": "BlogPosting",
+        "@id": "https://www.llm-works.ai/blog/llm-news-briefing/#post",
+        "url": "https://www.llm-works.ai/blog/llm-news-briefing/",
+        "mainEntityOfPage": {
+          "@id": "https://www.llm-works.ai/blog/llm-news-briefing/"
+        },
+        "headline": "llm-news gets an AI editor for hourly briefings",
+        "description": "llm-news now reads 70+ sources every hour and writes a briefing of the day on top of its rated feed, with a local model as the editor.",
+        "datePublished": "2026-11-11T00:00:00-05:00",
+        "dateModified": "2026-11-11T00:00:00-05:00",
+        "inLanguage": "en",
+        "author": {
+          "@id": "https://www.llm-works.ai/#organization"
+        },
+        "publisher": {
+          "@id": "https://www.llm-works.ai/#organization"
+        },
+        "image": "https://www.llm-works.ai/blog/llm-news-briefing/assets/news-front.png"
+      }
+    ]
+  }
+  </script>
+  <link rel="stylesheet" href="/styles.css?v=9a7583b2">
+  <script src="/script.js?v=5d3aaed5"></script>
+</head>
+<body class="blog-post">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <nav aria-label="Primary">
+    <div class="container">
+      <a href="/" class="logo">llm-works<span>.ai</span></a>
+      <ul class="nav-links">
+        <li><a href="/#agents">Agents</a></li>
+        <li><a href="/platform/">Platform</a></li>
+        <li><a href="/story/">Story</a></li>
+        <li><a href="/blog/" aria-current="page">Blog</a></li>
+        <li><a href="/about/">About</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
+    <input type="checkbox" id="theme-switch">
+    <span class="slider"></span>
+  </label>
+
+  <main id="main" tabindex="-1">
+
+  <article class="post">
+    <header class="post-header">
+      <div class="container">
+        <div class="post-meta-row">
+          <p class="post-date">November 11, 2026</p>
+          <div class="section-label post-kicker">Agent Release</div>
+        </div>
+        <h1>llm-news gets an AI editor for hourly briefings</h1>
+        <p class="post-byline">LLM Works</p>
+      </div>
+    </header>
+
+    <div class="post-content">
+      <div class="container">
+        <p>In March we <a href="/blog/introducing-llm-news/">launched llm-news</a> as a rated feed: articles from 50+
+        sources, each with a star rating and a short summary.</p>
+        <p>Today llm-news reads 70+ sources every hour, around 750 articles on a busy weekday, and writes a
+        briefing of the day on top of them. The rating, the summaries and the briefing all run on
+        a local Qwen3.8 27B model.</p>
+        <p>A briefing written by a model has to earn trust. Most of the work in this release went into keeping
+        opinion apart from fact, attributing disputed figures to whoever reported them, and building in
+        safeguards.</p>
+        <h2 id="the-new-front-page">The new front page</h2>
+        <p>The front page at <a href="https://llm-news.ai" target="_blank" rel="noopener noreferrer">llm-news.ai</a> opens with the stories that carried the day.
+        The briefing develops through the day as one edition, and the top spot goes to what is new.</p>
+        <p><strong>Top story</strong> leads with the day's biggest news. When outlets report different numbers, each
+        version appears with its outlet. Forecasts and claims are attributed to their source, as in
+        "Barclays expects" or "the company says".</p>
+        <p><strong>Findings</strong> collects research and security write-ups that rarely make the headlines, such as a
+        study showing that editing fewer than ten neurons can backdoor an LLM.</p>
+        <p><strong>By the numbers</strong> pulls the day's figures out of the coverage and puts them side by side, from the
+        valuation of an upcoming IPO to the count of vulnerabilities in a patch release.</p>
+        <p><strong>Tensions</strong> sets two framings of the same story against each other, such as a company's revenue
+        claims next to leaked documents showing heavy losses.</p>
+        <p><strong>Who moved</strong> shows which companies the coverage treated favorably or unfavorably that day. It
+        reflects the tone of the news, not stock prices.</p>
+        <p><strong>The day in short</strong> closes the briefing with a single paragraph that tells the whole day, with
+        forecasts and claims attributed the same way.</p>
+        <p>Below the briefing comes every article with its rating. A 💎 marks a gem, a well-rated story that
+        few outlets picked up, with a short note on its significance.</p>
+        <h2 id="editorial-process">Editorial process</h2>
+        <p>The editor works in several passes, and a story makes the briefing only when it holds up across
+        them. The top story and the day in short get a closer review before publication. If a review fails,
+        the briefing keeps the previous version.</p>
+        <p>Every item is checked against the articles it cites before it appears. Analyst notes and vendor
+        posts count as views.</p>
+        <p>Everything runs on our own hardware, without any outside AI service.</p>
+        <h2 id="platform">Platform</h2>
+        <p>llm-news runs on the <a href="/platform/">LLM Works platform</a>, using
+        <a href="https://github.com/llm-works/llm-saia">llm-saia</a>,
+        <a href="https://github.com/llm-works/llm-infer">llm-infer</a>,
+        <a href="https://github.com/llm-works/llm-gent">llm-gent</a> and
+        <a href="https://github.com/llm-works/appinfra">appinfra</a>.</p>
+        <h2 id="availability">Availability</h2>
+        <p><a href="https://llm-news.ai" target="_blank" rel="noopener noreferrer">llm-news.ai</a> is free. Errors in the briefing can be reported to
+        <a href="https://x.com/serendip_ml" target="_blank" rel="noopener noreferrer">@serendip_ml</a> on X.</p>
+      </div>
+    </div>
+  </article>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <span>&copy; 2026 LLM Works LLC</span>
+      <div class="footer-links">
+        <a href="/blog/feed.xml">RSS</a>
+        <a href="/llms.txt">llms.txt</a>
+        <a href="/terms/">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
