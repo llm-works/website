@@ -6,6 +6,7 @@ import json
 import os
 import re
 import shutil
+import sys
 from datetime import datetime, timezone
 from html import escape
 from pathlib import Path
@@ -50,6 +51,7 @@ ROOT = Path(__file__).parent
 SITE_ROOT = ROOT.parent
 STYLES_CSS = SITE_ROOT / "styles.css"
 SCRIPT_JS = SITE_ROOT / "script.js"
+NEWS_JSON = SITE_ROOT / "news.json"
 
 # Static assets get a ?v=<content-hash> suffix so a deploy immediately
 # invalidates the upstream CDN cache instead of waiting out its 4h TTL.
@@ -633,6 +635,7 @@ def build_post(src_dir: Path) -> dict | None:
         "twitter_image_meta": twitter_image_meta,
         "twitter_card": twitter_card,
         "kicker": kicker_raw,
+        "announce": frontmatter.get("announce", True) is not False,
     }
 
     # Write HTML to same directory as post.md
@@ -737,6 +740,33 @@ def build_rss(posts: list[dict]) -> None:
     print("  Built: /blog/feed.xml")
 
 
+def check_news(posts: list[dict]) -> None:
+    """Warn when the news bar's blog entry (news.json, read by script.js) does
+    not match the newest post's url and date. news.json is edited by hand; posts with
+    `announce: false` are not expected there."""
+    announced = [p for p in posts if p["announce"]]
+    if not announced:
+        return
+    newest = max(announced, key=lambda p: p["date"])
+    url = f"/blog/{newest['slug']}/"
+    try:
+        news = json.loads(NEWS_JSON.read_text(encoding="utf-8")) if NEWS_JSON.exists() else {}
+    except json.JSONDecodeError as e:
+        # A malformed file breaks the live bar (script.js drops it silently), so fail loudly.
+        sys.exit(f"  ERROR: news.json is malformed: {e}")
+    blog = news.get("blog") or {}
+    date = newest["date"].strftime("%Y-%m-%d")
+    # script.js drops an entry whose date is missing or outside its window, so check both.
+    if blog.get("url") == url and blog.get("date") == date:
+        return
+    print(f"  WARNING: news.json's blog entry does not match the newest post {url}\n"
+          f"    set its \"blog\" entry to:\n"
+          f"      \"title\": {json.dumps(newest['title'], ensure_ascii=False)},\n"
+          f"      \"url\": \"{url}\",\n"
+          f"      \"date\": \"{date}\"\n"
+          f"    or add `announce: false` to the post's frontmatter.")
+
+
 def _asset_hash(path: Path) -> str:
     # md5[:8] to stay consistent with the Makefile's `bump-css` / `bump-js`
     # targets, so either mechanism produces the same cache-busting tag.
@@ -784,8 +814,9 @@ def main() -> None:
         build_rss(posts)
 
     stamp_assets()
-
     print(f"Done. {len(posts)} posts built.")
+    # Last, so a failure here leaves every output complete.
+    check_news(posts)
 
 
 if __name__ == "__main__":
