@@ -742,7 +742,7 @@ def build_rss(posts: list[dict]) -> None:
 
 def check_news(posts: list[dict]) -> None:
     """Warn when the news bar's blog entry (news.json, read by script.js) does
-    not point at the newest post. news.json is edited by hand; posts with
+    not match the newest post's url and date. news.json is edited by hand; posts with
     `announce: false` are not expected there."""
     announced = [p for p in posts if p["announce"]]
     if not announced:
@@ -754,13 +754,16 @@ def check_news(posts: list[dict]) -> None:
     except json.JSONDecodeError as e:
         # A malformed file breaks the live bar (script.js drops it silently), so fail loudly.
         sys.exit(f"  ERROR: news.json is malformed: {e}")
-    if (news.get("blog") or {}).get("url") == url:
+    blog = news.get("blog") or {}
+    date = newest["date"].strftime("%Y-%m-%d")
+    # script.js drops an entry whose date is missing or outside its window, so check both.
+    if blog.get("url") == url and blog.get("date") == date:
         return
-    print(f"  WARNING: news.json does not announce the newest post {url}\n"
+    print(f"  WARNING: news.json's blog entry does not match the newest post {url}\n"
           f"    set its \"blog\" entry to:\n"
           f"      \"title\": {json.dumps(newest['title'], ensure_ascii=False)},\n"
           f"      \"url\": \"{url}\",\n"
-          f"      \"date\": \"{newest['date'].strftime('%Y-%m-%d')}\"\n"
+          f"      \"date\": \"{date}\"\n"
           f"    or add `announce: false` to the post's frontmatter.")
 
 
