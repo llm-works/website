@@ -768,8 +768,6 @@ def check_news(posts: list[dict]) -> None:
 
 
 def _asset_hash(path: Path) -> str:
-    # md5[:8] to stay consistent with the Makefile's `bump-css` / `bump-js`
-    # targets, so either mechanism produces the same cache-busting tag.
     return hashlib.md5(path.read_bytes()).hexdigest()[:8]
 
 
