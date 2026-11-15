@@ -2254,3 +2254,19 @@ body.home.reframe .link-preview { display: none; }
   }
 }
 
+/* Scroll reveal (script.js). Fill `backwards`: a held transform would trap popovers. */
+.reveal { opacity: 0; transform: translate(var(--reveal-x, 0px), 24px); }
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+  animation: reveal-in 1s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+@keyframes reveal-in {
+  from { opacity: 0; transform: translate(var(--reveal-x, 0px), 24px); }
+  to { opacity: 1; transform: none; }
+}
+/* Sideways starts must not widen the page. */
+body.blog-index main, body.home main { overflow-x: clip; }
+@media (prefers-reduced-motion: reduce), print {
+  .reveal, .reveal.is-visible { opacity: 1; transform: none; animation: none; }
+}

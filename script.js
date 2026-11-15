@@ -47,7 +47,63 @@
     hydratePypiVersions();
     hydrateNewsBanner();
     hydrateBlogHero();
+    revealOnScroll();
   });
+
+  // Scroll reveal: pieces below the fold fade in and rise once; sideways ones also close in.
+  var REVEAL_SELECTOR = 'body.blog-index .post-grid .post-card,' +
+                        ' body.about main > section:not(.hero) > .container,' +
+                        ' body.story main > section:not(.hero) > .container >' +
+                        ' :not(.timeline):not(.consequences),' +
+                        ' body.story .timeline-item, body.story .consequence,' +
+                        ' body.platform main > section:not(.hero) > .container >' +
+                        ' :not(.package-rows),' +
+                        ' body.platform .package-row,' +
+                        ' body.home #agents .container > :not(.agent-rows),' +
+                        ' body.home .agent-shot, body.home .agent-info,' +
+                        ' body.home .platform-lead > :not(.solution-list),' +
+                        ' body.home .solution-list li,' +
+                        ' body.home .quote-reveal, body.home .trait-card,' +
+                        ' body.home .story-lead > *, body.home .story-lead + .section-cta';
+  var REVEAL_SIDEWAYS = '.post-card, body.home .agent-shot, body.home .trait-card';
+  var REVEAL_STAGGER_MS = 80;
+  var REVEAL_SPREAD_PX = 16;
+  var REVEAL_THRESHOLD = 0.15;
+
+  // Start offset toward the side the element sits on; centered (e.g. stacked on phones) gives 0.
+  function sideSpread(el) {
+    var r = el.getBoundingClientRect();
+    var offCenter = (r.left + r.width / 2) - window.innerWidth / 2;
+    if (Math.abs(offCenter) < window.innerWidth * 0.1) return 0;
+    return offCenter < 0 ? -REVEAL_SPREAD_PX : REVEAL_SPREAD_PX;
+  }
+
+  function revealOnScroll() {
+    var targets = document.querySelectorAll(REVEAL_SELECTOR);
+    if (!targets.length || !('IntersectionObserver' in window)) return;
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var observer = new IntersectionObserver(function (entries) {
+      var batch = 0;
+      entries.forEach(function (entry) {
+        // Not isIntersecting: the first callback reports any overlap as intersecting.
+        if (entry.intersectionRatio < REVEAL_THRESHOLD) return;
+        var el = entry.target;
+        if (!el.matches('.post-card')) el.style.animationDelay = (batch++ * REVEAL_STAGGER_MS) + 'ms';
+        el.classList.add('is-visible');
+        observer.unobserve(el);
+      });
+    }, { threshold: REVEAL_THRESHOLD });
+
+    // Hide only what starts below the fold, so nothing on screen blinks out.
+    var fold = window.innerHeight;
+    targets.forEach(function (el) {
+      if (el.getBoundingClientRect().top < fold) return;
+      if (el.matches(REVEAL_SIDEWAYS)) el.style.setProperty('--reveal-x', sideSpread(el) + 'px');
+      el.classList.add('reveal');
+      observer.observe(el);
+    });
+  }
 
   var PACKAGES = ['appinfra', 'llm-saia', 'llm-infer', 'llm-kelt', 'llm-gent'];
   var PYPI_CACHE_TTL_MS = 24 * 60 * 60 * 1000;
