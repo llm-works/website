@@ -67,6 +67,7 @@
                         ' body.home .story-lead > *, body.home .story-lead + .section-cta';
   var REVEAL_SIDEWAYS = '.post-card, body.home .agent-shot, body.home .trait-card';
   var REVEAL_STAGGER_MS = 80;
+  var REVEAL_STAGGER_STEPS = 4;
   var REVEAL_SPREAD_PX = 16;
   var REVEAL_THRESHOLD = 0.15;
 
@@ -89,7 +90,7 @@
         // Not isIntersecting: the first callback reports any overlap as intersecting.
         if (entry.intersectionRatio < REVEAL_THRESHOLD) return;
         var el = entry.target;
-        if (!el.matches('.post-card')) el.style.animationDelay = (batch++ * REVEAL_STAGGER_MS) + 'ms';
+        if (!el.matches('.post-card')) el.style.animationDelay = (Math.min(batch++, REVEAL_STAGGER_STEPS - 1) * REVEAL_STAGGER_MS) + 'ms';
         el.classList.add('is-visible');
         observer.unobserve(el);
       });
