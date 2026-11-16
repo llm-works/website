@@ -1903,6 +1903,7 @@ body.home.reframe .container { max-width: 1080px; }
 body.home.reframe h1.claim,
 body.home.reframe .door h2,
 body.home.reframe .hero-statement,
+body.home.reframe .claim-sub,
 body.platform .hero h1,
 body.story .hero h1,
 body.story section h2:not(.section-label) {
@@ -1922,6 +1923,7 @@ body.story .hero h1 {
 
 body.home.reframe .door h2,
 body.home.reframe .hero-statement,
+body.home.reframe .claim-sub,
 body.story section h2:not(.section-label) {
   font-size: clamp(26px, 3.6vw, 38px);
   font-weight: 600;
@@ -1935,6 +1937,12 @@ body.home.reframe h1.claim {
 }
 
 body.home.reframe .title-accent { color: var(--accent); }
+
+body.home.reframe .claim-sub {
+  color: var(--text);
+  text-align: center;
+  margin: 28px 0 0;
+}
 
 /* Doors: two solid halves meeting at a 1px divider at 50% of the viewport.
    Left = --door-warm (sand), right = --door-deep. Under the 1080 content
@@ -2234,6 +2242,7 @@ body.home.reframe .link-preview { display: none; }
   body.story .hero h1 { font-size: 40px; }
   body.home.reframe .door h2,
   body.home.reframe .hero-statement,
+  body.home.reframe .claim-sub,
   body.story section h2:not(.section-label) { font-size: clamp(24px, 6.5vw, 30px); }
 }
 
