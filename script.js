@@ -65,7 +65,9 @@
                         ' body.home .solution-list li,' +
                         ' body.home .quote-reveal, body.home .trait-card,' +
                         ' body.home .story-lead > *, body.home .story-lead + .section-cta';
-  var REVEAL_SIDEWAYS = '.post-card, body.home .agent-shot, body.home .trait-card';
+  var REVEAL_SIDEWAYS = '.post-card, body.home .agent-shot, body.home .trait-card, body.home .quote-reveal';
+  // These drop the rise when they close in from a side; stacked and centered they still rise.
+  var REVEAL_SIDEWAYS_ONLY = 'body.home .agent-shot, body.home .trait-card, body.home .quote-reveal';
   var REVEAL_STAGGER_MS = 80;
   var REVEAL_STAGGER_STEPS = 4;
   var REVEAL_SPREAD_PX = 16;
@@ -100,7 +102,11 @@
     var fold = window.innerHeight;
     targets.forEach(function (el) {
       if (el.getBoundingClientRect().top < fold) return;
-      if (el.matches(REVEAL_SIDEWAYS)) el.style.setProperty('--reveal-x', sideSpread(el) + 'px');
+      if (el.matches(REVEAL_SIDEWAYS)) {
+        var spread = sideSpread(el);
+        el.style.setProperty('--reveal-x', spread + 'px');
+        if (spread && el.matches(REVEAL_SIDEWAYS_ONLY)) el.style.setProperty('--reveal-y', '0px');
+      }
       el.classList.add('reveal');
       observer.observe(el);
     });
