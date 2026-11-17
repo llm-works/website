@@ -144,6 +144,10 @@ nav .container {
 
 .nav-links a[aria-current="page"] { color: var(--text); }
 
+.nav-github { display: flex; align-items: center; }
+/* The mark is a solid disk: centered on the text box it reads high next to lowercase text. */
+.nav-github svg { display: block; transform: translateY(1px); }
+
 /* --- Release banner --- */
 .release-banner {
   position: fixed;
@@ -1892,6 +1896,11 @@ html.light-mode .blog-neg { color: #dc2626; }
   .link-list a { padding-left: 16px; }
 }
 
+/* Smallest phones: keep the five links and the GitHub mark on one row. */
+@media (max-width: 359.98px) {
+  .nav-links { column-gap: 10px; }
+}
+
 /* --- Reframe: two-doors home (prototype, branch reframe/two-doors) ---
    All rules scoped to body.home.reframe. Uses live tokens only; no new
    palette values. */
@@ -2244,6 +2253,18 @@ body.home.reframe .link-preview { display: none; }
   body.home.reframe .hero-statement,
   body.home.reframe .claim-sub,
   body.story section h2:not(.section-label) { font-size: clamp(24px, 6.5vw, 30px); }
+}
+
+/* Hero: from tablet up the headline scales with the container to hold one full-width
+   line, and the block centers. Phones stack it on three lines, left-aligned. */
+body.home.reframe .hero-block .container { container-type: inline-size; }
+@media (min-width: 768px) {
+  body.home.reframe .hero-block .container { text-align: center; }
+  body.home.reframe h1.claim { font-size: min(56px, 5.4cqi); }
+}
+@media (max-width: 767.98px) {
+  body.home.reframe h1.claim { text-wrap: balance; }
+  body.home.reframe .claim-sub { text-align: left; }
 }
 
 /* Below 768: doors stack. Backgrounds go directly on each door so the

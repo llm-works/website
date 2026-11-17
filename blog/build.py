@@ -59,6 +59,13 @@ HASHED_ASSETS = {"/styles.css": STYLES_CSS, "/script.js": SCRIPT_JS}
 _asset_pattern = "|".join(re.escape(url) for url in HASHED_ASSETS)
 _ASSET_REF_RE = re.compile(rf'(?<![\w./-])({_asset_pattern})(\?v=[^"\'\s#>)]*)?(?=["\'\s#>)])')
 
+# Shared markup lives in partials/NAME.html and is copied into every page between
+# <!-- begin partial NAME --> and <!-- end partial NAME -->.
+PARTIALS_DIR = SITE_ROOT / "partials"
+_PARTIAL_RE = re.compile(
+    r"<!-- begin partial (\w+) -->\n.*?^([ \t]*)<!-- end partial \1 -->", re.S | re.M)
+_ANCHOR_RE = re.compile(r'(<a href="([^"]*)"[^>]*)>')
+
 POST_TEMPLATE = """\
 <!DOCTYPE html>
 <html lang="en">
@@ -93,18 +100,8 @@ POST_TEMPLATE = """\
 <body class="blog-post">
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <nav aria-label="Primary">
-    <div class="container">
-      <a href="/" class="logo">llm-works<span>.ai</span></a>
-      <ul class="nav-links">
-        <li><a href="/#agents">Agents</a></li>
-        <li><a href="/platform/">Platform</a></li>
-        <li><a href="/story/">Story</a></li>
-        <li><a href="/blog/" aria-current="page">Blog</a></li>
-        <li><a href="/about/">About</a></li>
-      </ul>
-    </div>
-  </nav>
+  <!-- begin partial nav -->
+  <!-- end partial nav -->
 
   <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
     <input type="checkbox" id="theme-switch">
@@ -179,18 +176,8 @@ INDEX_TEMPLATE = """\
 <body class="blog-index">
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <nav aria-label="Primary">
-    <div class="container">
-      <a href="/" class="logo">llm-works<span>.ai</span></a>
-      <ul class="nav-links">
-        <li><a href="/#agents">Agents</a></li>
-        <li><a href="/platform/">Platform</a></li>
-        <li><a href="/story/">Story</a></li>
-        <li><a href="/blog/" aria-current="page">Blog</a></li>
-        <li><a href="/about/">About</a></li>
-      </ul>
-    </div>
-  </nav>
+  <!-- begin partial nav -->
+  <!-- end partial nav -->
 
   <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
     <input type="checkbox" id="theme-switch">
@@ -771,6 +758,67 @@ def _asset_hash(path: Path) -> str:
     return hashlib.md5(path.read_bytes()).hexdigest()[:8]
 
 
+def _site_html_files():
+    """Every page of the site. Hidden dirs, vendored deps and the partials
+    themselves are pruned before descent."""
+    skip = {"node_modules", "partials"}
+    for dirpath, dirnames, filenames in os.walk(SITE_ROOT):
+        dirnames[:] = [d for d in dirnames if not d.startswith(".") and d not in skip]
+        for fname in filenames:
+            if fname.endswith(".html"):
+                yield Path(dirpath) / fname
+
+
+def _rewrite(html_path: Path, transform) -> bool:
+    original = html_path.read_text(encoding="utf-8")
+    updated = transform(original)
+    if updated != original:
+        html_path.write_text(updated, encoding="utf-8")
+    return updated != original
+
+
+def _page_path(html_path: Path) -> str:
+    """URL path a file is served at: about/index.html -> /about/."""
+    return "/" + html_path.relative_to(SITE_ROOT).as_posix().removesuffix("index.html")
+
+
+def _is_current(href: str, page: str) -> bool:
+    """A section link is current on every page below it (Blog on each post);
+    the home link and in-page anchors only on an exact match."""
+    if href == "/" or "#" in href or not href.startswith("/"):
+        return href == page
+    return page.startswith(href)
+
+
+def _mark_current(partial: str, page: str) -> str:
+    def repl(m: re.Match) -> str:
+        if _is_current(m.group(2), page):
+            return f'{m.group(1)} aria-current="page">'
+        return m.group(0)
+
+    return _ANCHOR_RE.sub(repl, partial)
+
+
+def _fill_partials(html: str, html_path: Path, partials: dict[str, str]) -> str:
+    def repl(m: re.Match) -> str:
+        name, indent = m.group(1), m.group(2)
+        if name not in partials:
+            sys.exit(f"  ERROR: {html_path} uses a missing partial: partials/{name}.html")
+        body = _mark_current(partials[name], _page_path(html_path))
+        return f"<!-- begin partial {name} -->\n{body}{indent}<!-- end partial {name} -->"
+
+    return _PARTIAL_RE.sub(repl, html)
+
+
+def stamp_partials() -> None:
+    """Copy each partial into the pages that mark a place for it. Idempotent."""
+    partials = {p.stem: p.read_text(encoding="utf-8") for p in PARTIALS_DIR.glob("*.html")}
+    stamped = sum(
+        _rewrite(path, lambda html, path=path: _fill_partials(html, path, partials))
+        for path in _site_html_files())
+    print(f"  Stamped partials in {stamped} HTML file(s)")
+
+
 def stamp_assets() -> None:
     """Rewrite /styles.css and /script.js references across all HTML with
     ?v=<content-hash> so a deploy invalidates CDN caches immediately.
@@ -780,19 +828,8 @@ def stamp_assets() -> None:
     def repl(m: re.Match) -> str:
         return f"{m.group(1)}?v={hashes[m.group(1)]}"
 
-    stamped = 0
-    for dirpath, dirnames, filenames in os.walk(SITE_ROOT):
-        # Prune hidden dirs and vendored deps before descent.
-        dirnames[:] = [d for d in dirnames if not d.startswith(".") and d != "node_modules"]
-        for fname in filenames:
-            if not fname.endswith(".html"):
-                continue
-            html_path = Path(dirpath) / fname
-            original = html_path.read_text(encoding="utf-8")
-            updated = _ASSET_REF_RE.sub(repl, original)
-            if updated != original:
-                html_path.write_text(updated, encoding="utf-8")
-                stamped += 1
+    stamped = sum(_rewrite(path, lambda html: _ASSET_REF_RE.sub(repl, html))
+                  for path in _site_html_files())
     print(f"  Stamped assets in {stamped} HTML file(s) "
           f"(css={hashes['/styles.css']}, js={hashes['/script.js']})")
 
@@ -811,6 +848,7 @@ def main() -> None:
         build_index(posts)
         build_rss(posts)
 
+    stamp_partials()
     stamp_assets()
     print(f"Done. {len(posts)} posts built.")
     # Last, so a failure here leaves every output complete.
