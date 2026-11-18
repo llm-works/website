@@ -1,0 +1,41 @@
+/* Brand tokens, shared with docs.llm-works.ai: custom properties only, dark by default,
+   html.light-mode for light. The names are a contract with the docs build. */
+:root {
+  --bg: #0a0a0b;
+  --bg-raised: #1a1a1d;
+  --bg-subtle: #2a2a2f;
+  --border: #505055;
+  --edge-step: 0.15;
+  /* Dark edges: oklch(from <surface> calc(l + var(--edge-step)) c h), hex fallbacks for older browsers.
+     Light mode sets its edges as hex. */
+  --edge-raised: #353538;
+  --edge-subtle: #454548;
+  --text: #e4e4e7;
+  --text-muted: #a1a1aa;
+  --accent: #2874ed;
+  --accent-dim: #2967e9;
+  --mono: "SF Mono", "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --card-pad: 20px;
+  --card-gap: 20px;
+}
+
+@supports (color: oklch(from red l c h)) {
+  :root {
+    --edge-raised: oklch(from var(--bg-raised) calc(l + var(--edge-step)) c h);
+    --edge-subtle: oklch(from var(--bg-subtle) calc(l + var(--edge-step)) c h);
+  }
+}
+
+html.light-mode {
+  --bg: #ffffff;
+  --bg-raised: #f4f4f5;
+  --bg-subtle: #dcdce0;
+  --border: #a5a5aa;
+  --edge-raised: #c8c8ca;
+  --edge-subtle: #b0b0b5;
+  --text: #27272a;
+  --text-muted: #52525b;
+  --accent: #2662e2;
+  --accent-dim: #2258db;
+}

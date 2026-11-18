@@ -1,0 +1,130 @@
+/* Site nav and theme switch, the markup in partials/nav.html. Needs tokens.css; carries its
+   own width, font and resets so it renders the same on pages without styles.css. */
+.site-nav,
+.site-nav *,
+.theme-toggle,
+.theme-toggle * { box-sizing: border-box; }
+
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  font-family: var(--sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  background: rgba(10, 10, 11, 0.85);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-nav .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1080px;
+  min-height: 56px;
+  margin: 0 auto;
+  padding: 8px 24px;
+}
+
+.site-nav .logo {
+  font-family: var(--mono);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: -0.02em;
+}
+
+.site-nav .logo span { color: var(--text-muted); }
+
+.site-nav .nav-links {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  justify-content: flex-end;
+}
+
+.site-nav .nav-links a {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.site-nav .nav-links a:hover { color: var(--text); }
+
+.site-nav .nav-links a[aria-current="page"] { color: var(--text); }
+
+.site-nav .nav-github { display: flex; align-items: center; }
+/* The mark is a solid disk: centered on the text box it reads high next to lowercase text. */
+.site-nav .nav-github svg { display: block; transform: translateY(1px); }
+
+.theme-toggle {
+  position: fixed;
+  top: 19px;
+  right: 24px;
+  z-index: 101;
+  display: block;
+  width: 34px;
+  height: 18px;
+  cursor: pointer;
+}
+
+.theme-toggle input { opacity: 0; width: 0; height: 0; }
+
+.theme-toggle .slider {
+  position: absolute;
+  inset: 0;
+  background: var(--bg-subtle);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  transition: background 0.2s;
+}
+
+.theme-toggle .slider::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.theme-toggle input:checked + .slider::before {
+  transform: translateX(16px);
+  background: var(--accent);
+}
+
+/* Narrow viewports: reserve space on nav so About doesn't hide under the toggle.
+   Wide viewports (>1250px) leave nav symmetric, the container has natural margin. */
+@media (max-width: 1250px) {
+  .site-nav .container { padding-right: 80px; }
+}
+
+/* Phones: wrap the links onto a second row, keep the larger switch for touch. */
+@media (max-width: 768px) {
+  .site-nav .container { padding: 10px 24px; flex-wrap: wrap; row-gap: 6px; }
+  .site-nav .nav-links { flex-basis: 100%; justify-content: center; gap: 6px 16px; }
+  .site-nav .nav-links a { font-size: 13px; }
+  .theme-toggle { top: 9px; right: 16px; width: 40px; height: 22px; }
+  .theme-toggle .slider { border-radius: 22px; }
+  .theme-toggle .slider::before { width: 16px; height: 16px; }
+  .theme-toggle input:checked + .slider::before { transform: translateX(18px); }
+}
+
+/* Smallest phones: keep the five links and the GitHub mark on one row. */
+@media (max-width: 359.98px) {
+  .site-nav .nav-links { column-gap: 10px; }
+}

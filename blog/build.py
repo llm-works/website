@@ -55,7 +55,12 @@ NEWS_JSON = SITE_ROOT / "news.json"
 
 # Static assets get a ?v=<content-hash> suffix so a deploy immediately
 # invalidates the upstream CDN cache instead of waiting out its 4h TTL.
-HASHED_ASSETS = {"/styles.css": STYLES_CSS, "/script.js": SCRIPT_JS}
+HASHED_ASSETS = {
+    "/partials/tokens.css": SITE_ROOT / "partials" / "tokens.css",
+    "/partials/nav.css": SITE_ROOT / "partials" / "nav.css",
+    "/styles.css": STYLES_CSS,
+    "/script.js": SCRIPT_JS,
+}
 _asset_pattern = "|".join(re.escape(url) for url in HASHED_ASSETS)
 _ASSET_REF_RE = re.compile(rf'(?<![\w./-])({_asset_pattern})(\?v=[^"\'\s#>)]*)?(?=["\'\s#>)])')
 
@@ -94,6 +99,8 @@ POST_TEMPLATE = """\
   <script type="application/ld+json">
 {post_jsonld}
   </script>
+  <link rel="stylesheet" href="/partials/tokens.css">
+  <link rel="stylesheet" href="/partials/nav.css">
   <link rel="stylesheet" href="/styles.css">
   <script src="/script.js"></script>
 </head>
@@ -102,11 +109,6 @@ POST_TEMPLATE = """\
 
   <!-- begin partial nav -->
   <!-- end partial nav -->
-
-  <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
-    <input type="checkbox" id="theme-switch">
-    <span class="slider"></span>
-  </label>
 
   <main id="main" tabindex="-1">
 
@@ -170,6 +172,8 @@ INDEX_TEMPLATE = """\
   <script type="application/ld+json">
 {index_jsonld}
   </script>
+  <link rel="stylesheet" href="/partials/tokens.css">
+  <link rel="stylesheet" href="/partials/nav.css">
   <link rel="stylesheet" href="/styles.css">
   <script src="/script.js"></script>
 </head>
@@ -178,11 +182,6 @@ INDEX_TEMPLATE = """\
 
   <!-- begin partial nav -->
   <!-- end partial nav -->
-
-  <label class="theme-toggle" aria-label="Toggle dark/light mode" title="Toggle dark/light mode">
-    <input type="checkbox" id="theme-switch">
-    <span class="slider"></span>
-  </label>
 
   <main id="main" tabindex="-1">
 
@@ -645,7 +644,7 @@ def build_post(src_dir: Path) -> dict | None:
     print(f"  Built: /blog/{slug}/")
 
     # Generate redirects from old URLs
-    redirects = frontmatter.get("redirect_from", [])
+    redirects = frontmatter.get("redirect_from") or []
     if isinstance(redirects, str):
         redirects = [redirects]
     for redirect_path in redirects:
@@ -820,7 +819,7 @@ def stamp_partials() -> None:
 
 
 def stamp_assets() -> None:
-    """Rewrite /styles.css and /script.js references across all HTML with
+    """Rewrite references to each HASHED_ASSETS file across all HTML with
     ?v=<content-hash> so a deploy invalidates CDN caches immediately.
     Idempotent: an existing ?v=... suffix is replaced."""
     hashes = {url: _asset_hash(path) for url, path in HASHED_ASSETS.items()}
@@ -830,8 +829,8 @@ def stamp_assets() -> None:
 
     stamped = sum(_rewrite(path, lambda html: _ASSET_REF_RE.sub(repl, html))
                   for path in _site_html_files())
-    print(f"  Stamped assets in {stamped} HTML file(s) "
-          f"(css={hashes['/styles.css']}, js={hashes['/script.js']})")
+    summary = ", ".join(f"{url}={h}" for url, h in hashes.items())
+    print(f"  Stamped assets in {stamped} HTML file(s) ({summary})")
 
 
 def main() -> None:
