@@ -21,6 +21,11 @@
   border-bottom: 1px solid var(--border);
 }
 
+html.light-mode .site-nav {
+  background: rgba(255, 255, 255, 0.85);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+}
+
 .site-nav .container {
   display: flex;
   align-items: center;
