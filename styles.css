@@ -11,39 +11,13 @@
 
 .nowrap { white-space: nowrap; }
 
+/* Brand tokens (colors, fonts, card spacing) live in partials/tokens.css; these are site-only. */
 :root {
-  --bg: #0a0a0b;
-  --bg-raised: #1a1a1d;
-  --bg-subtle: #2a2a2f;
-  --border: #505055;
-  --edge-step: 0.15;
-  /* Edge colors: oklch(from <surface> calc(l + var(--edge-step)) c h) — hex fallbacks for older browsers */
-  --edge-raised: #353538;
-  --edge-subtle: #454548;
-  --text: #e4e4e7;
-  --text-muted: #a1a1aa;
-  --accent: #2874ed;
-  --accent-dim: #2967e9;
   --green: #00ff41;
   --red: #ef4444;
-  --mono: "SF Mono", "Cascadia Code", "Fira Code", "JetBrains Mono", Consolas, monospace;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --section-pad: 48px;
-  --card-pad: 20px;
-  --card-gap: 20px;
   --post-grid-cols: 3;
   --blog-hero-scale: 1.15;
-}
-
-@supports (color: oklch(from red l c h)) {
-  :root {
-    --edge-raised: oklch(from var(--bg-raised) calc(l + var(--edge-step)) c h);
-    --edge-subtle: oklch(from var(--bg-subtle) calc(l + var(--edge-step)) c h);
-  }
-  html.light-mode {
-    --edge-raised: oklch(from var(--bg-raised) calc(l + var(--edge-step)) c h);
-    --edge-subtle: oklch(from var(--bg-subtle) calc(l + var(--edge-step)) c h);
-  }
 }
 
 html { scroll-behavior: smooth; scroll-padding-top: calc(56px + var(--banner-h, 0px)); }
@@ -91,62 +65,7 @@ section + section {
 
 .skip-link:focus { top: 8px; }
 
-/* --- Nav --- */
-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 100;
-  background: rgba(10, 10, 11, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-}
-
-nav .container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 56px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-}
-
-.logo {
-  font-family: var(--mono);
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-  text-decoration: none;
-  letter-spacing: -0.02em;
-}
-
-.logo span { color: var(--text-muted); }
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px 24px;
-  list-style: none;
-  justify-content: flex-end;
-}
-
-.nav-links a {
-  font-size: 14px;
-  color: var(--text-muted);
-  text-decoration: none;
-  transition: color 0.15s;
-}
-
-.nav-links a:hover { color: var(--text); }
-
-.nav-links a[aria-current="page"] { color: var(--text); }
-
-.nav-github { display: flex; align-items: center; }
-/* The mark is a solid disk: centered on the text box it reads high next to lowercase text. */
-.nav-github svg { display: block; transform: translateY(1px); }
+/* Nav and theme switch: partials/nav.css. */
 
 /* --- Release banner --- */
 .release-banner {
@@ -503,7 +422,6 @@ html.light-mode .quote-reveal p.pull-quote + p {
 body.home .hero h1 { margin-bottom: 18px; }
 body.home .hero p { margin-bottom: 12px; }
 body.home .block-link { margin-top: 12px; }
-body.home footer { padding: 24px 0; }
 
 /* --- Homepage desktop geometry (wider container + horizontal grids) --- */
 body.home .container,
@@ -1354,10 +1272,9 @@ body.about .why-list li strong {
   margin-bottom: 28px;
 }
 
-/* --- Footer --- */
+/* --- Footer: the nav's bar geometry (partials/nav.css), shared with the docs site --- */
 footer {
   border-top: 1px solid var(--edge-raised);
-  padding: 32px 0;
 }
 
 footer .container {
@@ -1366,6 +1283,8 @@ footer .container {
   align-items: center;
   flex-wrap: wrap;
   gap: 12px;
+  min-height: 56px;
+  padding: 8px 24px;
   font-size: 13px;
   color: var(--text-muted);
 }
@@ -1383,70 +1302,10 @@ footer a:hover { color: var(--text); }
   gap: 20px;
 }
 
-/* --- Light mode --- */
+/* --- Light mode (site-only tokens; the brand tokens are in partials/tokens.css) --- */
 html.light-mode {
-  --bg: #ffffff;
-  --bg-raised: #f4f4f5;
-  --bg-subtle: #dcdce0;
-  --border: #a5a5aa;
-  --edge-step: -0.17;
-  --edge-raised: #c8c8ca;
-  --edge-subtle: #b0b0b5;
-  --text: #27272a;
-  --text-muted: #52525b;
-  --accent: #2662e2;
-  --accent-dim: #2258db;
   --green: #076c2a;
   --red: #dc2626;
-}
-
-html.light-mode nav { background: rgba(255, 255, 255, 0.85); }
-
-
-/* --- Theme toggle --- */
-.theme-toggle {
-  position: fixed;
-  top: 19px;
-  right: 24px;
-  z-index: 101;
-  display: block;
-  width: 34px;
-  height: 18px;
-  cursor: pointer;
-}
-
-/* Narrow viewports: reserve space on nav so About doesn't hide under the toggle.
-   Wide viewports (>1250px) leave nav symmetric — container has natural margin. */
-@media (max-width: 1250px) {
-  nav .container { padding-right: 80px; }
-}
-
-.theme-toggle input { opacity: 0; width: 0; height: 0; }
-
-.theme-toggle .slider {
-  position: absolute;
-  inset: 0;
-  background: var(--bg-subtle);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  transition: background 0.2s;
-}
-
-.theme-toggle .slider::before {
-  content: "";
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 12px;
-  height: 12px;
-  background: var(--text-muted);
-  border-radius: 50%;
-  transition: transform 0.2s, background 0.2s;
-}
-
-.theme-toggle input:checked + .slider::before {
-  transform: translateX(16px);
-  background: var(--accent);
 }
 
 /* --- Blog index --- */
@@ -1860,16 +1719,6 @@ html.light-mode .blog-neg { color: #dc2626; }
   }
   .quote-reveal p.pull-quote::after { display: none; }
 
-  /* Nav: wrap items, tighter padding */
-  nav .container { padding-right: 24px; padding-top: 10px; padding-bottom: 10px; flex-wrap: wrap; row-gap: 6px; }
-  .nav-links { flex-basis: 100%; justify-content: center; gap: 6px 16px; }
-  .nav-links a { font-size: 13px; }
-  /* Touch: keep the larger switch */
-  .theme-toggle { top: 9px; right: 16px; width: 40px; height: 22px; }
-  .theme-toggle .slider { border-radius: 22px; }
-  .theme-toggle .slider::before { width: 16px; height: 16px; }
-  .theme-toggle input:checked + .slider::before { transform: translateX(18px); }
-
   /* Main clearance: wrapped nav is taller on mobile, bump padding-top */
   main { padding-top: calc(85px + var(--banner-h, 0px)); }
 
@@ -1894,11 +1743,6 @@ html.light-mode .blog-neg { color: #dc2626; }
   .link-list > div { display: flex; flex-direction: column; gap: 2px; }
   .link-list .label { margin-right: 0; }
   .link-list a { padding-left: 16px; }
-}
-
-/* Smallest phones: keep the five links and the GitHub mark on one row. */
-@media (max-width: 359.98px) {
-  .nav-links { column-gap: 10px; }
 }
 
 /* --- Reframe: two-doors home (prototype, branch reframe/two-doors) ---
